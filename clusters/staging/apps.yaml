@@ -7,9 +7,9 @@ metadata:
 spec:
   interval: 1m0s
   retryInterval: 1m0s
-  timeout: 5m   
+  timeout: 5m 
   path: ./apps/staging
   sourceRef:
     kind: GitRepository
-    name: flux-systems
+    name: flux-system
   prune: true
