@@ -13,3 +13,7 @@ spec:
     kind: GitRepository
     name: flux-system
   prune: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
