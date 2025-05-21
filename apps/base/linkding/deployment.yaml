@@ -11,31 +11,37 @@ spec:
     metadata:
       labels:
         app: linkding
-  spec:
+        policy-type: "app"
+    spec:
       securityContext:
-        fsGroup: 33 # www-data group ID
-        runAsUser: 33 # www-data user ID
-        runAsGroup: 33 # www-data group ID
+        runAsUser: 33
+        runAsGroup: 33
+        fsGroup: 33
 
       containers:
         - name: linkding
-          image: sissbruecker/linkding:1.31.0
-          ports:
-            - containerPort: 9090
-
-              #  envFrom:
-            # - configMapRef:
-            #  name: linkding-configmap
-            # - secretRef:
-            # name: linkding-container-env
+          image: sissbruecker/linkding:1.39.1
 
           securityContext:
             allowPrivilegeEscalation: false
 
+          envFrom:
+            - configMapRef:
+                name: linkding-configmap
+            - secretRef:
+                name: linkding-container-env
+
+          ports:
+            - containerPort: 3003
+              protocol: TCP
+
           volumeMounts:
             - name: linkding-data
               mountPath: /etc/linkding/data
+
+      restartPolicy: Always
+
       volumes:
         - name: linkding-data
           persistentVolumeClaim:
-            claimName: linkding-data-pvc
+            claimName: linkding-data
