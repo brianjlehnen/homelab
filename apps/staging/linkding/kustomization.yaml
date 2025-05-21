@@ -5,3 +5,4 @@ resources:
   - ../../base/linkding/
   - cloudflare.yaml
   - cloudflare-secret.yaml
+  - linkding-container-env-secret.yaml
