@@ -23,11 +23,11 @@ spec:
           ports:
             - containerPort: 9090
 
-          envFrom:
+              #  envFrom:
             # - configMapRef:
             #  name: linkding-configmap
-            - secretRef:
-              name: linkding-container-env
+            # - secretRef:
+            # name: linkding-container-env
 
           securityContext:
             allowPrivilegeEscalation: false
