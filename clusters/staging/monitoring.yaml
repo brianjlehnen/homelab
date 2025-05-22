@@ -17,22 +17,22 @@ spec:
  #   secretRef:
  #     name: sops-age
 
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#  name: monitoring-configs
-#  namespace: flux-system
-# spec:
- # interval: 1m0s
- # retryInterval: 1m0s
- # timeout: 5m 
- # path: ./monitoring/configs/staging/
- # sourceRef:
- #  kind: GitRepository
- #   name: flux-system
- # prune: true
- # decryption:
- #   provider: sops
- #   secretRef:
- #     name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: monitoring-configs
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  retryInterval: 1m0s
+  timeout: 5m 
+  path: ./monitoring/configs/staging/
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  prune: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
