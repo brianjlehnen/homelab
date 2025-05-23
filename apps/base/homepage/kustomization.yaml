@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - deployment.yaml
-  # - ingress.yaml
+  - ingress.yaml
   - secrets.yaml
   - serviceaccount.yaml
   - configmap.yaml
