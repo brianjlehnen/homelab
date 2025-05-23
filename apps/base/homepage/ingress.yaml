@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: homepage
+  name: homepage-ingress
   namespace: homepage
   labels:
     app.kubernetes.io/name: homepage
@@ -11,12 +11,13 @@ metadata:
     gethomepage.dev/group: Cluster Management
     gethomepage.dev/icon: homepage.png
     gethomepage.dev/name: Homepage
+    traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-    - host: "homepage.my.network"
+    - host: home.lab1830.com
       http:
         paths:
-          - path: "/"
+          - path: /
             pathType: Prefix
             backend:
               service:
