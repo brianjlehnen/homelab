@@ -4,4 +4,3 @@ resources:
   - namespace.yaml
   - ingress.yaml
   - deployment.yaml
-  - service.yaml
