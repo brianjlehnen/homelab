@@ -4,7 +4,7 @@ metadata:
   name: nginx-ingress
   namespace: nginx
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
     - host: nginx.lab1830.com
@@ -14,6 +14,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: traefik
+                name: nginx
                 port:
                   number: 80
