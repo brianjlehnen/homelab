@@ -2,17 +2,28 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: ca-root-certificate
-  namespace: cert-manager
+  namespace: cert-manager # Keep CA-related certs in the cert-manager namespace
 spec:
   isCA: true
   commonName: "lab1830.local CA"
-  secretName: ca-root-secret
+  subject: # Optional: More details for your CA
+    organizations:
+      - "Lab1830 Homelab"
+    organizationalUnits:
+      - "Infrastructure"
+    countries:
+      - "US"
+    localities:
+      - "Oconomowoc"
+    provinces:
+      - "Wisconsin" 
+  secretName: ca-root-secret # Kubernetes secret to store CA cert and key
   privateKey:
     algorithm: ECDSA
     size: 256
+  duration: 87600h # 10 years validity for the root CA
+  renewBefore: 8760h # 1 year before expiry, though root CAs are often not auto-renewed this way
   issuerRef:
     name: selfsigned-clusterissuer
     kind: ClusterIssuer
     group: cert-manager.io
-  duration: 87600h # 10 years
-  renewBefore: 720h # 30 days
