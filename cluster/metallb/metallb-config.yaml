@@ -16,5 +16,5 @@ spec:
 # Optional: if you have multiple IPAddressPools and want this L2Advertisement
 # to only apply to specific pools, you can list them here.
 # If omitted or empty, it applies to all pools.
-ipAddressPools:
-  - first-pool
+  ipAddressPools:
+    - first-pool
