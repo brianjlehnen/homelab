@@ -1,7 +1,0 @@
-# homelab-k8s-config/cluster/test-namespace.yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: test-gitops-namespace
-  labels:
-    app.kubernetes.io/managed-by: argocd
