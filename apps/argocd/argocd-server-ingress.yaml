@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/force-ssl-redirect":"true"},"name":"argocd-server-ingress","namespace":"argocd"},"spec":{"ingressClassName":"nginx","rules":[{"host":"argocd.lab1830.local","http":{"paths":[{"backend":{"service":{"name":"argocd-server","port":{"number":443}}},"path":"/","pathType":"Prefix"}]}}]}}
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  creationTimestamp: "2025-05-30T18:11:04Z"
+  generation: 1
+  name: argocd-server-ingress
+  namespace: argocd
+  resourceVersion: "8139"
+  uid: 07536a45-6328-4272-8e01-84c1e140e859
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: argocd.lab1830.local
+    http:
+      paths:
+      - backend:
+          service:
+            name: argocd-server
+            port:
+              number: 443
+        path: /
+        pathType: Prefix
+status:
+  loadBalancer:
+    ingress:
+    - ip: 192.168.4.252
