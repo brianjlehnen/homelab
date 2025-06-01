@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels: # Optional: good for organization or if Pod Security Admission is on 'restricted'
+    name: monitoring
+    # pod-security.kubernetes.io/enforce: baseline # Example PSS label
