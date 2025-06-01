@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring # Should be the same namespace where Grafana is deployed
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "ca-clusterissuer" # Use your internal CA
+    # Optional: Add basic auth for an extra layer if desired
+    # nginx.ingress.kubernetes.io/auth-type: basic
+    # nginx.ingress.kubernetes.io/auth-secret: grafana-auth-secret # You'd need to create this secret
+    # nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: grafana.lab1830.local # Or your desired hostname for Grafana
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                # The service name for Grafana deployed by kube-prometheus-stack
+                # is typically '<helm-release-name>-grafana'.
+                # If ArgoCD app name is 'kube-prometheus-stack', release name might be the same.
+                # Or it could be just 'grafana' if the chart is configured so.
+                # Check service name after deployment, usually 'kube-prometheus-stack-grafana'
+                # Or often, it's just 'grafana' if Release name is 'grafana'
+                # The kube-prometheus-stack chart usually names the service for grafana like:
+                # {{ .Release.Name }}-grafana
+                # If ArgoCD app name is kube-prometheus-stack, release name is kube-prometheus-stack.
+                name: kube-prometheus-stack-grafana # VERIFY THIS SERVICE NAME AFTER DEPLOYMENT
+                port:
+                  number: 80 # Grafana service port, usually 80 (or 3000 if not using subpath)
+                               # The chart's default Grafana service port is 80.
+  tls:
+    - hosts:
+        - grafana.lab1830.local
+      secretName: grafana-tls-cert
