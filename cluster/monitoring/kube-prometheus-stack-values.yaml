@@ -1,0 +1,102 @@
+# Default Grafana admin user is 'admin'.
+# You can set a password here, or get the auto-generated one from the secret later.
+# It's recommended to change it after first login anyway.
+grafana:
+  # To set an initial password (will be stored in a secret):
+  adminPassword: "Gozer1017" # Choose a strong password
+
+  # Enable Ingress for Grafana
+  ingress:
+    enabled: true
+    # We will define the hostname and TLS in a separate Ingress resource
+    # to use our ca-clusterissuer with cert-manager.
+    # So, we don't need to specify annotations or hosts here directly for the chart's Ingress.
+    # We'll set pathType to Prefix
+    pathType: Prefix
+    # The chart will create an Ingress object. We'll make our own to control annotations better.
+    # To prevent the chart from creating its own Ingress if we make a separate one:
+    # enabled: false # We'll set this to false if we create a fully separate Ingress manifest.
+    # For now, let's let it create one and see if we can annotate it via ArgoCD app or decide to make our own.
+    # Let's actually disable the chart's Ingress and create our own for full control with cert-manager.
+    # So, we'll set enabled: false here and create grafana-ingress.yaml.
+    # Correction: The chart often creates an Ingress resource, but it might be easier to just let it
+    # create it and then we add annotations if possible, or manage it externally.
+    # Let's try to configure it directly if the chart supports it well enough.
+    # If not, we'll create a separate Ingress.
+
+    # Re-evaluating: It's often cleaner to manage the Ingress resource fully outside the chart for cert-manager.
+    # So, let's disable the chart's own Ingress creation for Grafana.
+    ingressClassName: "nginx" # Your IngressClass name
+    # We will create a separate Ingress resource for Grafana.
+    # Therefore, we can disable the chart's default ingress for grafana:
+    # grafana.ingress.enabled: false # This is often a top-level setting for grafana in this chart.
+
+  persistence:
+    enabled: true
+    # storageClassName: "local-path" # Or your preferred StorageClass. If null, uses default.
+    size: 10Gi
+
+prometheus:
+  prometheusSpec:
+    # externalLabels: # Optional: if you want to add external labels to your metrics
+    #   cluster: lab1830
+    retention: 15d # How long to keep metrics, default is 10d. Adjust as needed for your storage.
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          # storageClassName: "local-path" # Or your preferred StorageClass. If null, uses default.
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi # Adjust based on your needs and available storage
+
+alertmanager:
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          # storageClassName: "local-path"
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+# Disable components we might not need initially for a simpler setup
+# You can enable them later by removing these 'enabled: false' lines or setting to true.
+# prometheus-node-exporter:
+#   enabled: true # Usually good to keep
+# kube-state-metrics:
+#   enabled: true # Usually good to keep
+# alertmanager:
+#   enabled: false # Disable if you're not setting up alerts yet
+# grafana:
+#   enabled: true
+# prometheusOperator:
+#   admissionWebhooks:
+#     patch:
+#       enabled: false # Can sometimes cause issues on some K3s setups if cert-manager webhook is also very busy, but usually fine. Let's keep default for now.
+
+# Override some default resource requests/limits for a homelab if needed to be less resource-intensive.
+# This is optional and you should monitor resource usage.
+# kubeStateMetrics:
+#   resources:
+#     requests:
+#       cpu: 50m
+#       memory: 128Mi
+# prometheus-node-exporter:
+#   resources:
+#     requests:
+#       cpu: 20m
+#       memory: 64Mi
+# prometheus:
+#   prometheusSpec:
+#     resources:
+#       requests:
+#         cpu: 200m
+#         memory: 512Mi
+# alertmanager:
+#   alertmanagerSpec:
+#     resources:
+#       requests:
+#         cpu: 50m
+#         memory: 128Mi

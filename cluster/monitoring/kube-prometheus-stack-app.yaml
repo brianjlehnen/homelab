@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd # This is where ArgoCD Application objects live
+  # This Application CRD will be managed by homelab-cluster-infra
+  # which watches 'cluster/', and this file will be at 'cluster/monitoring/'
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: "72.9.0" # Use a recent stable chart version. Check for updates.
+    helm:
+      # valueFiles paths are relative to the 'path' in the source of the app *managing this manifest* (homelab-cluster-infra).
+      # If homelab-cluster-infra path is 'cluster/', and this app manifest is in 'cluster/monitoring/',
+      # and values file is also in 'cluster/monitoring/', then the path is 'monitoring/kube-prometheus-stack-values.yaml'.
+      valueFiles:
+        - monitoring/kube-prometheus-stack-values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring # Install kube-prometheus-stack here
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true # Good for complex charts
