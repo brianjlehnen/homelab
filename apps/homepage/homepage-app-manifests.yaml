@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homepage # Name of this ArgoCD Application
+  namespace: argocd # ArgoCD Application objects live in the argocd namespace
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io 
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:brianjlehnen/k8s-homelab.git
+    path: apps/homepage
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: homepage
+  syncPolicy:
+    automated:
+      prune: true    
+      selfHeal: true 
+    syncOptions:
+      - CreateNamespace=true 
+      - ServerSideApply=true
