@@ -1,0 +1,32 @@
+# Values for nfs-subdir-external-provisioner Helm chart
+replicaCount: 1
+
+# Important: Configure your NFS server details here
+nfs:
+  server: "192.168.4.159"
+  path: "/volume1/LokiData" # Replace with the EXACT export path from Synology (e.g., /volume1/K8sVolumes)
+  # mountOptions: # Usually not needed unless you have specific requirements
+  #   - "vers=3" # Example: Force NFSv3 if needed
+  #   - "nfsvers=3" # Some charts use this key
+
+# RBAC for the provisioner
+rbac:
+  create: true
+
+# Name of the StorageClass the provisioner will create and manage.
+# Or, you can set storageClass.create=false and define your own StorageClass manifest later.
+# Let's allow it to create one, and we can inspect it. Or we can disable and create our own.
+# For better control and naming, let's disable its default SC creation and make our own in Phase 4.
+storageClass:
+  create: false
+  # name: nfs-client # If create was true, this would be its name
+  # defaultClass: false # Don't make it the default SC unless you want to
+
+# Optional: Resource requests/limits for the provisioner pod
+# resources:
+#   requests:
+#     cpu: 50m
+#     memory: 128Mi
+#   limits:
+#     cpu: 100m
+#     memory: 256Mi
