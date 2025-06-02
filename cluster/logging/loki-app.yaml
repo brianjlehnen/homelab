@@ -26,6 +26,8 @@ spec:
 
         loki:
           auth_enabled: false
+          storage:
+            type: filesystem
           # Provide the ENTIRE Loki configuration via loki.structuredConfig
           structuredConfig:
             auth_enabled: false 
