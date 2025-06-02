@@ -1,0 +1,152 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
+    app.kubernetes.io/instance: homepage # Using 'homepage' as instance name
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: homepage
+      app.kubernetes.io/instance: homepage
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: homepage
+        app.kubernetes.io/instance: homepage
+    spec:
+      # Security context for the pod: ensures the mounted PVC is group-writable
+      # by the GID that Homepage runs as (typically 1000).
+      securityContext:
+        fsGroup: 1000 # Match with runAsGroup below
+      volumes:
+        # The writable PVC that will hold the config files at /app/config
+        - name: homepage-config-volume
+          persistentVolumeClaim:
+            claimName: homepage-config-pvc # Defined in 05-homepage-config-pvc.yaml
+        
+        # Volumes for each of our ConfigMaps to be used by the initContainer
+        - name: initial-settings
+          configMap:
+            name: homepage-settings # From 01-homepage-settings-cm.yaml
+        - name: initial-bookmarks
+          configMap:
+            name: homepage-bookmarks # From 02-homepage-bookmarks-cm.yaml
+        - name: initial-services
+          configMap:
+            name: homepage-services # From 03-homepage-services-cm.yaml
+        - name: initial-widgets
+          configMap:
+            name: homepage-widgets # From 04-homepage-widgets-cm.yaml
+
+      initContainers:
+      - name: populate-config
+        image: busybox:latest # Small image with shell and cp
+        command:
+          - /bin/sh
+          - -c
+          - |
+            echo "Initializing Homepage configuration in PVC..."
+            # Copy files from ConfigMap mounts to the writable PVC mount
+            # Only copy if the destination file doesn't already exist,
+            # to preserve user changes on subsequent pod restarts (if desired).
+            # Or, always overwrite if you want Git to be the absolute source of truth on every pod start.
+            # For now, let's copy if not exists to allow app to manage after first boot.
+            # If you always want Git to overwrite, remove the 'if [ ! -f ... ]' checks.
+            
+            CONFIG_TARGET_DIR="/app/config-target" # Target directory in this initContainer
+            INITIAL_CONFIG_DIR="/tmp/initial-config"
+
+            mkdir -p ${CONFIG_TARGET_DIR}
+
+            if [ ! -f "${CONFIG_TARGET_DIR}/settings.yaml" ] && [ -f "${INITIAL_CONFIG_DIR}/settings.yaml" ]; then
+              echo "Copying settings.yaml..."
+              cp "${INITIAL_CONFIG_DIR}/settings.yaml" "${CONFIG_TARGET_DIR}/settings.yaml"
+            fi
+            
+            if [ ! -f "${CONFIG_TARGET_DIR}/bookmarks.yaml" ] && [ -f "${INITIAL_CONFIG_DIR}/bookmarks.yaml" ]; then
+              echo "Copying bookmarks.yaml..."
+              cp "${INITIAL_CONFIG_DIR}/bookmarks.yaml" "${CONFIG_TARGET_DIR}/bookmarks.yaml"
+            fi
+
+            if [ ! -f "${CONFIG_TARGET_DIR}/services.yaml" ] && [ -f "${INITIAL_CONFIG_DIR}/services.yaml" ]; then
+              echo "Copying services.yaml..."
+              cp "${INITIAL_CONFIG_DIR}/services.yaml" "${CONFIG_TARGET_DIR}/services.yaml"
+            fi
+
+            if [ ! -f "${CONFIG_TARGET_DIR}/widgets.yaml" ] && [ -f "${INITIAL_CONFIG_DIR}/widgets.yaml" ]; then
+              echo "Copying widgets.yaml..."
+              cp "${INITIAL_CONFIG_DIR}/widgets.yaml" "${CONFIG_TARGET_DIR}/widgets.yaml"
+            fi
+            
+            echo "Config initialization complete."
+        volumeMounts:
+          # Mount the PVC writable for the initContainer
+          - name: homepage-config-volume
+            mountPath: /app/config-target # Mount PVC here
+          # Mount ConfigMaps read-only to a temporary location
+          - name: initial-settings
+            mountPath: /tmp/initial-config/settings.yaml
+            subPath: settings.yaml
+            readOnly: true
+          - name: initial-bookmarks
+            mountPath: /tmp/initial-config/bookmarks.yaml
+            subPath: bookmarks.yaml
+            readOnly: true
+          - name: initial-services
+            mountPath: /tmp/initial-config/services.yaml
+            subPath: services.yaml
+            readOnly: true
+          - name: initial-widgets
+            mountPath: /tmp/initial-config/widgets.yaml
+            subPath: widgets.yaml
+            readOnly: true
+        # The initContainer can run as root to ensure it can write to the PVC
+        # securityContext:
+        #   runAsUser: 0
+        #   runAsGroup: 0
+
+      containers:
+      - name: homepage
+        # Use a specific version tag for stability. Check gethomepage.dev for latest.
+        # Example: v0.9.10 corresponds to chart 1.2.0's appVersion
+        image: ghcr.io/gethomepage/homepage:v0.9.10
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          name: http
+        volumeMounts:
+          # Mount the PVC (now populated by initContainer) at /app/config
+          - name: homepage-config-volume
+            mountPath: /app/config 
+        # Security context for the main Homepage application container
+        securityContext:
+          runAsUser: 1000  # Homepage default UID
+          runAsGroup: 1000 # Homepage default GID
+          # fsGroup is set at the pod level
+          readOnlyRootFilesystem: true # Good practice if app doesn't need to write to rootfs
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+        readinessProbe:
+          httpGet:
+            path: / # Homepage serves on root
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        # resources: # Optional: define resource requests and limits
+        #   requests:
+        #     cpu: "100m"
+        #     memory: "128Mi"
+        #   limits:
+        #     cpu: "500m"
+        #     memory: "256Mi"
