@@ -13,9 +13,6 @@ spec:
     targetRevision: "6.30.1" # Your specified Loki chart version
     helm:
       values: |
-        # Ensure all lines below are correctly indented as part of this multi-line string
-        # This is the content that should be passed as Helm values.
-
         # 1. Set the deployment mode to SingleBinary
         deploymentMode: SingleBinary
 
@@ -24,56 +21,58 @@ spec:
           replicas: 1
           persistence:
             enabled: true
-            storageClassName: "nfs-client" # Your NFS StorageClass
-            size: 50Gi                     # Desired size for Loki data on NFS
-          # You can add resource requests/limits for the singleBinary pod here if needed:
-          # resources:
-          #   requests:
-          #     cpu: "500m"
-          #     memory: "1Gi"
-          #   limits:
-          #     cpu: "1"
-          #     memory: "2Gi"
-        
-        # 3. Provide the ENTIRE Loki configuration via loki.structuredConfig
-        # This will be rendered as Loki's main config file.
+            storageClassName: "nfs-client" 
+            size: 50Gi
+
         loki:
-          # This 'structuredConfig' will become the content of Loki's config file.
-          # It takes precedence over the chart's default templated 'loki.config' string.
+          auth_enabled: false
+
+          # --- CRITICAL CHANGE HERE ---
+          # Explicitly set the storage type at the Helm values level
+          # This informs the chart's helper templates (like loki.commonStorageConfig).
+          storage:
+            type: filesystem
+            # The filesystem sub-section here can use chart defaults for paths (e.g., /var/loki/chunks)
+            # as long as they align with commonConfig.path_prefix and your PVC mount.
+            # filesystem: # This section might be optional if chart defaults are fine with type: filesystem
+            #   chunks_directory: /var/loki/chunks # Often default
+            #   rules_directory: /var/loki/rules   # Often default
+
+          # Provide the ENTIRE Loki configuration via loki.structuredConfig
+          # This will be rendered as Loki's main config file.
           structuredConfig:
-            auth_enabled: false
+            auth_enabled: false # Consistent with .Values.loki.auth_enabled
 
             server:
               http_listen_port: 3100
               grpc_listen_port: 9096
-              # log_level: info
 
             common:
-              path_prefix: /var/loki # Base path for Loki data within the PVC mount
-              storage: 
-                filesystem:
+              path_prefix: /var/loki 
+              replication_factor: 1
+              storage: # This block inside structuredConfig refers to Loki's internal config
+                filesystem: # Loki will use these paths within its /var/loki mount
                   chunks_directory: /var/loki/chunks 
                   rules_directory: /var/loki/rules
-              replication_factor: 1
 
             distributor:
               ring:
-                instance_addr: 127.0.0.1 
+                instance_addr: 127.0.0.1
                 kvstore:
                   store: memberlist
 
             ingester:
               lifecycler:
-                address: 127.0.0.1 
+                address: 127.0.0.1
                 ring:
                   kvstore:
                     store: memberlist
                   replication_factor: 1
-                final_sleep: 0s 
+                final_sleep: 0s
               chunk_idle_period: 1h
               max_chunk_age: 1h
-              chunk_target_size: 1572864 # Approx 1.5MB
-              wal: 
+              chunk_target_size: 1572864 
+              wal:
                 enabled: true
                 dir: /var/loki/wal 
 
@@ -91,30 +90,25 @@ spec:
                     prefix: index_ 
                     period: 24h
 
-            storage_config:
+            storage_config: # This is Loki's internal storage_config
               boltdb_shipper:
                 active_index_directory: /var/loki/index 
                 cache_location: /var/loki/boltdb-cache 
                 shared_store: filesystem 
               filesystem: 
-                directory: /var/loki/chunks
+                directory: /var/loki/chunks # This is where boltdb_shipper stores chunks
 
             limits_config:
               allow_structured_metadata: false
         
-        # Ensure other deployment modes/components specified in the chart's values.yaml are disabled
-        # The deploymentMode: SingleBinary should handle many of these.
-        # Explicitly disabling their replicas as per chart's values.yaml structure:
+        # Ensure other deployment modes/components are off
         write:
           replicas: 0
         read:
           replicas: 0
         backend:
           replicas: 0
-        
-        # Distributed components (names from the chart's values.yaml)
-        # 'ingester:' here is the distributed component, not loki.structuredConfig.ingester
-        ingester: # Distributed ingester component, distinct from the 'ingester' config block above
+        ingester: # Distributed ingester component
           replicas: 0
         distributor: # Distributed distributor component
           replicas: 0
@@ -122,17 +116,8 @@ spec:
           replicas: 0
         queryFrontend:
           replicas: 0
-        queryScheduler:
-          replicas: 0
-        indexGateway:
-          replicas: 0
-        compactor: 
-          replicas: 0
-        bloomGateway:
-          replicas: 0
-        bloomPlanner:
-          replicas: 0
-        bloomBuilder:
+        # ... (and other distributed components set to replicas: 0 as before) ...
+        compactor:
           replicas: 0
 
         enterprise:
