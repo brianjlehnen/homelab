@@ -1,29 +1,12 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: nfs-client # You can choose a name, e.g., nfs-client, synology-nfs, nfs-dynamic
-  # Optional: Add annotations if you want this to be the default StorageClass
-  # (be careful if you already have a default like 'local-path' and don't want to change it globally)
-  # annotations:
-  #   storageclass.kubernetes.io/is-default-class: "false"
-# This provisioner name MUST match what the nfs-subdir-external-provisioner is configured to use.
-# The Helm chart for nfs-subdir-external-provisioner from kubernetes-sigs usually uses this name,
-# or one derived from the Helm release name.
-# Common names are 'k8s-sigs.io/nfs-subdir-external-provisioner' or
-# 'cluster.local/<helm-release-name>-nfs-subdir-external-provisioner'.
-# Let's use the most common one from the kubernetes-sigs chart.
-# If this doesn't work, we may need to find the exact provisioner name from its deployment.
-provisioner: k8s-sigs.io/nfs-subdir-external-provisioner 
+  name: nfs-client 
+# Change this line:
+provisioner: cluster.local/nfs-subdir-external-provisioner # <--- CORRECTED PROVISIONER NAME
 parameters:
-  # When a PVC is deleted, the corresponding directory on the NFS server will be archived
-  # by renaming it to 'archived-<pvc-name>-<timestamp>'.
-  # If you set archiveOnDelete to "false", the directory will be deleted.
   archiveOnDelete: "false" 
-  # Other possible parameters (defaults are usually fine):
-  # onDelete: "delete" # or "retain" - works with archiveOnDelete: "false"
-  # pathPattern: "${.PVC.namespace}/${.PVC.name}" # How subdirectories are named
-reclaimPolicy: Delete # Or Retain. "Delete" means when PVC is deleted, PV (and data if archiveOnDelete is false) is deleted.
-# allowVolumeExpansion: true # If you want to allow PVCs to be expanded later
-# mountOptions: # Global mount options for PVs created by this SC
+reclaimPolicy: Delete
+# allowVolumeExpansion: true 
+# mountOptions:
 #   - "vers=3"
-#   - "nfsvers=3"
