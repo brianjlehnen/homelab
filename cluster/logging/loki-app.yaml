@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: loki 
+    # Check the Grafana Helm repo for the latest STABLE version of the 'loki' chart.
+    # Example version (please verify and update):
+    targetRevision: "6.30.1"
+    helm:
+      # Inline the values from loki-values.yaml here, ensuring correct indentation
+      values: |
+        persistence:
+          enabled: true
+          storageClassName: "nfs-client"
+          accessModes:
+            - ReadWriteOnce
+          size: 50Gi # Should match your loki-values.yaml
+
+        # Add any other essential overrides from your loki-values.yaml here
+        # For example, if you are using the 'loki' chart and want to ensure single binary for simplicity:
+        # singleBinary:
+        #   replicas: 1
+        # (Check the chart's values.yaml for how to set single binary mode if not default)
+
+        # Or if the chart has a top-level 'loki:' key for common settings:
+        # loki:
+        #   auth_enabled: false # Common for internal setups
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

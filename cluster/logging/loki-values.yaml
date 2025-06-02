@@ -1,0 +1,72 @@
+# Values for the Grafana Loki Helm chart (the 'loki' chart, not 'loki-stack' if we want separate control)
+# Refer to the specific Loki chart version's values.yaml for all available options.
+
+# Example for a basic, scalable Loki deployment (often the default mode now)
+# or a single binary deployment. The chart defaults might be 'singleBinary' or 'simple'.
+# If using the 'loki' chart, it often defaults to a single binary mode which is good for homelabs.
+
+# Persistence Configuration
+persistence:
+  enabled: true
+  storageClassName: "nfs-client" # Crucial: Use your new NFS StorageClass
+  accessModes:
+    - ReadWriteOnce # Common for Loki
+  size: 50Gi # Initial size for Loki data on your NAS, adjust as needed
+
+# Optional: Configure retention directly in Loki's config if the chart supports it easily here.
+# Otherwise, retention is often managed by the compactor or table_manager.
+# This varies greatly by chart version and Loki configuration (boltdb-shipper vs. other backends).
+# For a simple setup, the chart might have a top-level retention setting or you configure it via loki.config.
+# Example (syntax VERY dependent on chart and Loki config structure):
+# loki:
+#   config:
+#     table_manager:
+#       retention_deletes_enabled: true
+#       retention_period: 7d # e.g., 7 days
+
+# Resource requests/limits for Loki (adjust based on your homelab capacity)
+# If using the simple 'loki' chart (often single binary mode by default):
+# resources:
+#   requests:
+#     cpu: 200m
+#     memory: 512Mi
+#   limits:
+#     cpu: "1"
+#     memory: 1Gi
+
+# If the chart has sub-components (like for simple-scalable mode):
+# write:
+#   replicas: 1
+#   persistence: # This is often separate from the global persistence above for this mode
+#     enabled: true
+#     storageClassName: "nfs-client"
+#     size: 20Gi
+# read:
+#   replicas: 1
+# ingester:
+#   persistence: # This is often separate from the global persistence above for this mode
+#     enabled: true
+#     storageClassName: "nfs-client"
+#     size: 20Gi
+# querier:
+#   replicas: 1
+# queryFrontend:
+#   replicas: 1
+
+# For simplicity with a chart like 'loki' (not 'loki-distributed'),
+# the top-level 'persistence' often applies to the main data store.
+# Ensure the chart you use doesn't deploy its own Grafana if you don't want it to.
+# Most standalone 'loki' charts don't.
+# Example values for a chart where 'loki' is the main component:
+loki:
+  persistence:
+    enabled: true
+    storageClassName: "nfs-client"
+    accessModes: ["ReadWriteOnce"]
+    size: 50Gi # This might be redundant if top-level persistence is also set and applies here.
+               # Prioritize the chart's documented way to set persistence for its main stateful component.
+               # Often, it's just the top-level 'persistence:' block.
+  # resources: # If you want to define resources for the main loki component
+  #   requests:
+  #     cpu: 100m
+  #     memory: 256Mi

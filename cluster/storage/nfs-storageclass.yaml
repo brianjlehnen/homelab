@@ -6,6 +6,6 @@ provisioner: cluster.local/nfs-subdir-external-provisioner
 parameters:
   archiveOnDelete: "false" 
 reclaimPolicy: Delete
-# allowVolumeExpansion: true # You can add this if you want
+ allowVolumeExpansion: true
 # mountOptions:
 #   - "vers=3"
