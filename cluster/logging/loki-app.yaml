@@ -10,10 +10,7 @@ spec:
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: loki
-    # Verify and use a current stable chart version for 'loki'.
-    # For example, as of my last update, versions around 5.x were common for the 'loki' chart (not loki-distributed).
-    # Let's use a placeholder, PLEASE VERIFY for your needs:
-    targetRevision: "6.30.1"
+    targetRevision: "6.30.1" # Your chosen chart version
     helm:
       values: |
         # Content from your values snippet, correctly indented:
@@ -76,4 +73,7 @@ spec:
   syncPolicy:
     automated:
       prune: true
-      selfHeal
+      selfHeal: true  # Ensure this has a value
+    syncOptions:      # Ensure this block is present and correct
+      - CreateNamespace=true
+      - ServerSideApply=true
