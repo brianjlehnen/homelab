@@ -13,42 +13,67 @@ spec:
     targetRevision: "6.30.1" # Your specified Loki chart version
     helm:
       values: |
-        # This is the content for helm.values
-        # It overrides specific keys in the chart's default values.yaml.
-        # The chart then uses these to template its internal Loki config file.
-
-        # 1. Set the deployment mode to SingleBinary
+        # ... your full, corrected Helm values for Loki go here ...
         deploymentMode: SingleBinary
-
-        # 2. Configure and enable the singleBinary deployment target
         singleBinary:
           replicas: 1
           persistence:
             enabled: true
-            storageClass: "nfs-client" # Your NFS StorageClass
-            size: 50Gi                     # Desired size for Loki data on NFS
-          # You can add resource requests/limits for the singleBinary pod here if needed:
-          # resources:
-          #   requests:
-          #     cpu: "500m"
-          #     memory: "1Gi"
-          #   limits:
-          #     cpu: "1"
-          #     memory: "2Gi"
-
-        # 3. Configure Loki itself by overriding specific values
-        #    that the chart's default loki.config template will use.
+            storageClass: "nfs-client" # Corrected key
+            size: 50Gi
         loki:
           auth_enabled: false
-
-          # Override the chart's default storage type to filesystem
           storage:
             type: filesystem
-            # The 'filesystem' sub-section under loki.storage has defaults in the chart
-            # like chunks_directory: /var/loki/chunks. These should be used by the
-            # chart's templated loki.config when type is filesystem.
-
-          # Provide the schema configuration for filesystem with boltdb-shipper
-          schemaConfig: # This will be used by the chart's default loki.config template
+          schemaConfig:
             configs:
-              - from: "2024-
+              - from: "2024-04-01"
+                store: boltdb-shipper
+                object_store: filesystem
+                schema: v13
+                index:
+                  prefix: index_
+                  period: 24h
+          commonConfig:
+            path_prefix: /var/loki
+            replication_factor: 1
+          ingester:
+            lifecycler:
+              address: 127.0.0.1
+              ring:
+                kvstore:
+                  store: memberlist
+                replication_factor: 1
+              final_sleep: 0s
+            wal:
+              enabled: true
+              dir: /var/loki/wal
+          limits_config:
+            allow_structured_metadata: false
+        write:
+          replicas: 0
+        read:
+          replicas: 0
+        backend:
+          replicas: 0
+        enterprise:
+          enabled: false
+        gateway:
+          enabled: false
+        ingress:
+          enabled: false
+        # ... (and any other distributed components set to replicas: 0 or enabled: false)
+
+  # --- THIS SECTION IS CRITICAL ---
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logging # Target namespace for Loki components
+  # --- END DESTINATION SECTION ---
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
