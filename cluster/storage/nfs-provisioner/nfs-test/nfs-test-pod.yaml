@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfs-test-pod
+  namespace: default # Same namespace as the PVC
+spec:
+  volumes:
+    - name: nfs-pvc-storage
+      persistentVolumeClaim:
+        claimName: nfs-test-pvc 
+  containers:
+    - name: data-writer
+      image: busybox:latest
+      command: ["/bin/sh", "-c"]
+      args:
+        - >
+          echo "NFS dynamic provisioning test successful on K8sNFSVolumes!" > /mnt/nfs_test_data/test_on_nfs.txt &&
+          echo "Data written to /mnt/nfs_test_data/test_on_nfs.txt. Pod will sleep for 10 minutes..." &&
+          echo "Check your Synology NAS share 'K8sNFSVolumes' for a new subdirectory containing this file." &&
+          echo "Also exec into this pod: kubectl exec -it nfs-test-pod -n default -- cat /mnt/nfs_test_data/test_on_nfs.txt" &&
+          sleep 600
+      volumeMounts:
+        - name: nfs-pvc-storage
+          mountPath: "/mnt/nfs_test_data" 
+  restartPolicy: Never
