@@ -13,80 +13,62 @@ spec:
     targetRevision: "6.30.1" # Your specified Loki chart version (ensure this is for the main 'loki' chart)
     helm:
       values: |
-        # Paste the entire content of your loki-values.yaml (from above) here,
-        # ensuring correct indentation for a YAML multi-line string.
-        # Example: the first line 'deploymentMode:' should be indented.
-
-        # 1. Set the deployment mode to SingleBinary
         deploymentMode: SingleBinary
 
-        # 2. Configure and enable the singleBinary deployment target
         singleBinary:
           replicas: 1
-          # Persistence configuration for the singleBinary StatefulSet
           persistence:
             enabled: true
-            storageClassName: "nfs-client" # Your NFS StorageClass
-            size: 50Gi                     # Desired size for Loki data on NFS
-            # accessModes defaults to ReadWriteOnce in the chart for singleBinary, which is fine.
+            storageClassName: "nfs-client"
+            size: 50Gi
 
         loki:
-          # Ensure auth is disabled for simplicity
-          auth_enabled: false 
-
-          # Configure Loki's storage backend type to filesystem.
+          auth_enabled: false
           storage:
             type: filesystem
-            # The 'filesystem' sub-section here will use chart defaults for paths like /var/loki/chunks
-            # which is fine if singleBinary.persistence mounts the PVC at /var/loki.
-
-          # Provide the schema configuration for filesystem with boltdb-shipper.
-          schemaConfig:
+            # The filesystem sub-section under loki.storage already has defaults
+            # like chunks_directory: /var/loki/chunks which the chart should use.
+          schemaConfig: # This will be used by the chart's default loki.config template
             configs:
-              - from: "2024-04-01" 
+              - from: "2024-04-01"
                 store: boltdb-shipper
-                object_store: filesystem 
-                schema: v13 
+                object_store: filesystem
+                schema: v13
                 index:
                   prefix: index_
                   period: 24h
-          
-          commonConfig:
-            path_prefix: /var/loki 
-            replication_factor: 1 
-
-          ingester:
+          commonConfig: # This will be used by the chart's default loki.config template
+            path_prefix: /var/loki # Ensures paths are relative to the PVC mount at /var/loki
+            replication_factor: 1
+          ingester: # Configures the ingester part of the default loki.config template
             lifecycler:
-              address: 127.0.0.1 
+              address: 127.0.0.1
               ring:
                 kvstore:
                   store: memberlist
                 replication_factor: 1
               final_sleep: 0s
+            # For WAL with boltdb-shipper, the chart's default config usually sets
+            # wal:
+            #   enabled: true
+            #   dir: {{ .Values.loki.commonConfig.path_prefix }}/wal (or similar)
+            # We rely on the chart's default loki.config template to set this up correctly now.
+          limits_config: # <--- ADDED/CORRECTED THIS
+            allow_structured_metadata: false
+
+        # Ensure other modes are off
         write:
           replicas: 0
         read:
           replicas: 0
         backend:
           replicas: 0
-        
-        # Disable enterprise
         enterprise:
           enabled: false
-
-        # Disable chart's gateway and ingress
         gateway:
           enabled: false
         ingress:
           enabled: false
-
-        # Explicitly set replicas for other modes to 0 to ensure they are disabled if
-        # deploymentMode: SingleBinary doesn't fully handle turning them off.
-        # Check your chart's values.yaml for these top-level keys if this is necessary.
-        # It's often handled by just setting deploymentMode.
-        # For this chart version (6.30.1), `deploymentMode: SingleBinary` SHOULD suffice to disable
-        # 'write', 'read', 'backend', 'distributor', 'ingester' (as separate components), 'querier' etc.
-        # So, I'm omitting explicit disables here to keep it cleaner, relying on 'deploymentMode'.
 
   destination:
     server: https://kubernetes.default.svc
