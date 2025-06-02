@@ -63,7 +63,13 @@ spec:
                   store: memberlist
                 replication_factor: 1
               final_sleep: 0s
-
+        write:
+          replicas: 0
+        read:
+          replicas: 0
+        backend:
+          replicas: 0
+        
         # Disable enterprise
         enterprise:
           enabled: false
