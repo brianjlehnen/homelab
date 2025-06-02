@@ -10,63 +10,135 @@ spec:
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: loki
-    targetRevision: "6.30.1" # Your specified Loki chart version (ensure this is for the main 'loki' chart)
+    targetRevision: "6.30.1" # Your specified Loki chart version
     helm:
       values: |
+        # Ensure all lines below are correctly indented as part of this multi-line string
+        # This is the content that should be passed as Helm values.
+
+        # 1. Set the deployment mode to SingleBinary
         deploymentMode: SingleBinary
 
+        # 2. Configure and enable the singleBinary deployment target
         singleBinary:
           replicas: 1
           persistence:
             enabled: true
-            storageClass: "nfs-client"
-            size: 50Gi
-
+            storageClassName: "nfs-client" # Your NFS StorageClass
+            size: 50Gi                     # Desired size for Loki data on NFS
+          # You can add resource requests/limits for the singleBinary pod here if needed:
+          # resources:
+          #   requests:
+          #     cpu: "500m"
+          #     memory: "1Gi"
+          #   limits:
+          #     cpu: "1"
+          #     memory: "2Gi"
+        
+        # 3. Provide the ENTIRE Loki configuration via loki.structuredConfig
+        # This will be rendered as Loki's main config file.
         loki:
-          auth_enabled: false
-          storage:
-            type: filesystem
-            # The filesystem sub-section under loki.storage already has defaults
-            # like chunks_directory: /var/loki/chunks which the chart should use.
-          schemaConfig: # This will be used by the chart's default loki.config template
-            configs:
-              - from: "2024-04-01"
-                store: boltdb-shipper
-                object_store: filesystem
-                schema: v13
-                index:
-                  prefix: index_
-                  period: 24h
-          commonConfig: # This will be used by the chart's default loki.config template
-            path_prefix: /var/loki # Ensures paths are relative to the PVC mount at /var/loki
-            replication_factor: 1
-          ingester: # Configures the ingester part of the default loki.config template
-            lifecycler:
-              address: 127.0.0.1
+          # This 'structuredConfig' will become the content of Loki's config file.
+          # It takes precedence over the chart's default templated 'loki.config' string.
+          structuredConfig:
+            auth_enabled: false
+
+            server:
+              http_listen_port: 3100
+              grpc_listen_port: 9096
+              # log_level: info
+
+            common:
+              path_prefix: /var/loki # Base path for Loki data within the PVC mount
+              storage: 
+                filesystem:
+                  chunks_directory: /var/loki/chunks 
+                  rules_directory: /var/loki/rules
+              replication_factor: 1
+
+            distributor:
               ring:
+                instance_addr: 127.0.0.1 
                 kvstore:
                   store: memberlist
-                replication_factor: 1
-              final_sleep: 0s
-            # For WAL with boltdb-shipper, the chart's default config usually sets
-            # wal:
-            #   enabled: true
-            #   dir: {{ .Values.loki.commonConfig.path_prefix }}/wal (or similar)
-            # We rely on the chart's default loki.config template to set this up correctly now.
-          limits_config: # <--- ADDED/CORRECTED THIS
-            allow_structured_metadata: false
 
-        # Ensure other modes are off
+            ingester:
+              lifecycler:
+                address: 127.0.0.1 
+                ring:
+                  kvstore:
+                    store: memberlist
+                  replication_factor: 1
+                final_sleep: 0s 
+              chunk_idle_period: 1h
+              max_chunk_age: 1h
+              chunk_target_size: 1572864 # Approx 1.5MB
+              wal: 
+                enabled: true
+                dir: /var/loki/wal 
+
+            querier:
+              engine:
+                max_look_back_period: 0s 
+
+            schema_config:
+              configs:
+                - from: "2024-04-01"
+                  store: boltdb-shipper
+                  object_store: filesystem 
+                  schema: v13 
+                  index:
+                    prefix: index_ 
+                    period: 24h
+
+            storage_config:
+              boltdb_shipper:
+                active_index_directory: /var/loki/index 
+                cache_location: /var/loki/boltdb-cache 
+                shared_store: filesystem 
+              filesystem: 
+                directory: /var/loki/chunks
+
+            limits_config:
+              allow_structured_metadata: false
+        
+        # Ensure other deployment modes/components specified in the chart's values.yaml are disabled
+        # The deploymentMode: SingleBinary should handle many of these.
+        # Explicitly disabling their replicas as per chart's values.yaml structure:
         write:
           replicas: 0
         read:
           replicas: 0
         backend:
           replicas: 0
+        
+        # Distributed components (names from the chart's values.yaml)
+        # 'ingester:' here is the distributed component, not loki.structuredConfig.ingester
+        ingester: # Distributed ingester component, distinct from the 'ingester' config block above
+          replicas: 0
+        distributor: # Distributed distributor component
+          replicas: 0
+        querier: # Distributed querier component
+          replicas: 0
+        queryFrontend:
+          replicas: 0
+        queryScheduler:
+          replicas: 0
+        indexGateway:
+          replicas: 0
+        compactor: 
+          replicas: 0
+        bloomGateway:
+          replicas: 0
+        bloomPlanner:
+          replicas: 0
+        bloomBuilder:
+          replicas: 0
+
         enterprise:
           enabled: false
         gateway:
-          enabled: false
+          enabled: false 
         ingress:
           enabled: false
 
