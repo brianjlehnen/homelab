@@ -1,0 +1,31 @@
+# Values for the Grafana Promtail Helm chart
+# Refer to the specific Promtail chart version's values.yaml for all available options.
+
+# Configuration for Promtail itself, especially the Loki server URL
+config:
+  clients:
+    - url: http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
+      # This URL assumes:
+      # - Your Loki service (created by its Helm chart) is named 'loki'.
+      # - It's in the 'logging' namespace.
+      # - It listens on port 3100 for HTTP.
+      # Verify this with 'kubectl get svc -n logging loki' (or whatever your Loki service is named).
+
+# By default, Promtail scrapes Kubernetes pod logs and journal logs (if enabled and paths are correct).
+# Default scrape_configs are usually good to start.
+
+# Optional: Set resource requests/limits for Promtail pods if defaults are too high/low
+# resources:
+#   limits:
+#     cpu: 200m
+#     memory: 256Mi
+#   requests:
+#     cpu: 50m
+#     memory: 128Mi
+
+# Optional: If your nodes have taints that Promtail needs to tolerate
+# tolerations:
+#  - key: "key"
+#    operator: "Equal"
+#    value: "value"
+#    effect: "NoSchedule"
