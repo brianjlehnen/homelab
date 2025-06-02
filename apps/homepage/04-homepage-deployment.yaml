@@ -126,8 +126,8 @@ spec:
           env:
             # As per official manifest, HOMEPAGE_ALLOWED_HOSTS might be needed if you access via IP or different hostnames directly
             # For Ingress access, it's usually less critical if the Ingress handles host matching.
-            # - name: HOMEPAGE_ALLOWED_HOSTS
-            #   value: "homepage.lab1830.local,your-node-ip,localhost" # Adjust as needed
+            - name: HOMEPAGE_ALLOWED_HOSTS
+              value: "homepage.lab1830.local"
             - name: PUID # Process User ID
               value: "1000"
             - name: PGID # Process Group ID
