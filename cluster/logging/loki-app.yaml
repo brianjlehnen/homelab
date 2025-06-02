@@ -2,43 +2,78 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: loki
-  namespace: argocd
+  namespace: argocd # This is where ArgoCD Application objects live
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://grafana.github.io/helm-charts
-    chart: loki 
-    # Check the Grafana Helm repo for the latest STABLE version of the 'loki' chart.
-    # Example version (please verify and update):
+    chart: loki
+    # Verify and use a current stable chart version for 'loki'.
+    # For example, as of my last update, versions around 5.x were common for the 'loki' chart (not loki-distributed).
+    # Let's use a placeholder, PLEASE VERIFY for your needs:
     targetRevision: "6.30.1"
     helm:
-      # Inline the values from loki-values.yaml here, ensuring correct indentation
       values: |
+        # Content from your values snippet, correctly indented:
         persistence:
           enabled: true
           storageClassName: "nfs-client"
           accessModes:
             - ReadWriteOnce
-          size: 50Gi # Should match your loki-values.yaml
+          size: 50Gi # Or desired size
 
-        # Add any other essential overrides from your loki-values.yaml here
-        # For example, if you are using the 'loki' chart and want to ensure single binary for simplicity:
+        loki:
+          # Ensure this is false if you are not using Loki's built-in auth
+          auth_enabled: false
+
+          # This 'config' block is crucial and maps to Loki's own config file.
+          config:
+            # Schema config is important for filesystem storage
+            schema_config:
+              configs:
+                - from: "2024-04-01" # Use a recent "from" date for schema
+                  store: boltdb-shipper # Common for filesystem backend
+                  object_store: filesystem
+                  schema: v13 # Or v12/v14 - check compatibility with your Loki & chart version
+                  index:
+                    prefix: index_
+                    period: 24h
+            
+            # Storage config explicitly for filesystem
+            storage_config:
+              boltdb_shipper:
+                active_index_directory: /data/loki/index    # Path *inside* the PVC
+                cache_location: /data/loki/boltdb-cache # Path *inside* the PVC
+                shared_store: filesystem # Important for boltdb-shipper with filesystem
+              filesystem:
+                directory: /data/loki/chunks # Path *inside* the PVC where log chunks are stored
+        
+        # Add any other top-level overrides from your values file here,
+        # ensuring they are at the same indentation level as 'persistence:' and 'loki:'.
+        # For example, to set resource requests/limits for the main loki component/container:
+        # resources:
+        #   limits:
+        #     cpu: 1
+        #     memory: 1Gi
+        #   requests:
+        #     cpu: 100m
+        #     memory: 256Mi
+
+        # If your chart requires explicitly setting a deployment mode for single binary with filesystem:
+        # (This depends heavily on the chart's values.yaml structure)
+        # Example:
+        # deploymentMode: SingleBinary 
+        # or
         # singleBinary:
         #   replicas: 1
-        # (Check the chart's values.yaml for how to set single binary mode if not default)
+        #   # ... other singleBinary specific settings
 
-        # Or if the chart has a top-level 'loki:' key for common settings:
-        # loki:
-        #   auth_enabled: false # Common for internal setups
   destination:
     server: https://kubernetes.default.svc
-    namespace: logging
+    namespace: logging # Install Loki here
   syncPolicy:
     automated:
       prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+      selfHeal
