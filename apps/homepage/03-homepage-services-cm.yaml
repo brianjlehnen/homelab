@@ -5,13 +5,4 @@ metadata:
   namespace: homepage
 data:
   services.yaml: |
-    - My Services: 
-      - My K8s Cluster: 
-          href: http://localhost # Placeholder, link often isn't used if widget provides all info
-          description: Kubernetes Resources
-          widget:
-            type: kubernetes
-            namespace: default 
-            allNodes: true 
-            refreshInterval: 10000
-            # usePodSelector: true # Verify if this is a valid field for the widget type
+    # Intentionally empty for testing

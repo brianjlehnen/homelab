@@ -5,11 +5,4 @@ metadata:
   namespace: homepage
 data:
   widgets.yaml: |
-    - resources: 
-        cpu: true
-        memory: true
-        storage: [] # Shows no specific host paths by default
-    - openweathermap: 
-        units: imperial 
-        # label: Oconomowoc 
-        # cache: 5
+    # Intentionally empty for testing
