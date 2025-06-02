@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-bookmarks
+  namespace: homepage
+data:
+  bookmarks.yaml: |
+    - ArgoCD: # Group name (must match a layout group in settings.yaml)
+      - ArgoCD:
+          abbr: ARG
+          href: https://argocd.lab1830.local
+          description: "Continuous Delivery"
+          # icon: argo-cd.png 
+
+    - Grafana Stack: # Group name
+      - Grafana:
+          abbr: GRF
+          href: https://grafana.lab1830.local
+          description: "Monitoring Dashboards"
+          # icon: grafana.png
+      - Loki in Grafana: 
+          abbr: LOG
+          href: "https://grafana.lab1830.local/explore?orgId=1&left=%7B%22datasource%22%3A%22Loki%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22expr%22%3A%22%7Bnamespace%3D%5C%22default%5C%22%7D%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22now-1h%22%2C%22to%22%3A%22now%22%7D%7D"
+          # description: "Log Explorer"
+          # icon: grafana-loki.png

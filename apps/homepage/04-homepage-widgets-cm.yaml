@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-widgets
+  namespace: homepage
+data:
+  widgets.yaml: |
+    - resources: 
+        cpu: true
+        memory: true
+        storage: [] # Shows no specific host paths by default
+    - openweathermap: 
+        units: imperial 
+        # label: Oconomowoc 
+        # cache: 5
