@@ -1,0 +1,14 @@
+apiVersion: v2
+appVersion: v0.10.1
+description: homepage helm chart for Kubernetes
+home: https://github.com/gethomepage/homepage
+icon: https://artifacthub.io/image/e417b561-5fe4-4ee3-9b89-f67df4069169
+kubeVersion: '>=1.23.0-0'
+maintainers:
+- email: ludovic.ortega@adminafk.fr
+  name: Ludovic Ortega
+name: homepage
+sources:
+- https://github.com/M0NsTeRRR/helm-charts/tree/main/charts/homepage
+type: application
+version: 1.1.0
