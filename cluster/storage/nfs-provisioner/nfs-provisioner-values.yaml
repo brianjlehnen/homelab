@@ -4,7 +4,7 @@ replicaCount: 1
 # Important: Configure your NFS server details here
 nfs:
   server: "192.168.4.159"
-  path: "/volume1/LokiData" # Replace with the EXACT export path from Synology (e.g., /volume1/K8sVolumes)
+  path: "/volume1/K8sNFSVolumes" # Replace with the EXACT export path from Synology (e.g., /volume1/K8sVolumes)
   # mountOptions: # Usually not needed unless you have specific requirements
   #   - "vers=3" # Example: Force NFSv3 if needed
   #   - "nfsvers=3" # Some charts use this key

@@ -20,7 +20,7 @@ spec:
         replicaCount: 1
         nfs:
           server: "192.168.4.159"
-          path: "/volume1/LokiData"
+          path: "/volume1/K8sNFSVolumes"
           # mountOptions:
           #  - "vers=3"
         rbac:
