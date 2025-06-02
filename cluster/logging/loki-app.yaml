@@ -13,6 +13,10 @@ spec:
     targetRevision: "6.30.1" # Your specified Loki chart version
     helm:
       values: |
+        # This is the content for helm.values
+        # It overrides specific keys in the chart's default values.yaml.
+        # The chart then uses these to template its internal Loki config file.
+
         # 1. Set the deployment mode to SingleBinary
         deploymentMode: SingleBinary
 
@@ -21,110 +25,30 @@ spec:
           replicas: 1
           persistence:
             enabled: true
-            storageClass: "nfs-client" 
-            size: 50Gi
+            storageClass: "nfs-client" # Your NFS StorageClass
+            size: 50Gi                     # Desired size for Loki data on NFS
+          # You can add resource requests/limits for the singleBinary pod here if needed:
+          # resources:
+          #   requests:
+          #     cpu: "500m"
+          #     memory: "1Gi"
+          #   limits:
+          #     cpu: "1"
+          #     memory: "2Gi"
 
+        # 3. Configure Loki itself by overriding specific values
+        #    that the chart's default loki.config template will use.
         loki:
           auth_enabled: false
+
+          # Override the chart's default storage type to filesystem
           storage:
             type: filesystem
-          # Provide the ENTIRE Loki configuration via loki.structuredConfig
-          structuredConfig:
-            auth_enabled: false 
+            # The 'filesystem' sub-section under loki.storage has defaults in the chart
+            # like chunks_directory: /var/loki/chunks. These should be used by the
+            # chart's templated loki.config when type is filesystem.
 
-            server:
-              http_listen_port: 3100
-              grpc_listen_port: 9096
-
-            common:
-              path_prefix: /var/loki 
-              replication_factor: 1
-              storage: 
-                filesystem: 
-                  chunks_directory: /var/loki/chunks 
-                  rules_directory: /var/loki/rules
-
-            distributor:
-              ring:
-                instance_addr: 127.0.0.1
-                kvstore:
-                  store: memberlist
-
-            ingester:
-              lifecycler:
-                address: 127.0.0.1
-                ring:
-                  kvstore:
-                    store: memberlist
-                  replication_factor: 1
-                final_sleep: 0s
-              chunk_idle_period: 1h
-              max_chunk_age: 1h
-              chunk_target_size: 1572864 
-              wal:
-                enabled: true
-                dir: /var/loki/wal 
-
-            querier:
-              engine:
-                max_look_back_period: 0s 
-
-            schema_config:
-              configs:
-                - from: "2024-04-01"
-                  store: boltdb-shipper
-                  object_store: filesystem 
-                  schema: v13 
-                  index:
-                    prefix: index_ 
-                    period: 24h
-
-            storage_config: # This is Loki's internal storage_config
-              boltdb_shipper:
-                active_index_directory: /var/loki/index 
-                cache_location: /var/loki/boltdb-cache 
-                shared_store: filesystem 
-              filesystem: 
-                directory: /var/loki/chunks 
-
-            limits_config:
-              allow_structured_metadata: false
-        
-        # Ensure other deployment modes/components are off
-        write:
-          replicas: 0
-        read:
-          replicas: 0
-        backend:
-          replicas: 0
-        ingester: # Distributed ingester component
-          replicas: 0
-        distributor: # Distributed distributor component
-          replicas: 0
-        querier: # Distributed querier component
-          replicas: 0
-        queryFrontend:
-          replicas: 0
-        # Remove other distributed components like compactor, bloomGateway etc. if they were here before
-        # by ensuring their replica count is 0 or they are disabled as per the chart's values.
-        compactor:
-          replicas: 0
-        # (Add other distributed components here and set replicas to 0 if they are in your chart's values and enabled by default)
-
-        enterprise:
-          enabled: false
-        gateway:
-          enabled: false 
-        ingress:
-          enabled: false
-
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: logging # Install Loki here
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true  # <--- CORRECTED: Added 'true'
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+          # Provide the schema configuration for filesystem with boltdb-shipper
+          schemaConfig: # This will be used by the chart's default loki.config template
+            configs:
+              - from: "2024-
