@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homepage-ingress
+  namespace: homepage
+  annotations:
+    # Cert-manager annotation to use your internal CA
+    cert-manager.io/cluster-issuer: "ca-clusterissuer"
+    # Nginx Ingress specific annotations
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP" # Homepage listens on HTTP on port 3000
+    # Add any other common Nginx annotations you use
+spec:
+  ingressClassName: nginx # Your Nginx IngressClass
+  rules:
+    - host: homepage.lab1830.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homepage # Matches the Service name above
+                port:
+                  name: http # Matches the Service port name (which is 3000)
+  tls:
+    - hosts:
+        - homepage.lab1830.local
+      secretName: homepage-tls-cert # cert-manager will create this Secret with the TLS certificate
