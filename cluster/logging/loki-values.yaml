@@ -1,72 +1,72 @@
-# Values for the Grafana Loki Helm chart (the 'loki' chart, not 'loki-stack' if we want separate control)
-# Refer to the specific Loki chart version's values.yaml for all available options.
+# Inside your helm.values: | block in loki-app.yaml
 
-# Example for a basic, scalable Loki deployment (often the default mode now)
-# or a single binary deployment. The chart defaults might be 'singleBinary' or 'simple'.
-# If using the 'loki' chart, it often defaults to a single binary mode which is good for homelabs.
+# 1. Ensure you're selecting the right deployment mode (e.g., single binary)
+# This key and value is an EXAMPLE, find the correct one for your chart version.
+# It might be a top-level setting or under 'loki:'.
+# Some charts make singleBinary the default if you don't enable other components.
+# Let's assume your chart defaults to a mode that might try object storage
+# unless explicitly configured otherwise or a simpler mode is chosen.
+# If the chart has a simple 'deploymentMode' or 'mode' key:
+# deploymentMode: SingleBinary # EXAMPLE - CHECK YOUR CHART
 
-# Persistence Configuration
+# Or ensure enterprise features are off if that influences storage
+# enterprise:
+#   enabled: false # This was in the error template, make sure it's false
+
+# This top-level persistence is for the PVC itself
 persistence:
   enabled: true
-  storageClassName: "nfs-client" # Crucial: Use your new NFS StorageClass
+  storageClassName: "nfs-client"
   accessModes:
-    - ReadWriteOnce # Common for Loki
-  size: 50Gi # Initial size for Loki data on your NAS, adjust as needed
+    - ReadWriteOnce
+  size: 50Gi # Or desired size
 
-# Optional: Configure retention directly in Loki's config if the chart supports it easily here.
-# Otherwise, retention is often managed by the compactor or table_manager.
-# This varies greatly by chart version and Loki configuration (boltdb-shipper vs. other backends).
-# For a simple setup, the chart might have a top-level retention setting or you configure it via loki.config.
-# Example (syntax VERY dependent on chart and Loki config structure):
-# loki:
-#   config:
-#     table_manager:
-#       retention_deletes_enabled: true
-#       retention_period: 7d # e.g., 7 days
-
-# Resource requests/limits for Loki (adjust based on your homelab capacity)
-# If using the simple 'loki' chart (often single binary mode by default):
-# resources:
-#   requests:
-#     cpu: 200m
-#     memory: 512Mi
-#   limits:
-#     cpu: "1"
-#     memory: 1Gi
-
-# If the chart has sub-components (like for simple-scalable mode):
-# write:
-#   replicas: 1
-#   persistence: # This is often separate from the global persistence above for this mode
-#     enabled: true
-#     storageClassName: "nfs-client"
-#     size: 20Gi
-# read:
-#   replicas: 1
-# ingester:
-#   persistence: # This is often separate from the global persistence above for this mode
-#     enabled: true
-#     storageClassName: "nfs-client"
-#     size: 20Gi
-# querier:
-#   replicas: 1
-# queryFrontend:
-#   replicas: 1
-
-# For simplicity with a chart like 'loki' (not 'loki-distributed'),
-# the top-level 'persistence' often applies to the main data store.
-# Ensure the chart you use doesn't deploy its own Grafana if you don't want it to.
-# Most standalone 'loki' charts don't.
-# Example values for a chart where 'loki' is the main component:
 loki:
-  persistence:
-    enabled: true
-    storageClassName: "nfs-client"
-    accessModes: ["ReadWriteOnce"]
-    size: 50Gi # This might be redundant if top-level persistence is also set and applies here.
-               # Prioritize the chart's documented way to set persistence for its main stateful component.
-               # Often, it's just the top-level 'persistence:' block.
-  # resources: # If you want to define resources for the main loki component
-  #   requests:
-  #     cpu: 100m
-  #     memory: 256Mi
+  # Ensure this is false if you are not using Loki's built-in auth
+  auth_enabled: false
+
+  # This 'config' block is crucial and maps to Loki's own config file.
+  # The structure here MUST align with what your Loki chart version expects
+  # for configuring filesystem storage for a single binary or simple mode.
+  config:
+    # Schema config is important for filesystem storage
+    schema_config:
+      configs:
+        - from: "2024-04-01" # Use a recent "from" date for schema
+          store: boltdb-shipper # Common for filesystem backend
+          object_store: filesystem
+          schema: v13 # Or v12/v14 - check compatibility with your Loki & chart version
+          index:
+            prefix: index_
+            period: 24h
+    
+    # Storage config explicitly for filesystem
+    storage_config:
+      boltdb_shipper:
+        active_index_directory: /data/loki/index    # Path *inside* the PVC
+        cache_location: /data/loki/boltdb-cache # Path *inside* the PVC
+        shared_store: filesystem # Important for boltdb-shipper with filesystem
+      filesystem:
+        directory: /data/loki/chunks # Path *inside* the PVC where log chunks are stored
+    
+    # This section defines how long chunks are stored in the ingester's memory before flushing.
+    # Not directly related to the error, but good to be aware of.
+    # ingester:
+    #   chunk_idle_period: 3m
+    #   chunk_target_size: 1536000
+    #   max_chunk_age: 1h
+    #   # ... other ingester settings
+
+    # This limits how far back queries can go, how many streams, etc.
+    # Default limits are often fine to start.
+    # limits_config:
+    #   retention_period: 7d # Example: if you want Loki to enforce retention
+    #   # ... other limits
+
+# If your chart has explicit component sections (like write, read, backend)
+# ensure they are configured appropriately for single binary or disabled if not used.
+# For most 'loki' (non-distributed) charts, you configure 'loki.config' primarily.
+
+# Example: Ensure gateway is disabled if not needed for single binary
+# gateway:
+#   enabled: false
