@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: homepage # Name of the service, can be simpler like 'homepage'
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
+    app.kubernetes.io/instance: homepage
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000 # Port the service listens on
+      targetPort: http # Name of the container port in the Deployment (which is 3000)
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: homepage # Must match labels on the pods created by the Deployment
+    app.kubernetes.io/instance: homepage

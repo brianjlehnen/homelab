@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-main-config # Renamed for clarity
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
+data:
+  # From your settings.yaml content
+  settings.yaml: |
+    title: Lab1830 Dashboard
+    background: "https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80"
+    # provider: # Keep commented out for now
+    #   openweathermap:
+    #     apiKey: 405ebaef52733cdd83dd14b6b13a96b9
+    #     latitude: 43.1067
+    #     longitude: -88.4976
+    #     units: imperial
+    layout:
+      ArgoCD:
+        style: row
+        icon: si-glyph:argo
+      Grafana Stack:
+        style: row
+        icon: si-glyph:grafana
+
+  # From your bookmarks.yaml content
+  bookmarks.yaml: |
+    - ArgoCD:
+      - ArgoCD:
+          abbr: ARG
+          href: https://argocd.lab1830.local
+          description: "Continuous Delivery"
+    - Grafana Stack:
+      - Grafana:
+          abbr: GRF
+          href: https://grafana.lab1830.local
+          description: "Monitoring Dashboards"
+      - Loki in Grafana:
+          abbr: LOG
+          href: "https://grafana.lab1830.local/explore?orgId=1&left=%7B%22datasource%22%3A%22Loki%22%2C%22queries%22%3A%5B%7B%22refId%22%3A%22A%22%2C%22expr%22%3A%22%7Bnamespace%3D%5C%22default%5C%22%7D%22%7D%5D%2C%22range%22%3A%7B%22from%22%3A%22now-1h%22%2C%22to%22%3A%22now%22%7D%7D"
+
+  # From official example data structure
+  services.yaml: |
+    # - My First Group: # Start empty or with your desired services
+    #   - My First Service:
+    #       href: http://localhost/
+    #       description: Homepage is awesome
+    # Add your services here later
+
+  widgets.yaml: |
+    # - kubernetes: # Start empty or with desired widgets
+    #     cluster:
+    #       show: true
+    # - resources:
+    #     cpu: true
+    #     memory: true
+    #     storage: []
+    # Add your widgets here later
+
+  kubernetes.yaml: |
+    mode: cluster # For in-cluster Kubernetes widget API access
+
+  docker.yaml: "" # Empty as per example, if not using Docker widget
+
+  custom.css: |
+    /* Add your custom CSS here later if needed */
+
+  custom.js: |
+    // Add your custom JS here later if needed

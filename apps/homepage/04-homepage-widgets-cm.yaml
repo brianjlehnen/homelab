@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: homepage-widgets
-  namespace: homepage
-data:
-  widgets.yaml: |
-    # Intentionally empty for testing
