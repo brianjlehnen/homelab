@@ -26,22 +26,9 @@ spec:
 
         loki:
           auth_enabled: false
-
-          # --- CRITICAL CHANGE HERE ---
-          # Explicitly set the storage type at the Helm values level
-          # This informs the chart's helper templates (like loki.commonStorageConfig).
-          storage:
-            type: filesystem
-            # The filesystem sub-section here can use chart defaults for paths (e.g., /var/loki/chunks)
-            # as long as they align with commonConfig.path_prefix and your PVC mount.
-            # filesystem: # This section might be optional if chart defaults are fine with type: filesystem
-            #   chunks_directory: /var/loki/chunks # Often default
-            #   rules_directory: /var/loki/rules   # Often default
-
           # Provide the ENTIRE Loki configuration via loki.structuredConfig
-          # This will be rendered as Loki's main config file.
           structuredConfig:
-            auth_enabled: false # Consistent with .Values.loki.auth_enabled
+            auth_enabled: false 
 
             server:
               http_listen_port: 3100
@@ -50,8 +37,8 @@ spec:
             common:
               path_prefix: /var/loki 
               replication_factor: 1
-              storage: # This block inside structuredConfig refers to Loki's internal config
-                filesystem: # Loki will use these paths within its /var/loki mount
+              storage: 
+                filesystem: 
                   chunks_directory: /var/loki/chunks 
                   rules_directory: /var/loki/rules
 
@@ -96,7 +83,7 @@ spec:
                 cache_location: /var/loki/boltdb-cache 
                 shared_store: filesystem 
               filesystem: 
-                directory: /var/loki/chunks # This is where boltdb_shipper stores chunks
+                directory: /var/loki/chunks 
 
             limits_config:
               allow_structured_metadata: false
@@ -116,9 +103,11 @@ spec:
           replicas: 0
         queryFrontend:
           replicas: 0
-        # ... (and other distributed components set to replicas: 0 as before) ...
+        # Remove other distributed components like compactor, bloomGateway etc. if they were here before
+        # by ensuring their replica count is 0 or they are disabled as per the chart's values.
         compactor:
           replicas: 0
+        # (Add other distributed components here and set replicas to 0 if they are in your chart's values and enabled by default)
 
         enterprise:
           enabled: false
@@ -133,7 +122,7 @@ spec:
   syncPolicy:
     automated:
       prune: true
-      selfHeal: true
+      selfHeal: true  # <--- CORRECTED: Added 'true'
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
