@@ -1,3 +1,4 @@
+# plex-app-definition.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -13,88 +14,8 @@ spec:
     targetRevision: master                            # Use the latest chart from the master branch
                                                       # (Consider pinning to a specific Git commit/tag for long-term stability)
     helm:
-      values: |
-        # Image - Using official, consider pinning to a specific tag from Docker Hub
-        # instead of 'latest' for reproducibility.
-        # image:
-        #   repository: plexinc/pms-docker
-        #   tag: "1.41.7.9823-59f304c16" # Example specific public tag
-
-        timezone: "America/Chicago" # Set your timezone
-
-        # Plex Claim Token - IMPORTANT:
-        # 1. Get a FRESH token from https://www.plex.tv/claim just before your first sync.
-        # 2. Update this value in ArgoCD UI (Parameters section for 'plex' app) OR
-        #    temporarily in this file for the first sync, then remove/blank it from Git.
-        #    Leaving it blank here to remind you to set it at deploy time.
-        plexClaimToken: "" 
-
-        # Persistence for /config directory
-        persistence:
-          config:
-            enabled: false
-            type: pvc # Default type, explicit is fine
-            accessMode: ReadWriteOnce
-            size: "25Gi" # Plex metadata can grow, adjust as needed
-            storageClass: "nfs-client" # Your NFS StorageClass
-            # subPath: "" # Optional: store in a subdir of the auto-created PVC directory on NFS
-
-        # Environment variables for PUID/PGID
-        # The official plexinc/pms-docker image uses PLEX_UID and PLEX_GID
-        env:
-          PLEX_UID: "1026" # Your nas_admin UID
-          PLEX_GID: "100"  # Your users GID
-
-        # Pod Security Context to help with volume permissions
-        # fsGroup makes the volume group-writable by this GID
-        podSecurityContext:
-          fsGroup: 100 # Your users GID
-
-        # Add your /volume1/Media share as an NFS volume
-        extraVolumes:
-          - name: plex-media-main # A name for this volume
-            nfs:
-              server: "192.168.4.159" # Your Synology NAS IP
-              path: "/volume1/Media"    # Exact NFS export path for your Media
-
-        # Mount the NFS media volume inside the Plex container
-        extraVolumeMounts:
-          - name: plex-media-main # Must match the name from extraVolumes
-            mountPath: "/media"    # Path inside the Plex container
-            readOnly: true         # Recommended for media libraries
-
-        # Ingress configuration
-        ingress:
-          enabled: false
-          # For Kubernetes v1.19+ (K3s usually is), ingressClassName is preferred.
-          # The official chart's values.yaml uses 'className'.
-          className: "nginx" 
-          annotations:
-            cert-manager.io/cluster-issuer: "ca-clusterissuer"
-            nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-            nginx.ingress.kubernetes.io/backend-protocol: "HTTP" # Plex web UI is HTTP on 32400
-            # Consider adding proxy buffer settings if you encounter streaming issues later:
-            # nginx.ingress.kubernetes.io/proxy-buffering: "on"
-            # nginx.ingress.kubernetes.io/proxy-buffers: "8 128k"
-            # nginx.ingress.kubernetes.io/proxy-buffer-size: "256k"
-          hosts:
-            - host: "plex.lab1830.local"
-              paths:
-                - path: /
-                  pathType: Prefix # Or ImplementationSpecific as per chart default
-          tls:
-            - secretName: plex-tls-cert # cert-manager will create this
-              hosts:
-                - "plex.lab1830.local"
-        
-        # Service settings (defaults are usually fine, port 32400 is standard)
-        # service:
-        #   type: ClusterIP
-        #   port: 32400
-
-        # Disable host networking, it's generally not needed or recommended with Ingress
-        hostNetwork: false
-
+      valueFiles: # <--- All custom values now come from here
+        - https://github.com/brianjlehnen/k8s-homelab.git/main/apps/plex/plex-values-override.yaml # <--- IMPORTANT: Ensure this URL is correct!
   destination:
     server: https://kubernetes.default.svc
     namespace: plex # Deploy Plex into its own namespace
