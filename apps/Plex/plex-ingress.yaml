@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: plex-plex-media-server-ingress-custom # Give it a different name
+  namespace: plex
+  annotations:
+    cert-manager.io/cluster-issuer: ca-clusterissuer
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+    # Add your ArgoCD tracking ID annotation if you want ArgoCD to manage this new resource
+    # argocd.argoproj.io/tracking-id: plex-custom:networking.k8s.io/Ingress:plex/plex-plex-media-server-ingress-custom
+spec:
+  ingressClassName: nginx # Or 'ingress-nginx' if that's your class name
+  rules:
+    - host: plex.lab1830.local # <--- EXPLICITLY SET THE HOST
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: plex-plex-media-server # This is the service created by the Helm chart
+                port:
+                  number: 32400
+  tls:
+    - hosts:
+        - plex.lab1830.local
+      secretName: plex-tls-cert # This secret is still created by cert-manager
