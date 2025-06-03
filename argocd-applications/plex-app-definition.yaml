@@ -37,7 +37,7 @@ spec:
             accessMode: ReadWriteOnce
             size: "25Gi" # Plex metadata can grow, adjust as needed
             storageClass: "nfs-client" # Your NFS StorageClass
-            # subPath: "plex-config" # Optional: store in a subdir of the auto-created PVC directory on NFS
+            # subPath: "" # Optional: store in a subdir of the auto-created PVC directory on NFS
 
         # Environment variables for PUID/PGID
         # The official plexinc/pms-docker image uses PLEX_UID and PLEX_GID
