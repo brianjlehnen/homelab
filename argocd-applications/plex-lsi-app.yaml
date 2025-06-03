@@ -1,0 +1,30 @@
+# plex-lsi-app.yaml
+# Place this file in your k8s-homelab repository, e.g., argocd-applications/plex-lsi-app.yaml
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plex-lsi # A new, unique name for this ArgoCD Application
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default # Your ArgoCD project (usually 'default')
+  source:
+    repoURL: https://linuxserver.github.io/helm-charts # This points to the LSI Helm repo you just added
+    chart: plex # This is the name of the Plex chart within that repository
+    targetRevision: "*" # Use "*" for the latest chart version, or pin to a specific chart version (e.g., "1.x.x") for stability
+    helm:
+      valueFiles:
+        # This points to your custom values file in your k8s-homelab repo
+        - https://raw.githubusercontent.com/brianjlehnen/k8s-homelab/main/apps/plex/lsi-plex-values.yaml # <--- IMPORTANT: Verify this URL is correct!
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: plex # The namespace where Plex will be deployed (ensure it exists or will be created)
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true # Ensures the 'plex' namespace is created if it doesn't exist
+      - ServerSideApply=true
