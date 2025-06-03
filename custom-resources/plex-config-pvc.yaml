@@ -1,0 +1,20 @@
+# plex-config-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # CRITICAL: This name MUST match what the Plex StatefulSet expects.
+  # The StatefulSet still looks for a PVC named 'pms-config-plex-plex-media-server-0'.
+  name: pms-config-plex-plex-media-server-0 
+  namespace: plex
+  labels: # Include labels for good practice and ArgoCD tracking (optional but recommended)
+    app.kubernetes.io/instance: plex
+    app.kubernetes.io/name: plex-media-server
+    app.kubernetes.io/component: config # This label helps identify it as the config PVC
+spec:
+  accessModes:
+    - ReadWriteOnce # Standard for Plex config (single pod access)
+  resources:
+    requests:
+      storage: 25Gi # <--- Your desired capacity (25Gi or 50Gi is recommended)
+  storageClassName: nfs-client # <--- Your desired StorageClass
+  volumeMode: Filesystem
