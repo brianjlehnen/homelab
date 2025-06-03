@@ -32,7 +32,7 @@ spec:
         # Persistence for /config directory
         persistence:
           config:
-            enabled: true
+            enabled: false
             type: pvc # Default type, explicit is fine
             accessMode: ReadWriteOnce
             size: "25Gi" # Plex metadata can grow, adjust as needed
