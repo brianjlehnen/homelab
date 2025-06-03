@@ -27,7 +27,7 @@ spec:
                 name: homepage
                 port:
                   number: 3000
-tls:
-    - hosts:
-        - "homepage.lab1830.local"
-      secretName: "homepage-tls-cert"
+  tls:
+      - hosts:
+          - "homepage.lab1830.local"
+        secretName: "homepage-tls-cert"
