@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/brianjlehnen/k8s-homelab.git # <--- IMPORTANT: REPLACE WITH YOUR ACTUAL GITHUB REPO URL
     targetRevision: main     # <--- IMPORTANT: REPLACE WITH YOUR GIT BRANCH (e.g., 'main' or 'master')
-    path: apps/plex/plex-ingress.yaml # <--- This is the path to your new Ingress file
+    path: apps/plex
   destination:
     server: https://kubernetes.default.svc
     namespace: plex         # The namespace where the Ingress resource will be deployed
