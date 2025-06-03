@@ -11,7 +11,7 @@ metadata:
 spec:
   project: default # Your ArgoCD project (usually 'default')
   source:
-    repoURL: https://linuxserver.github.io/helm-charts # This points to the LSI Helm repo you just added
+    repoURL: https://helm.linuxserver.io # This points to the LSI Helm repo you just added
     chart: plex # This is the name of the Plex chart within that repository
     targetRevision: "*" # Use "*" for the latest chart version, or pin to a specific chart version (e.g., "1.x.x") for stability
     helm:
