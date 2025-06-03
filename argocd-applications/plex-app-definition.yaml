@@ -15,7 +15,7 @@ spec:
                                                       # (Consider pinning to a specific Git commit/tag for long-term stability)
     helm:
       valueFiles: # <--- All custom values now come from here
-        - https://github.com/brianjlehnen/k8s-homelab.git/main/apps/plex/plex-values-override.yaml # <--- IMPORTANT: Ensure this URL is correct!
+        - https://raw.githubusercontent.com/brianjlehnen/k8s-homelab/main/apps/plex/plex-values-override.yaml # <--- IMPORTANT: Ensure this URL is correct!
   destination:
     server: https://kubernetes.default.svc
     namespace: plex # Deploy Plex into its own namespace
