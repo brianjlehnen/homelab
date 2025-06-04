@@ -19,22 +19,21 @@ persistence:
 
 # Ingress configuration
 ingress:
-  main: # The main ingress for Uptime Kuma's web UI
-    enabled: true
-    ingressClassName: "nginx" # Your Ingress Class
-    annotations:
-      cert-manager.io/cluster-issuer: "ca-clusterissuer" # Your Cert-Manager ClusterIssuer
-      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTP" # Uptime Kuma listens on HTTP internally
-    hosts:
-      - host: "kuma.lab1830.local" # Your desired Uptime Kuma hostname
-        paths:
-          - path: /
-            pathType: Prefix
-    tls:
-      - secretName: kuma-tls-cert # Cert-Manager will create and manage this Secret
-        hosts:
-          - "kuma.lab1830.local"
+  enabled: true
+  ingressClassName: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "ca-clusterissuer"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+  hosts:
+    - host: "kuma.lab1830.local"
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: kuma-tls-cert
+      hosts:
+        - "kuma.lab1830.local"
 
 # Resource limits and requests (optional but good practice)
 resources:
