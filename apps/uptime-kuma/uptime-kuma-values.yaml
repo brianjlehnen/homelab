@@ -1,0 +1,52 @@
+# uptime-kuma-values.yaml
+# Place this file in your k8s-homelab repository, e.g., apps/uptime-kuma/uptime-kuma-values.yaml
+
+image:
+  repository: louislam/uptime-kuma # Default image
+  tag: "1.23.11" # Pin to a specific stable version (check Docker Hub for latest)
+
+env:
+  TZ: "America/Chicago" # Set your timezone
+
+# Persistence for Uptime Kuma's database
+persistence:
+  config: # The default name for config persistence in this chart
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: "1Gi" # Uptime Kuma's database is small, 1Gi is usually plenty
+    storageClass: "nfs-client" # IMPORTANT: Use your NFS StorageClass
+    subPath: "" # Store in the root of the PVC
+
+# Ingress configuration
+ingress:
+  main: # The main ingress for Uptime Kuma's web UI
+    enabled: true
+    ingressClassName: "nginx" # Your Ingress Class
+    annotations:
+      cert-manager.io/cluster-issuer: "ca-clusterissuer" # Your Cert-Manager ClusterIssuer
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP" # Uptime Kuma listens on HTTP internally
+    hosts:
+      - host: "kuma.lab1830.local" # Your desired Uptime Kuma hostname
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: kuma-tls-cert # Cert-Manager will create and manage this Secret
+        hosts:
+          - "kuma.lab1830.local"
+
+# Resource limits and requests (optional but good practice)
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+# Pod Security Context (typically not needed for Uptime Kuma as it often runs as root/non-root well)
+# securityContext:
+#   runAsUser: 0 
+#   runAsGroup: 0 
+#   fsGroup: 0
