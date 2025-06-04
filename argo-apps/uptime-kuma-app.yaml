@@ -1,0 +1,27 @@
+# uptime-kuma-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: uptime-kuma # Name for the ArgoCD Application
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default # Your ArgoCD project
+  source:
+    repoURL: https://helm.irsigler.cloud # <--- NEW REPO URL
+    chart: uptime-kuma # The name of the chart within that repo
+    targetRevision: "*" # Or pin to a specific chart version
+    helm:
+      valueFiles:
+        - https://raw.githubusercontent.com/brianjlehnen/k8s-homelab/main/apps/uptime-kuma/uptime-kuma-values.yaml # <--- Your values file
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: uptime-kuma # Deploy into a dedicated namespace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true # Ensures the 'uptime-kuma' namespace is created
+      - ServerSideApply=true
