@@ -3,7 +3,7 @@
 
 image:
   repository: louislam/uptime-kuma # Default image
-  tag: "1.23.11" # Pin to a specific stable version (check Docker Hub for latest)
+  tag: "2.21.3" # Pin to a specific stable version (check Docker Hub for latest)
 
 env:
   TZ: "America/Chicago" # Set your timezone
