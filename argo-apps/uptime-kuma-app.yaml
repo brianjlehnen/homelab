@@ -11,8 +11,13 @@ spec:
   source:
     repoURL: https://helm.irsigler.cloud # <--- NEW REPO URL
     chart: uptime-kuma # The name of the chart within that repo
-    targetRevision: "*" # Or pin to a specific chart version
+    targetRevision: "1.23.10" # Or pin to a specific chart version
     helm:
+      values: |
+        image:
+          repository: louislam/uptime-kuma # Ensure this matches your values file
+          tag: "1.23.10" # Use "1" for the latest stable major version (instead of "latest")
+                   # "latest" can be risky. "1" tracks latest 1.x.x version.
       valueFiles:
         - https://raw.githubusercontent.com/brianjlehnen/k8s-homelab/main/apps/uptime-kuma/uptime-kuma-values.yaml # <--- Your values file
   destination:
