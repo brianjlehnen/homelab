@@ -43,6 +43,32 @@ data:
             description: Internet speed monitoring
             icon: speedtest
 
+    - Media:
+        - Radarr:
+            href: http://radarr.lab1830.com
+            description: Movie downloader
+            icon: radarr
+        - Sonarr:
+            href: http://sonarr.lab1830.com
+            description: TV show downloader
+            icon: sonarr
+        - SABnzbd:
+            href: http://sabnzbd.lab1830.com
+            description: NZB downloader
+            icon: sabnzbd
+        - Overseerr:
+            href: http://overseerr.lab1830.com
+            description: Media request manager
+            icon: overseerr
+        - Prowlarr:
+            href: http://prowlarr.lab1830.com
+            description: Indexer manager
+            icon: prowlarr
+        - Plex:
+            href: http://plex.lab1830.com
+            description: Media server
+            icon: plex
+
   widgets.yaml: |
     - kubernetes:
         cluster:
