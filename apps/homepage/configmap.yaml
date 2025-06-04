@@ -18,10 +18,10 @@ data:
     - Developer:
         - GitHub:
             - abbr: GH
-            href: https://github.com/
+              href: https://github.com/
         - Homelab Repo:
             - abbr: K8S
-            href: https://github.com/brianjlehnen/k8s-homelab
+              href: https://github.com/brianjlehnen/k8s-homelab
 
   services.yaml: |
     - Monitoring:
