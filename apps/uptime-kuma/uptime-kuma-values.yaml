@@ -1,9 +1,9 @@
 # uptime-kuma-values.yaml
 # Place this file in your k8s-homelab repository, e.g., apps/uptime-kuma/uptime-kuma-values.yaml
 
-image:
-  repository: louislam/uptime-kuma # Default image
-  tag: "latest" # Pin to a specific stable version (check Docker Hub for latest)
+#image:
+# repository: louislam/uptime-kuma # Default image
+# tag: "latest" # Pin to a specific stable version (check Docker Hub for latest)
 
 env:
   TZ: "America/Chicago" # Set your timezone
