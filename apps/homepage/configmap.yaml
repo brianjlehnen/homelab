@@ -7,10 +7,10 @@ metadata:
     app.kubernetes.io/name: homepage
 data:
   kubernetes.yaml: |
-    mode: cluster
+    mode: disabled
 
-  settings.yaml: ""
-
+  settings.yaml: |
+    background: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
   custom.css: ""
   custom.js: ""
 
@@ -19,6 +19,7 @@ data:
         - GitHub:
             - abbr: GH
               href: https://github.com/
+              icon: github
         - Homelab Repo:
             - abbr: K8S
               href: https://github.com/brianjlehnen/k8s-homelab
@@ -51,6 +52,10 @@ data:
             icon: pi-hole
 
     - Media:
+        - Plex:
+            href: http://plex.lab1830.com
+            description: Media streaming
+            icon: plex
         - Radarr:
             href: http://radarr.lab1830.com
             description: Movie management
@@ -93,7 +98,7 @@ data:
         network: default
     - uptimekuma:
         url: http://kuma.lab1830.local
-        slug: default
+        slug: statuspageslug
     - search:
         provider: google
         target: _blank
