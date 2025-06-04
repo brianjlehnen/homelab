@@ -7,22 +7,19 @@ metadata:
     app.kubernetes.io/name: homepage
 data:
   kubernetes.yaml: |
-    mode: disabled
+    mode: cluster
 
   settings.yaml: |
-    background: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
+    background: https://unsplash.com/photos/body-of-water-surrounded-by-trees-NRQV-hBF10M
   custom.css: ""
   custom.js: ""
 
   bookmarks.yaml: |
     - Developer:
-        - GitHub:
-            - abbr: GH
-              href: https://github.com/
-              icon: github
         - Homelab Repo:
             - abbr: K8S
               href: https://github.com/brianjlehnen/k8s-homelab
+              icon: github
 
   services.yaml: |
     - Monitoring:
