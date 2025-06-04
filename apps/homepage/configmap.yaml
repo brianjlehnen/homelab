@@ -16,9 +16,12 @@ data:
 
   bookmarks.yaml: |
     - Developer:
-        - Github:
+        - GitHub:
             - abbr: GH
-              href: https://github.com/
+            href: https://github.com/
+        - Homelab Repo:
+            - abbr: K8S
+            href: https://github.com/brianjlehnen/k8s-homelab
 
   services.yaml: |
     - Monitoring:
@@ -35,39 +38,39 @@ data:
         - Argo CD:
             href: https://argocd.lab1830.local
             description: GitOps deployment controller
-            icon: argocd
+            icon: argo-cd
 
     - Utilities:
         - Speedtest Tracker:
             href: http://speedtest.lab1830.local
             description: Internet speed monitoring
             icon: speedtest
+        - Pi-hole:
+            href: http://192.168.4.254/admin/login
+            description: Network-wide DNS & ad-blocking
+            icon: pi-hole
 
     - Media:
         - Radarr:
             href: http://radarr.lab1830.com
-            description: Movie downloader
+            description: Movie management
             icon: radarr
         - Sonarr:
             href: http://sonarr.lab1830.com
-            description: TV show downloader
+            description: TV series management
             icon: sonarr
-        - SABnzbd:
-            href: http://sabnzbd.lab1830.com
-            description: NZB downloader
-            icon: sabnzbd
         - Overseerr:
             href: http://overseerr.lab1830.com
-            description: Media request manager
+            description: Media request platform
             icon: overseerr
         - Prowlarr:
             href: http://prowlarr.lab1830.com
             description: Indexer manager
             icon: prowlarr
-        - Plex:
-            href: http://plex.lab1830.com
-            description: Media server
-            icon: plex
+        - SABnzbd:
+            href: http://sabnzbd.lab1830.com
+            description: Usenet downloader
+            icon: sabnzbd
 
   widgets.yaml: |
     - kubernetes:
@@ -92,7 +95,7 @@ data:
         url: http://kuma.lab1830.local
         slug: default
     - search:
-        provider: duckduckgo
+        provider: google
         target: _blank
 
   docker.yaml: ""
