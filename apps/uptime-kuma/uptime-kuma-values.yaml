@@ -17,6 +17,11 @@ persistence:
     storageClass: "nfs-client" # IMPORTANT: Use your NFS StorageClass
     subPath: "" # Store in the root of the PVC
 
+# Service configuration to expose port 80 (required for Ingress)
+service:
+  port: 80
+  targetPort: 3001
+
 # Ingress configuration
 ingress:
   enabled: true
