@@ -19,7 +19,7 @@ spec:
           tag: "1.23.13" # Use "1" for the latest stable major version (instead of "latest")
                    # "latest" can be risky. "1" tracks latest 1.x.x version.
       valueFiles:
-        - https://raw.githubusercontent.com/brianjlehnen/k8s-homelab/main/apps/uptime-kuma/uptime-kuma-values.yaml # <--- Your values file
+        - https://raw.githubusercontent.com/brianjlehnen/k8s-homelab/refs/heads/main/apps/uptime-kuma/uptime-kuma-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: uptime-kuma # Deploy into a dedicated namespace
