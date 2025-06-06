@@ -24,7 +24,7 @@ data:
         - Homelab Repo:
             - abbr: K8S
               href: https://github.com/brianjlehnen/k8s-homelab
-              icon: github
+              icon: github-light
     - Resources:
         - KodeKloud:
             - abbr: kode
@@ -37,6 +37,10 @@ data:
             href: https://grafana.lab1830.com
             description: Metrics & dashboards
             icon: grafana
+        - Dozzle:
+            href: https://dozzle.lab1830.com
+            description: Container logging
+            icon: dozzle   
         - Uptime Kuma:
             href: https://kuma.lab1830.com
             description: Uptime monitoring
@@ -55,10 +59,7 @@ data:
             href: https://pihole.lab1830.com
             description: Network-wide DNS & ad-blocking
             icon: pi-hole
-        - Speedtest Tracker:
-            href: https://speedtest.lab1830.com
-            description: Internet speed monitoring
-            icon: speedtest
+       
 
     - Management:
         - Portainer:
