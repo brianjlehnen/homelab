@@ -59,6 +59,10 @@ data:
             href: https://pihole.lab1830.com
             description: Network-wide DNS & ad-blocking
             icon: pi-hole
+        - Synology:
+            href: https://nas.lab1830.com
+            description: NAS storage
+            icon: synology
        
 
     - Management:
@@ -69,7 +73,7 @@ data:
         - Dockge:
             href: https://dockge.lab1830.com
             description: Compose stack manager
-            icon: docker
+            icon: dockge
         - Argo CD:
             href: https://argocd.lab1830.com
             description: GitOps deployment controller
