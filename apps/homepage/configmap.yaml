@@ -7,48 +7,39 @@ metadata:
     app.kubernetes.io/name: homepage
 data:
   kubernetes.yaml: |
-    # mode: cluster
-    # namespaces:
-    #   - monitoring
-    #   - kube-system
-    #   - metallb-system
+    mode: cluster
+    namespaces:
+      - monitoring
+      - kube-system
+      - metallb-system
 
   settings.yaml: |
-    # background: https://unsplash.com/photos/body-of-water-surrounded-by-trees-NRQV-hBF10M
+    background: https://unsplash.com/photos/body-of-water-surrounded-by-trees-NRQV-hBF10M
 
   custom.css: ""
   custom.js: ""
 
   bookmarks.yaml: |
-    - Homelab: # Correct: This is a list item defining a group
-        GitHub Repo: # Correct: This is a key-value pair under 'Homelab'
-            href: https://github.com/brianjlehnen/k8s-homelab
-            icon: github
-        Cloudflare Dashboard: # Correct: This is a key-value pair under 'Homelab'
-            href: https://dash.cloudflare.com/2fe0cad65cd58fa82c6ea92e388703c6/home/domains
-            icon: cloudflare
-    - Resources: # Correct: This is a list item defining a group
-        KodeKloud: # Correct: This is a key-value pair under 'Resources'
-            href: https://www.kodekloud.com/
+    - Developer:
+        - Homelab Repo:
+            - abbr: K8S
+              href: https://github.com/brianjlehnen/k8s-homelab
+              icon: github
+
   services.yaml: |
     - Monitoring:
         - Grafana:
-            href: https://grafana.lab1830.local
+            href: https://grafana.lab1830.com
             description: Metrics & dashboards
             icon: grafana
-        - Dozzle:
-            href: https://dozzle.lab1830.com
-            description: Container monitoring
-            icon: dozzle
         - Uptime Kuma:
-            href: https://kuma.lab1830.local
+            href: https://kuma.lab1830.com
             description: Uptime monitoring
             icon: uptime-kuma
         - Tautulli:
             href: https://tautulli.lab1830.com
             description: Plex monitoring and stats
             icon: tautulli
-        
 
     - Infrastructure:
         - Traefik:
@@ -59,10 +50,10 @@ data:
             href: https://pihole.lab1830.com
             description: Network-wide DNS & ad-blocking
             icon: pi-hole
-        - Synology NAS:
-            href: https://nas.lab1830.com
-            description: Media and log storage
-            icon: synology
+        - Speedtest Tracker:
+            href: https://speedtest.lab1830.com
+            description: Internet speed monitoring
+            icon: speedtest
 
     - Management:
         - Portainer:
@@ -72,9 +63,9 @@ data:
         - Dockge:
             href: https://dockge.lab1830.com
             description: Compose stack manager
-            icon: https://dockge.kuma.pet/icon.svg
+            icon: docker
         - Argo CD:
-            href: https://argocd.lab1830.local
+            href: https://argocd.lab1830.com
             description: GitOps deployment controller
             icon: argo-cd
 
@@ -105,17 +96,29 @@ data:
             icon: sabnzbd
 
   widgets.yaml: |
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
     - resources:
         backend: resources
         expanded: true
         cpu: true
         memory: true
-        network: true
+        network: default
+    - uptimekuma:
+        url: https://kuma.lab1830.com
+        slug: statuspageslug
+    - search:
+        provider: google
+        target: _blank
 
-   # - openweathermap:
-    #     label: Oconomowoc
-    #     latitude: 43.1117
-    #     longitude: -88.4993
-    #     units: imperial
-    #     provider: openweathermap
-    #     apiKey: 1ed11b3dd6e7f24a4a6da749c87524d1
+  docker.yaml: ""
