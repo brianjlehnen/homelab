@@ -101,18 +101,7 @@ data:
             icon: sabnzbd
 
   widgets.yaml: |
-    - kubernetes:
-        cluster:
-          show: false
-          cpu: true
-          memory: true
-          showLabel: true
-          label: "cluster"
-        nodes:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
+    
     - resources:
         backend: resources
         expanded: true
