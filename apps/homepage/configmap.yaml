@@ -30,8 +30,6 @@ data:
     - Resources:
         - KodeKloud:
             - href: https://www.kodekloud.com/
-              icon: cloud
-
   services.yaml: |
     - Monitoring:
         - Grafana:
