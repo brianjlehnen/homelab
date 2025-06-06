@@ -25,6 +25,11 @@ data:
             - abbr: K8S
               href: https://github.com/brianjlehnen/k8s-homelab
               icon: github
+    - Resources:
+        - KodeKloud:
+            - abbr: kode
+              href: https://learn.kodekloud.com/user/dashboard
+              icon: Icloud
 
   services.yaml: |
     - Monitoring:
@@ -98,7 +103,7 @@ data:
   widgets.yaml: |
     - kubernetes:
         cluster:
-          show: true
+          show: false
           cpu: true
           memory: true
           showLabel: true
