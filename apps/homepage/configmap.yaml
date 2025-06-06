@@ -15,6 +15,7 @@ data:
 
   settings.yaml: |
     background: https://unsplash.com/photos/body-of-water-surrounded-by-trees-NRQV-hBF10M
+
   custom.css: ""
   custom.js: ""
 
@@ -93,5 +94,31 @@ data:
             href: https://sabnzbd.lab1830.com
             description: Usenet downloader
             icon: sabnzbd
+
+  widgets.yaml: |
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+    - resources:
+        backend: resources
+        expanded: true
+        cpu: true
+        memory: true
+        network: default
+    - uptimekuma:
+        url: https://kuma.lab1830.com
+        slug: statuspageslug
+    - search:
+        provider: google
+        target: _blank
 
   docker.yaml: ""
