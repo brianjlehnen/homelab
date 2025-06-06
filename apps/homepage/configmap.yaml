@@ -22,15 +22,18 @@ data:
   bookmarks.yaml: |
     - Developer:
         - Homelab Repo:
-            - abbr: K8S
+            - abbr: k8s
               href: https://github.com/brianjlehnen/k8s-homelab
               icon: github-light
-    - Resources:
+    - Learning:
         - KodeKloud:
             - abbr: kode
               href: https://learn.kodekloud.com/user/dashboard
               icon: icloud
-
+        - Kubernetes Docs:
+            - abbr: k8s concepts
+              href: https://kubernetes.io/docs/concepts/
+              icon: kubernetes
   services.yaml: |
     - Monitoring:
         - Grafana:
@@ -62,9 +65,8 @@ data:
         - Synology:
             href: https://nas.lab1830.com
             description: NAS storage
-            icon: synology-os
+            icon: synology dsm
        
-
     - Management:
         - Portainer:
             href: https://portainer.lab1830.com
