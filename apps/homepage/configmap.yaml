@@ -8,6 +8,10 @@ metadata:
 data:
   kubernetes.yaml: |
     mode: cluster
+    namespaces:
+      - monitoring
+      - kube-system
+      - metallb-system
 
   settings.yaml: |
     background: https://unsplash.com/photos/body-of-water-surrounded-by-trees-NRQV-hBF10M
@@ -21,83 +25,73 @@ data:
               href: https://github.com/brianjlehnen/k8s-homelab
               icon: github
 
-  services.yaml: |
+  sservices.yaml: |
     - Monitoring:
         - Grafana:
-            href: http://grafana.lab1830.local
+            href: https://grafana.lab1830.com
             description: Metrics & dashboards
             icon: grafana
         - Uptime Kuma:
-            href: http://kuma.lab1830.local
+            href: https://kuma.lab1830.com
             description: Uptime monitoring
             icon: uptime-kuma
+        - Tautulli:
+            href: https://tautulli.lab1830.com
+            description: Plex monitoring and stats
+            icon: tautulli
 
-    - DevOps:
+    - Infrastructure:
+        - Traefik:
+            href: https://traefik.lab1830.com
+            description: Reverse proxy dashboard
+            icon: traefik
+        - Pi-hole:
+            href: https://pihole.lab1830.com
+            description: Network-wide DNS & ad-blocking
+            icon: pi-hole
+        - Speedtest Tracker:
+            href: https://speedtest.lab1830.com
+            description: Internet speed monitoring
+            icon: speedtest
+
+    - Management:
+        - Portainer:
+            href: https://portainer.lab1830.com
+            description: Docker management UI
+            icon: portainer
+        - Dockge:
+            href: https://dockge.lab1830.com
+            description: Compose stack manager
+            icon: docker
         - Argo CD:
-            href: https://argocd.lab1830.local
+            href: https://argocd.lab1830.com
             description: GitOps deployment controller
             icon: argo-cd
 
-    - Utilities:
-        - Speedtest Tracker:
-            href: http://speedtest.lab1830.local
-            description: Internet speed monitoring
-            icon: speedtest
-        - Pi-hole:
-            href: http://192.168.4.254/admin/login
-            description: Network-wide DNS & ad-blocking
-            icon: pi-hole
-
     - Media:
         - Plex:
-            href: http://plex.lab1830.com
+            href: https://plex.lab1830.com
             description: Media streaming
             icon: plex
         - Radarr:
-            href: http://radarr.lab1830.com
+            href: https://radarr.lab1830.com
             description: Movie management
             icon: radarr
         - Sonarr:
-            href: http://sonarr.lab1830.com
+            href: https://sonarr.lab1830.com
             description: TV series management
             icon: sonarr
         - Overseerr:
-            href: http://overseerr.lab1830.com
+            href: https://overseerr.lab1830.com
             description: Media request platform
             icon: overseerr
         - Prowlarr:
-            href: http://prowlarr.lab1830.com
+            href: https://prowlarr.lab1830.com
             description: Indexer manager
             icon: prowlarr
         - SABnzbd:
-            href: http://sabnzbd.lab1830.com
+            href: https://sabnzbd.lab1830.com
             description: Usenet downloader
             icon: sabnzbd
-
-  widgets.yaml: |
-    - kubernetes:
-        cluster:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-          label: "cluster"
-        nodes:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-    - resources:
-        backend: resources
-        expanded: true
-        cpu: true
-        memory: true
-        network: default
-    - uptimekuma:
-        url: http://kuma.lab1830.local
-        slug: statuspageslug
-    - search:
-        provider: google
-        target: _blank
 
   docker.yaml: ""
