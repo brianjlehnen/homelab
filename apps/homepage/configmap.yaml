@@ -20,16 +20,16 @@ data:
   custom.js: ""
 
   bookmarks.yaml: |
-    - Homelab:
-        - GitHub Repo:
-            - href: https://github.com/brianjlehnen/k8s-homelab
-              icon: github
-        - Cloudflare Dashboard:
-            - href: https://dash.cloudflare.com/2fe0cad65cd58fa82c6ea92e388703c6/home/domains
-              icon: cloudflare
-    - Resources:
-        - KodeKloud:
-            - href: https://www.kodekloud.com/
+    - Homelab: # Correct: This is a list item defining a group
+        GitHub Repo: # Correct: This is a key-value pair under 'Homelab'
+            href: https://github.com/brianjlehnen/k8s-homelab
+            icon: github
+        Cloudflare Dashboard: # Correct: This is a key-value pair under 'Homelab'
+            href: https://dash.cloudflare.com/2fe0cad65cd58fa82c6ea92e388703c6/home/domains
+            icon: cloudflare
+    - Resources: # Correct: This is a list item defining a group
+        KodeKloud: # Correct: This is a key-value pair under 'Resources'
+            href: https://www.kodekloud.com/
   services.yaml: |
     - Monitoring:
         - Grafana:
