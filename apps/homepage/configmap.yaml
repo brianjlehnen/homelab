@@ -28,11 +28,11 @@ data:
   services.yaml: |
     - Monitoring:
         - Grafana:
-            href: https://grafana.lab1830.com
+            href: https://grafana.lab1830.local
             description: Metrics & dashboards
             icon: grafana
         - Uptime Kuma:
-            href: https://kuma.lab1830.com
+            href: https://kuma.lab1830.local
             description: Uptime monitoring
             icon: uptime-kuma
         - Tautulli:
@@ -64,7 +64,7 @@ data:
             description: Compose stack manager
             icon: docker
         - Argo CD:
-            href: https://argocd.lab1830.com
+            href: https://argocd.lab1830.local
             description: GitOps deployment controller
             icon: argo-cd
 
