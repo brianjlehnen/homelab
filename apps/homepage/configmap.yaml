@@ -112,10 +112,10 @@ data:
         memory: true
         network: true
 
-    - openweathermap:
-        label: Oconomowoc
-        latitude: 43.1117
-        longitude: -88.4993
-        units: imperial
-        provider: openweathermap
-        apiKey: 1ed11b3dd6e7f24a4a6da749c87524d1
+   # - openweathermap:
+    #     label: Oconomowoc
+    #     latitude: 43.1117
+    #     longitude: -88.4993
+    #     units: imperial
+    #     provider: openweathermap
+    #     apiKey: 1ed11b3dd6e7f24a4a6da749c87524d1
