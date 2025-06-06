@@ -62,7 +62,7 @@ data:
         - Synology:
             href: https://nas.lab1830.com
             description: NAS storage
-            icon: synology
+            icon: synology-os
        
 
     - Management:
