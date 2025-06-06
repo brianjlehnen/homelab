@@ -14,8 +14,7 @@ data:
       - metallb-system
 
   settings.yaml: |
-    background: https://unsplash.com/photos/body-of-water-surrounded-by-trees-NRQV-hBF10M
-
+   # background: https://unsplash.com/photos/body-of-water-surrounded-by-trees-NRQV-hBF10M
   custom.css: ""
   custom.js: ""
 
@@ -96,29 +95,22 @@ data:
             icon: sabnzbd
 
   widgets.yaml: |
-    - kubernetes:
-        cluster:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-          label: "cluster"
-        nodes:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
     - resources:
         backend: resources
         expanded: true
         cpu: true
         memory: true
-        network: default
-    - uptimekuma:
-        url: https://kuma.lab1830.com
-        slug: statuspageslug
-    - search:
-        provider: google
-        target: _blank
+        network: true
+
+    - docker:
+        socket: /var/run/docker.sock
+        containers: true
+
+    - weather:
+        label: Oconomowoc
+        latitude: 43.1117
+        longitude: -88.4993
+        units: imperial
+        apiKey: 1ed11b3dd6e7f24a4a6da749c87524d1
 
   docker.yaml: ""
