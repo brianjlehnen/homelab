@@ -25,7 +25,7 @@ data:
               href: https://github.com/brianjlehnen/k8s-homelab
               icon: github
 
-  sservices.yaml: |
+  services.yaml: |
     - Monitoring:
         - Grafana:
             href: https://grafana.lab1830.com
