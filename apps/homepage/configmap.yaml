@@ -7,11 +7,11 @@ metadata:
     app.kubernetes.io/name: homepage
 data:
   kubernetes.yaml: |
-    mode: cluster
-    namespaces:
-      - monitoring
-      - kube-system
-      - metallb-system
+  #  mode: cluster
+  #  namespaces:
+  #   - monitoring
+  #   - kube-system
+  #   - metallb-system
 
   settings.yaml: |
    # background: https://unsplash.com/photos/body-of-water-surrounded-by-trees-NRQV-hBF10M
