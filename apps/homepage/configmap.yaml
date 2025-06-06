@@ -7,23 +7,30 @@ metadata:
     app.kubernetes.io/name: homepage
 data:
   kubernetes.yaml: |
-  #  mode: cluster
-  #  namespaces:
-  #   - monitoring
-  #   - kube-system
-  #   - metallb-system
+    # mode: cluster
+    # namespaces:
+    #   - monitoring
+    #   - kube-system
+    #   - metallb-system
 
   settings.yaml: |
-   # background: https://unsplash.com/photos/body-of-water-surrounded-by-trees-NRQV-hBF10M
+    # background: https://unsplash.com/photos/body-of-water-surrounded-by-trees-NRQV-hBF10M
+
   custom.css: ""
   custom.js: ""
 
   bookmarks.yaml: |
-    - Developer:
-        - Homelab Repo:
-            - abbr: K8S
-              href: https://github.com/brianjlehnen/k8s-homelab
+    - Homelab:
+        - GitHub Repo:
+            - href: https://github.com/brianjlehnen/k8s-homelab
               icon: github
+        - Cloudflare Dashboard:
+            - href: https://dash.cloudflare.com/2fe0cad65cd58fa82c6ea92e388703c6/home/domains
+              icon: cloudflare
+    - Resources:
+        - KodeKloud:
+            - href: https://www.kodekloud.com/
+              icon: cloud
 
   services.yaml: |
     - Monitoring:
@@ -31,6 +38,10 @@ data:
             href: https://grafana.lab1830.local
             description: Metrics & dashboards
             icon: grafana
+        - Dozzle:
+            href: https://dozzle.lab1830.com
+            description: Container monitoring
+            icon: dozzle
         - Uptime Kuma:
             href: https://kuma.lab1830.local
             description: Uptime monitoring
@@ -39,6 +50,10 @@ data:
             href: https://tautulli.lab1830.com
             description: Plex monitoring and stats
             icon: tautulli
+        # - Speedtest Tracker:
+        #     href: https://speedtest.lab1830.com
+        #     description: Internet speed monitoring
+        #     icon: speedtest
 
     - Infrastructure:
         - Traefik:
@@ -49,10 +64,10 @@ data:
             href: https://pihole.lab1830.com
             description: Network-wide DNS & ad-blocking
             icon: pi-hole
-        - Speedtest Tracker:
-            href: https://speedtest.lab1830.com
-            description: Internet speed monitoring
-            icon: speedtest
+        - Synology NAS:
+            href: https://nas.lab1830.com
+            description: Media and log storage
+            icon: synology
 
     - Management:
         - Portainer:
@@ -62,7 +77,7 @@ data:
         - Dockge:
             href: https://dockge.lab1830.com
             description: Compose stack manager
-            icon: docker
+            icon: dockge
         - Argo CD:
             href: https://argocd.lab1830.local
             description: GitOps deployment controller
@@ -102,15 +117,10 @@ data:
         memory: true
         network: true
 
-    - docker:
-        socket: /var/run/docker.sock
-        containers: true
-
-    - weather:
+    - openweathermap:
         label: Oconomowoc
         latitude: 43.1117
         longitude: -88.4993
         units: imperial
+        provider: openweathermap
         apiKey: 1ed11b3dd6e7f24a4a6da749c87524d1
-
-  docker.yaml: ""
