@@ -50,10 +50,7 @@ data:
             href: https://tautulli.lab1830.com
             description: Plex monitoring and stats
             icon: tautulli
-        # - Speedtest Tracker:
-        #     href: https://speedtest.lab1830.com
-        #     description: Internet speed monitoring
-        #     icon: speedtest
+        
 
     - Infrastructure:
         - Traefik:
@@ -77,7 +74,7 @@ data:
         - Dockge:
             href: https://dockge.lab1830.com
             description: Compose stack manager
-            icon: dockge
+            icon: https://dockge.kuma.pet/icon.svg
         - Argo CD:
             href: https://argocd.lab1830.local
             description: GitOps deployment controller
