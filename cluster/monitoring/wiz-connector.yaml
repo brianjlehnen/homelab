@@ -24,8 +24,8 @@ spec:
             # These values are REQUIRED by the chart in the Helm values,
             # even when you're manually creating the secret.
             # Replace with your ACTUAL Client ID and Client Token!
-            clientId: wgxq75hrlndpbktx3eupevf2xzh22xvle7jfob47kov6etpt6ktwg
-            clientToken: zX7eD0K0fSugMWdrhrZKKdyXSbSwPE9Wf3rencNLcmBYFz6aMQlSE3vTu8e8GaE9
+            clientId: wgxq75hrlndpbktx3eupevf2xzylnseye4yvilfiuimzuvrdhttwm
+            clientToken: OeOm0w8MIFI9g8ZO7wTIEEtgb6MFSI7Lh6wWESQPXOwq5YVBDaXOjNkt1wxGiNDY
             # Add clientEndpoint if Wiz provided one (e.g., for GovCloud)
             # clientEndpoint: "https://api.wiz.us" # Example, uncomment if needed
 
