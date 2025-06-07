@@ -1,0 +1,46 @@
+# applications/wiz-connector.yaml (in Git)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wiz-kubernetes-connector
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://wiz-sec.github.io/charts
+    targetRevision: 3.3.14 # Always specify a version
+    chart: wiz-kubernetes-connector
+    helm:
+      values: |
+        global:
+          wizApiToken:
+            secret:
+              create: false
+              name: wiz-api-token
+
+        wiz-kubernetes-connector:
+          enabled: true
+          autoCreateConnector:
+            clusterFlavor: Kubernetes
+            connectorName: cluster-lab1830
+          wiz-broker:
+            enabled: true
+
+        wiz-sensor:
+          enabled: true
+          imagePullSecret:
+            create: false
+            name: sensor-image-pull
+          sensorClusterName: cluster-lab1830
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: wiz # Target namespace for deployment
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
