@@ -21,7 +21,7 @@ spec:
             create: false
             name: wiz-api-token
           clientId: ***REMOVED***
-          clientToken: OeOm0...
+          clientToken: ***REMOVED***
 
         wiz-kubernetes-connector:
           enabled: true
