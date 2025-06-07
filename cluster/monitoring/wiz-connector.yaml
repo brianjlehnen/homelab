@@ -16,16 +16,12 @@ spec:
 
     helm:
       values: |
-        global:
-          wizApiToken:
-            secret:
-              create: false
-              name: wiz-api-token
-            # THESE ARE REQUIRED BY THE CHART'S TEMPLATING, DESPITE DOCS
-            # You must keep these here for the Helm templating to succeed.
-            clientId: ***REMOVED***
-            clientToken: ***REMOVED***
-            # clientEndpoint: "https://api.wiz.us" # Uncomment if needed
+        wizApiToken:
+          secret:
+            create: false
+            name: wiz-api-token
+          clientId: ***REMOVED***
+          clientToken: OeOm0...
 
         wiz-kubernetes-connector:
           enabled: true
@@ -39,7 +35,7 @@ spec:
           enabled: true
           image:
             repository: wizio.azurecr.io/wiz/sensor
-            tag: "1.0.6816" # Confirm with Wiz docs / 'helm search repo wiz-sec/wiz-sensor'
+            tag: "1.0.6816"
             pullPolicy: IfNotPresent
           imagePullSecret:
             create: false
