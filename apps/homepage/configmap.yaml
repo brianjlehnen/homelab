@@ -59,7 +59,7 @@ data:
             description: Reverse proxy dashboard
             icon: traefik
         - Pi-hole:
-            href: https://pihole.lab1830.com
+            href: https://192.168.4.254/admin/
             description: Network-wide DNS & ad-blocking
             icon: pi-hole
         - Synology:
