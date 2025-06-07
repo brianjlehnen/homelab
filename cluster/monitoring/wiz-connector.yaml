@@ -19,7 +19,7 @@ spec:
         wizApiToken:
           secret:
             create: false
-            name: wiz-api-token
+            name: wiz-kubernetes-connector-api-token
           clientId: ***REMOVED***
           clientToken: ***REMOVED***
 
