@@ -3,16 +3,16 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: wiz-kubernetes-connector
-  namespace: argocd # Argo CD's namespace, where the Application resource lives
+  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default # Or your specific Argo CD project
+  project: default
 
   source:
-    repoURL: https://wiz-sec.github.io/charts # The Helm repository URL
-    targetRevision: 3.3.14 # IMPORTANT: Pin to the exact chart version you searched for
-    chart: wiz-kubernetes-connector # The name of the chart within the repository
+    repoURL: https://wiz-sec.github.io/charts
+    targetRevision: 3.3.14
+    chart: wiz-kubernetes-connector
 
     helm:
       values: |
@@ -21,13 +21,11 @@ spec:
             secret:
               create: false
               name: wiz-api-token
-            # These values are REQUIRED by the chart in the Helm values,
-            # even when you're manually creating the secret.
-            # Replace with your ACTUAL Client ID and Client Token!
+            # THESE ARE REQUIRED BY THE CHART'S TEMPLATING, DESPITE DOCS
+            # You must keep these here for the Helm templating to succeed.
             clientId: ***REMOVED***
             clientToken: ***REMOVED***
-            # Add clientEndpoint if Wiz provided one (e.g., for GovCloud)
-            # clientEndpoint: "https://api.wiz.us" # Example, uncomment if needed
+            # clientEndpoint: "https://api.wiz.us" # Uncomment if needed
 
         wiz-kubernetes-connector:
           enabled: true
@@ -40,22 +38,21 @@ spec:
         wiz-sensor:
           enabled: true
           image:
-            # Use the specific repository and tag found from 'helm search repo wiz-sec'
-            repository: wizio.azurecr.io/wiz/sensor # THIS IS CRITICAL - USE THE CORRECT REPO
-            tag: "1.0.6816" # Found in your 'helm search repo' output for wiz-sensor
-            pullPolicy: IfNotPresent # Good default for homelab
+            repository: wizio.azurecr.io/wiz/sensor
+            tag: "1.0.6816" # Confirm with Wiz docs / 'helm search repo wiz-sec/wiz-sensor'
+            pullPolicy: IfNotPresent
           imagePullSecret:
             create: false
             name: sensor-image-pull
           sensorClusterName: cluster-lab1830
 
   destination:
-    server: https://kubernetes.default.svc # The target Kubernetes cluster (usually in-cluster)
-    namespace: wiz # The namespace where the Wiz connector will be deployed
+    server: https://kubernetes.default.svc
+    namespace: wiz
 
   syncPolicy:
     automated:
-      prune: true # Automatically delete resources that are no longer in Git
-      selfHeal: true # Automatically sync if there's drift from Git
+      prune: true
+      selfHeal: true
     syncOptions:
-      - CreateNamespace=true # Argo CD will create the 'wiz' namespace if it doesn't exist
+      - CreateNamespace=true
