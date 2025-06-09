@@ -34,7 +34,7 @@ data:
             - abbr: k8s concepts
               href: https://kubernetes.io/docs/concepts/
               icon: kubernetes
-         - Claude AI:
+        - Claude AI:
             - abbr: AI
               href: https://claude.ai/new
               icon: clause-ai
