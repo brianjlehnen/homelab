@@ -34,6 +34,17 @@ data:
             - abbr: k8s concepts
               href: https://kubernetes.io/docs/concepts/
               icon: kubernetes
+         - Claude AI:
+            - abbr: AI
+              href: https://claude.ai/new
+              icon: clause-ai
+
+    - Management:
+        - Cloudflare:
+            - abbr: cflare
+              href: https://dash.cloudflare.com/login
+              icon: cloudflare
+        
   services.yaml: |
     - Monitoring:
         - Grafana:
@@ -59,13 +70,13 @@ data:
             description: Reverse proxy dashboard
             icon: traefik
         - Pi-hole:
-            href: https://192.168.4.254/admin/
+            href: https://192.168.4.254/admin/login
             description: Network-wide DNS & ad-blocking
             icon: pi-hole
         - Synology:
             href: https://nas.lab1830.com
             description: NAS storage
-            icon: synology dsm
+            icon: synology-dsm
        
     - Management:
         - Portainer:
