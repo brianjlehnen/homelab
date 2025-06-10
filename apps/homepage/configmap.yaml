@@ -8,16 +8,10 @@ metadata:
 data:
   kubernetes.yaml: |
     mode: cluster
-    # Uncomment to enable Kubernetes service discovery
-    # namespaces:
-    #   - monitoring
-    #   - kube-system
-    #   - metallb-system
-    #   - homepage
   
   settings.yaml: |
     title: Lab1830 HomeLab
-    theme: dark  # or light
+    theme: dark
     color: slate
     layout:
       Monitoring:
@@ -29,11 +23,6 @@ data:
       Management:
         style: row
         columns: 3
-      Media:
-        style: row
-        columns: 4
-    # Optional background
-    # background: https://images.unsplash.com/photo-1519904981063-b0cf448d479e
 
   widgets.yaml: |
     - resources:
@@ -63,105 +52,35 @@ data:
   services.yaml: |
     - Monitoring:
         - Grafana:
-            href: https://grafana.lab1830.com  # Fixed .local to .com
+            href: https://grafana.lab1830.com
             description: Metrics & dashboards
             icon: grafana
-            widget:
-              type: grafana
-              url: https://grafana.lab1830.com
-              username: {{HOMEPAGE_VAR_GRAFANA_USERNAME}}
-              password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
               
         - Uptime Kuma:
-            href: https://kuma.lab1830.com  # Fixed .local to .com
+            href: https://kuma.lab1830.com
             description: Uptime monitoring
             icon: uptime-kuma
             widget:
               type: uptimekuma
               url: https://kuma.lab1830.com
               slug: lab1830
-              
-        - Tautulli:
-            href: https://tautulli.lab1830.com
-            description: Plex monitoring and stats
-            icon: tautulli
-            widget:
-              type: tautulli
-              url: https://tautulli.lab1830.com
-              key: {{HOMEPAGE_VAR_TAUTULLI_API_KEY}}
+              apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
 
-    - Infrastructure:
-        - Traefik:
-            href: https://traefik.lab1830.com
-            description: Reverse proxy dashboard
-            icon: traefik
-            
+    - Infrastructure:        
         - Pi-hole:
             href: https://192.168.4.254/admin/login
             description: Network-wide DNS & ad-blocking
             icon: pi-hole
             widget:
               type: pihole
-              url: http://192.168.4.254  # Remove https, use http
+              url: http://192.168.4.254
               key: {{HOMEPAGE_VAR_PIHOLE_API_KEY}}
-              
-        - Synology:
-            href: https://nas.lab1830.com
-            description: NAS storage
-            icon: synology-dsm
 
     - Management:
-        - Portainer:
-            href: https://portainer.lab1830.com
-            description: Docker management UI
-            icon: portainer
-            
-        - Dockge:
-            href: https://dockge.lab1830.com
-            description: Compose stack manager
-            icon: dockge
-            
         - Argo CD:
-            href: https://argocd.lab1830.com  # Fixed .local to .com
+            href: https://argocd.lab1830.com
             description: GitOps deployment controller
             icon: argo-cd
-
-    - Media:
-        - Plex:
-            href: https://plex.lab1830.com
-            description: Media streaming
-            icon: plex
-            widget:
-              type: plex
-              url: https://plex.lab1830.com
-              key: {{HOMEPAGE_VAR_PLEX_API_KEY}}
-              
-        - Overseerr:
-            href: https://overseerr.lab1830.com
-            description: Media request platform
-            icon: overseerr
-            widget:
-              type: overseerr
-              url: https://overseerr.lab1830.com
-              key: {{HOMEPAGE_VAR_OVERSEERR_API_KEY}}
-              
-        - Radarr:
-            href: https://radarr.lab1830.com
-            description: Movie management
-            icon: radarr
-            widget:
-              type: radarr
-              url: https://radarr.lab1830.com
-              key: {{HOMEPAGE_VAR_RADARR_API_KEY}}
-              
-        - Sonarr:
-            href: https://sonarr.lab1830.com
-            description: TV series management
-            icon: sonarr
-            widget:
-              type: sonarr
-              url: https://sonarr.lab1830.com
-              key: {{HOMEPAGE_VAR_SONARR_API_KEY}}
 
   bookmarks.yaml: |
     - Developer:
@@ -182,7 +101,7 @@ data:
         - Claude AI:
             - abbr: AI
               href: https://claude.ai/new
-              icon: claude-ai  # Fixed typo: clause -> claude
+              icon: claude-ai
               
     - Consoles:
         - Cloudflare:
@@ -192,7 +111,7 @@ data:
         - Dreamhost:
             - abbr: dream
               href: https://panel.dreamhost.com/
-              icon: dreamhost  # Fixed icon name
+              icon: dreamhost
 
   docker.yaml: ""
   custom.css: ""
