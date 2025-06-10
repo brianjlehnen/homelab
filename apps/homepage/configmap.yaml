@@ -13,6 +13,7 @@ data:
     title: Lab1830 HomeLab
     theme: dark
     color: slate
+    colorMode: auto  # Enables color switching in UI
     target: _blank  # Open all links in new tabs
     layout:
       Infrastructure:
@@ -183,9 +184,8 @@ data:
         - Dreamhost:
             - abbr: DH
               href: https://panel.dreamhost.com/
-              icon: dreamhost
+              icon: dream-host-dark
 
   docker.yaml: ""
   custom.css: ""
-  custom.js: ""
   custom.js: ""
