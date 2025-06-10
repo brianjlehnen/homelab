@@ -7,8 +7,7 @@ metadata:
     app.kubernetes.io/name: homepage
 data:
   kubernetes.yaml: |
-    mode: cluster
-    namespaces: []
+    mode: disabled
   
   settings.yaml: |
     title: Lab1830 HomeLab
@@ -22,9 +21,6 @@ data:
         style: column  
         columns: 1
       Management:
-        style: column
-        columns: 1
-      Cluster Info:
         style: column
         columns: 1
       Media Management:
@@ -109,22 +105,6 @@ data:
             href: https://dockge.lab1830.com
             description: Docker compose stack manager
             icon: dockge
-
-    - Cluster Info:
-        - Nodes:
-            widget:
-              type: kubernetes
-              cluster:
-                show: true
-                cpu: true
-                memory: true
-                showLabel: true
-                label: "Lab1830 Cluster"
-              nodes:
-                show: true
-                cpu: true
-                memory: true
-                showLabel: true
 
     - Media Management:
         - Plex:
