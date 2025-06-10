@@ -19,15 +19,23 @@ data:
     theme: dark
     color: slate
     layout:
-      Monitoring:
-        style: row
-        columns: 4
       Infrastructure:
-        style: row
-        columns: 3
+        style: column
+        columns: 1
+      Monitoring:
+        style: column  
+        columns: 1
       Management:
-        style: row
-        columns: 3
+        style: column
+        columns: 1
+      Media Management:
+        style: column
+        columns: 1
+      Media Downloads:
+        style: column
+        columns: 1
+    headerStyle: boxed
+    hideVersion: true
 
   widgets.yaml: |
     - resources:
