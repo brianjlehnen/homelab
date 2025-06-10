@@ -39,11 +39,15 @@ data:
               href: https://claude.ai/new
               icon: clause-ai
 
-    - Management:
+    - Consoles:
         - Cloudflare:
             - abbr: cflare
               href: https://dash.cloudflare.com/login
               icon: cloudflare
+        - Dreamhost:
+            - abbr: dream
+              href: https://panel.dreamhost.com/
+              icon: dream-host-dark
         
   services.yaml: |
     - Monitoring:
@@ -128,7 +132,7 @@ data:
         network: default
     - uptimekuma:
         url: https://kuma.lab1830.com
-        slug: statuspageslug
+        slug: lab1830
     - search:
         provider: google
         target: _blank
