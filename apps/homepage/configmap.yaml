@@ -43,11 +43,6 @@ data:
         units: imperial
         provider: openweathermap
         apiKey: {{HOMEPAGE_VAR_WEATHER_API_KEY}}
-        
-    - uptimekuma:
-        url: https://kuma.lab1830.com
-        slug: lab1830
-        apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
 
   services.yaml: |
     - Monitoring:
@@ -62,7 +57,7 @@ data:
             icon: uptime-kuma
             widget:
               type: uptimekuma
-              url: https://kuma.lab1830.com
+              url: http://192.168.4.200  # Use HTTP and direct IP to bypass SSL
               slug: lab1830
               apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
 
