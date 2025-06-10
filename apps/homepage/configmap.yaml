@@ -57,7 +57,7 @@ data:
             icon: uptime-kuma
             widget:
               type: uptimekuma
-              url: http://192.168.4.200  # Use HTTP and direct IP to bypass SSL
+              url: http://10.43.240.254
               slug: lab1830
               apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
 
