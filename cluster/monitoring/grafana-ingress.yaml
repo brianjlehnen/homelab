@@ -13,7 +13,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: grafana.lab1830.local # Or your desired hostname for Grafana
+    - host: grafana.lab1830.com # Or your desired hostname for Grafana
       http:
         paths:
           - path: /
@@ -35,5 +35,5 @@ spec:
                                # The chart's default Grafana service port is 80.
   tls:
     - hosts:
-        - grafana.lab1830.local
+        - grafana.lab1830.com
       secretName: grafana-tls-cert
