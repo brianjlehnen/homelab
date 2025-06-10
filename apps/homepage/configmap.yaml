@@ -13,6 +13,17 @@ data:
       - uptime-kuma
       - ingress-nginx
       - monitoring
+      - kube-system
+      - metallb-system
+    resources:
+      - group: ""
+        resource: nodes
+      - group: ""
+        resource: pods
+      - group: apps
+        resource: deployments
+      - group: ""
+        resource: services
   
   settings.yaml: |
     title: Lab1830 HomeLab
@@ -26,6 +37,9 @@ data:
         style: column  
         columns: 1
       Management:
+        style: column
+        columns: 1
+      Kubernetes:
         style: column
         columns: 1
       Media Management:
@@ -110,6 +124,22 @@ data:
             href: https://dockge.lab1830.com
             description: Docker compose stack manager
             icon: dockge
+
+    - Kubernetes:
+        - Cluster Overview:
+            widget:
+              type: kubernetes
+              cluster:
+                show: true
+                cpu: true
+                memory: true
+                showLabel: true
+                label: "k3s-cluster"
+              nodes:
+                show: true
+                cpu: true
+                memory: true
+                showLabel: true
 
     - Media Management:
         - Plex:
