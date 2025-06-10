@@ -26,6 +26,9 @@ data:
       Management:
         style: column
         columns: 1
+      Utilities & Apps:
+        style: column
+        columns: 1
       Media Management:
         style: column
         columns: 1
@@ -107,6 +110,12 @@ data:
             description: Docker compose stack manager
             icon: dockge
 
+    - Utilities & Apps:
+        - Mealie:
+            href: https://mealie.lab1830.com
+            description: Recipe management & meal planning
+            icon: mealie
+
     - Media Management:
         - Plex:
             href: https://plex.lab1830.com
@@ -156,6 +165,10 @@ data:
             - abbr: KC
               href: https://learn.kodekloud.com/user/dashboard
               icon: icloud
+        - KubeCraft:
+            - abbr: KubeC
+              href: https://www.skool.com/kubecraft
+              icon: kubecraft
         - Kubernetes Docs:
             - abbr: K8s
               href: https://kubernetes.io/docs/concepts/
@@ -169,6 +182,12 @@ data:
               href: https://claude.ai/new
               icon: claude-ai
               
+    - Productivity:
+        - Obsidian Vault:
+            - abbr: OB
+              href: obsidian://open?vault=Zettelkasten
+              icon: obsidian
+              
     - Cloud Services:
         - Cloudflare:
             - abbr: CF
@@ -177,7 +196,7 @@ data:
         - Dreamhost:
             - abbr: DH
               href: https://panel.dreamhost.com/
-              icon: dream-host-dark
+              icon: dream-host-light
 
   docker.yaml: ""
   custom.css: ""
