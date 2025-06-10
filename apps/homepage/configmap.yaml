@@ -79,7 +79,7 @@ data:
             icon: uptime-kuma
             widget:
               type: uptimekuma
-              url: https://kuma.lab1830.com
+              url: https://192.168.4.200
               slug: lab1830
               
         - Tautulli:
