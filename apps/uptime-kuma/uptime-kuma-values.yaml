@@ -31,14 +31,14 @@ ingress:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
   hosts:
-    - host: "kuma.lab1830.local"
+    - host: "kuma.lab1830.com"
       paths:
         - path: /
           pathType: Prefix
   tls:
     - secretName: kuma-tls-cert
       hosts:
-        - "kuma.lab1830.local"
+        - "kuma.lab1830.com"
 
 # Resource limits and requests (optional but good practice)
 resources:
