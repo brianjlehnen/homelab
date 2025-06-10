@@ -11,7 +11,6 @@ data:
   
   settings.yaml: |
     title: Lab1830 HomeLab
-    favicon: https://github.com/gethomepage/homepage/raw/main/public/icon.png
     theme: dark
     color: slate
     target: _blank  # Open all links in new tabs
@@ -188,4 +187,5 @@ data:
 
   docker.yaml: ""
   custom.css: ""
+  custom.js: ""
   custom.js: ""
