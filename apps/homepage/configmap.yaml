@@ -8,22 +8,7 @@ metadata:
 data:
   kubernetes.yaml: |
     mode: cluster
-    namespaces:
-      - homepage
-      - uptime-kuma
-      - ingress-nginx
-      - monitoring
-      - kube-system
-      - metallb-system
-    resources:
-      - group: ""
-        resource: nodes
-      - group: ""
-        resource: pods
-      - group: apps
-        resource: deployments
-      - group: ""
-        resource: services
+    namespaces: []
   
   settings.yaml: |
     title: Lab1830 HomeLab
@@ -39,7 +24,7 @@ data:
       Management:
         style: column
         columns: 1
-      Kubernetes:
+      Cluster Info:
         style: column
         columns: 1
       Media Management:
@@ -125,8 +110,8 @@ data:
             description: Docker compose stack manager
             icon: dockge
 
-    - Kubernetes:
-        - Cluster Overview:
+    - Cluster Info:
+        - Nodes:
             widget:
               type: kubernetes
               cluster:
@@ -134,7 +119,7 @@ data:
                 cpu: true
                 memory: true
                 showLabel: true
-                label: "k3s-cluster"
+                label: "Lab1830 Cluster"
               nodes:
                 show: true
                 cpu: true
