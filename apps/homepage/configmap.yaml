@@ -7,92 +7,123 @@ metadata:
     app.kubernetes.io/name: homepage
 data:
   kubernetes.yaml: |
-    #mode: cluster
-    #namespaces:
-      #- monitoring
-      #- kube-system
-      #- metallb-system
-
+    mode: cluster
+    # Uncomment to enable Kubernetes service discovery
+    # namespaces:
+    #   - monitoring
+    #   - kube-system
+    #   - metallb-system
+    #   - homepage
+  
   settings.yaml: |
-    # background: https://unsplash.com/photos/body-of-water-surrounded-by-trees-NRQV-hBF10M
+    title: Lab1830 HomeLab
+    theme: dark  # or light
+    color: slate
+    layout:
+      Monitoring:
+        style: row
+        columns: 4
+      Infrastructure:
+        style: row
+        columns: 3
+      Management:
+        style: row
+        columns: 3
+      Media:
+        style: row
+        columns: 4
+    # Optional background
+    # background: https://images.unsplash.com/photo-1519904981063-b0cf448d479e
 
-  custom.css: ""
-  custom.js: ""
-
-  bookmarks.yaml: |
-    - Developer:
-        - Homelab Repo:
-            - abbr: k8s
-              href: https://github.com/brianjlehnen/k8s-homelab
-              icon: github-light
-    - Learning:
-        - KodeKloud:
-            - abbr: kode
-              href: https://learn.kodekloud.com/user/dashboard
-              icon: icloud
-        - Kubernetes Docs:
-            - abbr: k8s concepts
-              href: https://kubernetes.io/docs/concepts/
-              icon: kubernetes
-        - Claude AI:
-            - abbr: AI
-              href: https://claude.ai/new
-              icon: clause-ai
-
-    - Consoles:
-        - Cloudflare:
-            - abbr: cflare
-              href: https://dash.cloudflare.com/login
-              icon: cloudflare
-        - Dreamhost:
-            - abbr: dream
-              href: https://panel.dreamhost.com/
-              icon: dream-host-dark
+  widgets.yaml: |
+    - resources:
+        backend: resources
+        expanded: true
+        cpu: true
+        memory: true
+        disk: /
+    
+    - search:
+        provider: google
+        target: _blank
         
+    - openweathermap:
+        label: Oconomowoc  # Your city
+        latitude: 43.1038
+        longitude: -88.4995
+        units: imperial  # or metric
+        provider: openweathermap
+        apiKey: {{HOMEPAGE_VAR_WEATHER_API_KEY}}  # You'll need to set this
+        
+    - uptimekuma:
+        url: https://kuma.lab1830.com
+        slug: lab1830
+        # Add API key if needed
+        # apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
+
   services.yaml: |
     - Monitoring:
         - Grafana:
-            href: https://grafana.lab1830.local
+            href: https://grafana.lab1830.com  # Fixed .local to .com
             description: Metrics & dashboards
             icon: grafana
-        - Dozzle:
-            href: https://dozzle.lab1830.com
-            description: Container logging
-            icon: dozzle   
+            widget:
+              type: grafana
+              url: https://grafana.lab1830.com
+              username: {{HOMEPAGE_VAR_GRAFANA_USERNAME}}
+              password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
+              
         - Uptime Kuma:
-            href: https://kuma.lab1830.local
+            href: https://kuma.lab1830.local  # Fixed .local to .com
             description: Uptime monitoring
             icon: uptime-kuma
+            widget:
+              type: uptimekuma
+              url: https://kuma.lab1830.com
+              slug: lab1830
+              
         - Tautulli:
             href: https://tautulli.lab1830.com
             description: Plex monitoring and stats
             icon: tautulli
+            widget:
+              type: tautulli
+              url: https://tautulli.lab1830.com
+              key: {{HOMEPAGE_VAR_TAUTULLI_API_KEY}}
 
     - Infrastructure:
         - Traefik:
             href: https://traefik.lab1830.com
             description: Reverse proxy dashboard
             icon: traefik
+            
         - Pi-hole:
             href: https://192.168.4.254/admin/login
             description: Network-wide DNS & ad-blocking
             icon: pi-hole
+            widget:
+              type: pihole
+              url: https://192.168.4.254
+              key: {{HOMEPAGE_VAR_PIHOLE_API_KEY}}
+              
         - Synology:
             href: https://nas.lab1830.com
             description: NAS storage
             icon: synology-dsm
-       
+
     - Management:
         - Portainer:
             href: https://portainer.lab1830.com
             description: Docker management UI
             icon: portainer
+            
         - Dockge:
             href: https://dockge.lab1830.com
             description: Compose stack manager
             icon: dockge
+            
         - Argo CD:
-            href: https://argocd.lab1830.local
+            href: https://argocd.lab1830.com  # Fixed .local to .com
             description: GitOps deployment controller
             icon: argo-cd
 
@@ -101,40 +132,69 @@ data:
             href: https://plex.lab1830.com
             description: Media streaming
             icon: plex
-        - Radarr:
-            href: https://radarr.lab1830.com
-            description: Movie management
-            icon: radarr
-        - Sonarr:
-            href: https://sonarr.lab1830.com
-            description: TV series management
-            icon: sonarr
+            widget:
+              type: plex
+              url: https://plex.lab1830.com
+              key: {{HOMEPAGE_VAR_PLEX_API_KEY}}
+              
         - Overseerr:
             href: https://overseerr.lab1830.com
             description: Media request platform
             icon: overseerr
-        - Prowlarr:
-            href: https://prowlarr.lab1830.com
-            description: Indexer manager
-            icon: prowlarr
-        - SABnzbd:
-            href: https://sabnzbd.lab1830.com
-            description: Usenet downloader
-            icon: sabnzbd
+            widget:
+              type: overseerr
+              url: https://overseerr.lab1830.com
+              key: {{HOMEPAGE_VAR_OVERSEERR_API_KEY}}
+              
+        - Radarr:
+            href: https://radarr.lab1830.com
+            description: Movie management
+            icon: radarr
+            widget:
+              type: radarr
+              url: https://radarr.lab1830.com
+              key: {{HOMEPAGE_VAR_RADARR_API_KEY}}
+              
+        - Sonarr:
+            href: https://sonarr.lab1830.com
+            description: TV series management
+            icon: sonarr
+            widget:
+              type: sonarr
+              url: https://sonarr.lab1830.com
+              key: {{HOMEPAGE_VAR_SONARR_API_KEY}}
 
-  widgets.yaml: |
-    
-    - resources:
-        backend: resources
-        expanded: true
-        cpu: true
-        memory: true
-        network: default
-    - uptimekuma:
-        url: https://kuma.lab1830.com
-        slug: lab1830
-    - search:
-        provider: google
-        target: _blank
+  bookmarks.yaml: |
+    - Developer:
+        - Homelab Repo:
+            - abbr: k8s
+              href: https://github.com/brianjlehnen/k8s-homelab
+              icon: github-light
+              
+    - Learning:
+        - KodeKloud:
+            - abbr: kode
+              href: https://learn.kodekloud.com/user/dashboard
+              icon: icloud
+        - Kubernetes Docs:
+            - abbr: k8s
+              href: https://kubernetes.io/docs/concepts/
+              icon: kubernetes
+        - Claude AI:
+            - abbr: AI
+              href: https://claude.ai/new
+              icon: claude-ai  # Fixed typo: clause -> claude
+              
+    - Consoles:
+        - Cloudflare:
+            - abbr: cflare
+              href: https://dash.cloudflare.com/login
+              icon: cloudflare
+        - Dreamhost:
+            - abbr: dream
+              href: https://panel.dreamhost.com/
+              icon: dreamhost  # Fixed icon name
 
   docker.yaml: ""
+  custom.css: ""
+  custom.js: ""

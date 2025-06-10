@@ -28,7 +28,21 @@ spec:
           imagePullPolicy: Always
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
-              value: homepage.lab1830.com # required, may need port. See gethomepage.dev/installation/#homepage_allowed_hosts
+              value: homepage.lab1830.com
+            # API Keys for widgets
+            - name: HOMEPAGE_VAR_WEATHER_API_KEY
+              value: "1ed11b3dd6e7f24a4a6da749c87524d1"
+            - name: HOMEPAGE_VAR_UPTIMEKUMA_API_KEY
+              value: "uk1_7N4K_CIpSg3JEBuXx1gG7iUrN3X30_ED3E68f2k9"
+            # Add other API keys as needed:
+            # - name: HOMEPAGE_VAR_GRAFANA_USERNAME
+            #   value: "admin"
+            # - name: HOMEPAGE_VAR_GRAFANA_PASSWORD
+            #   value: "your-grafana-password"
+            - name: HOMEPAGE_VAR_PIHOLE_API_KEY
+              value: "wrZeUKDufAnnSt3GXWOnSpnfuRKgyMYU1xHkMFdrX6w="
+            # - name: HOMEPAGE_VAR_PLEX_API_KEY
+            #   value: "your-plex-token"
           ports:
             - name: http
               containerPort: 3000
