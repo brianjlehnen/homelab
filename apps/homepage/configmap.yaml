@@ -180,26 +180,5 @@ data:
               icon: dream-host-dark
 
   docker.yaml: ""
-  custom.css: |
-    /* Force slate color scheme */
-    :root {
-      --color-primary: rgb(100 116 139);
-      --color-secondary: rgb(71 85 105);
-      --color-accent: rgb(148 163 184);
-      --color-50: rgb(248 250 252);
-      --color-100: rgb(241 245 249);
-      --color-200: rgb(226 232 240);
-      --color-300: rgb(203 213 225);
-      --color-400: rgb(148 163 184);
-      --color-500: rgb(100 116 139);
-      --color-600: rgb(71 85 105);
-      --color-700: rgb(51 65 85);
-      --color-800: rgb(30 41 59);
-      --color-900: rgb(15 23 42);
-    }
-    
-    /* Hide color picker if it appears */
-    [data-testid="color-picker"] {
-      display: none !important;
-    }
+  custom.css: ""
   custom.js: ""
