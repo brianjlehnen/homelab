@@ -20,7 +20,17 @@ spec:
     spec:
       serviceAccountName: homepage
       automountServiceAccountToken: true
-      dnsPolicy: ClusterFirst
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 192.168.4.254  # Your Pi-hole IP
+          - 8.8.8.8        # Fallback DNS
+        searches:
+          - lab1830.com
+          - cluster.local
+        options:
+          - name: ndots
+            value: "2"
       enableServiceLinks: true
       containers:
         - name: homepage
@@ -39,8 +49,8 @@ spec:
             #   value: "admin"
             # - name: HOMEPAGE_VAR_GRAFANA_PASSWORD
             #   value: "your-grafana-password"
-            - name: HOMEPAGE_VAR_PIHOLE_API_KEY
-              value: "wrZeUKDufAnnSt3GXWOnSpnfuRKgyMYU1xHkMFdrX6w="
+            # - name: HOMEPAGE_VAR_PIHOLE_API_KEY
+            #   value: "your-pihole-api-key"
             # - name: HOMEPAGE_VAR_PLEX_API_KEY
             #   value: "your-plex-token"
           ports:

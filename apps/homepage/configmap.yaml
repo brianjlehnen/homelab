@@ -48,18 +48,17 @@ data:
         target: _blank
         
     - openweathermap:
-        label: Oconomowoc  # Your city
+        label: Oconomowoc
         latitude: 43.1038
         longitude: -88.4995
-        units: imperial  # or metric
+        units: imperial
         provider: openweathermap
-        apiKey: {{HOMEPAGE_VAR_WEATHER_API_KEY}}  # You'll need to set this
+        apiKey: {{HOMEPAGE_VAR_WEATHER_API_KEY}}
         
     - uptimekuma:
         url: https://kuma.lab1830.com
         slug: lab1830
-        # Add API key if needed
-        # apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
+        apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
 
   services.yaml: |
     - Monitoring:
@@ -74,12 +73,12 @@ data:
               password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
               
         - Uptime Kuma:
-            href: https://kuma.lab1830.local  # Fixed .local to .com
+            href: https://kuma.lab1830.com  # Fixed .local to .com
             description: Uptime monitoring
             icon: uptime-kuma
             widget:
               type: uptimekuma
-              url: https://192.168.4.200
+              url: https://kuma.lab1830.com
               slug: lab1830
               
         - Tautulli:
@@ -103,7 +102,7 @@ data:
             icon: pi-hole
             widget:
               type: pihole
-              url: https://192.168.4.254
+              url: http://192.168.4.254  # Remove https, use http
               key: {{HOMEPAGE_VAR_PIHOLE_API_KEY}}
               
         - Synology:
