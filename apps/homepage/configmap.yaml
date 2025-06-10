@@ -102,11 +102,6 @@ data:
             href: https://dockge.lab1830.com
             description: Docker compose stack manager
             icon: dockge
-            
-        - Homepage:
-            href: https://homepage.lab1830.com
-            description: This dashboard
-            icon: homepage
 
     - Media Management:
         - Plex:
