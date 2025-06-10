@@ -13,8 +13,10 @@ data:
     title: Lab1830 HomeLab
     theme: dark
     color: slate
-    colorMode: auto  # Enables color switching in UI
-    target: _blank  # Open all links in new tabs
+    target: _blank
+    headerStyle: boxed
+    hideVersion: false
+    showStats: true
     layout:
       Infrastructure:
         style: column
@@ -31,14 +33,6 @@ data:
       Media Downloads:
         style: column
         columns: 1
-    headerStyle: boxed
-    hideVersion: true
-    language: en
-    providers:
-      openweathermap: {{HOMEPAGE_VAR_WEATHER_API_KEY}}
-    quicklaunch:
-      searchDescriptions: true
-      hideInternetSearch: false
 
   widgets.yaml: |
     - resources:
@@ -184,7 +178,7 @@ data:
         - Dreamhost:
             - abbr: DH
               href: https://panel.dreamhost.com/
-              icon: dream-host-dark
+              icon: dreamhost
 
   docker.yaml: ""
   custom.css: ""
