@@ -8,6 +8,11 @@ metadata:
 data:
   kubernetes.yaml: |
     mode: cluster
+    namespaces:
+      - homepage
+      - uptime-kuma
+      - ingress-nginx
+      - monitoring
   
   settings.yaml: |
     title: Lab1830 HomeLab
@@ -45,37 +50,100 @@ data:
         apiKey: {{HOMEPAGE_VAR_WEATHER_API_KEY}}
 
   services.yaml: |
+    - Infrastructure:
+        - Pi-hole:
+            href: http://192.168.4.254/admin/login
+            description: Network-wide DNS & ad-blocking
+            icon: pi-hole
+            
+        - Synology NAS:
+            href: https://nas.lab1830.com
+            description: Network storage & file management
+            icon: synology-dsm
+            
+        - Traefik:
+            href: https://traefik.lab1830.com
+            description: Reverse proxy & load balancer
+            icon: traefik
+
     - Monitoring:
         - Grafana:
             href: https://grafana.lab1830.com
-            description: Metrics & dashboards
+            description: Metrics visualization & dashboards
             icon: grafana
               
         - Uptime Kuma:
             href: https://kuma.lab1830.com
-            description: Uptime monitoring
+            description: Service uptime monitoring
             icon: uptime-kuma
             widget:
               type: uptimekuma
               url: http://10.43.240.254
               slug: lab1830
               apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
-
-    - Infrastructure:        
-        - Pi-hole:
-            href: https://192.168.4.254/admin/login
-            description: Network-wide DNS & ad-blocking
-            icon: pi-hole
-            widget:
-              type: pihole
-              url: http://192.168.4.254
-              key: {{HOMEPAGE_VAR_PIHOLE_API_KEY}}
+              
+        - Dozzle:
+            href: https://dozzle.lab1830.com
+            description: Real-time container logs
+            icon: dozzle
 
     - Management:
         - Argo CD:
             href: https://argocd.lab1830.com
             description: GitOps deployment controller
             icon: argo-cd
+            
+        - Portainer:
+            href: https://portainer.lab1830.com
+            description: Docker container management
+            icon: portainer
+            
+        - Dockge:
+            href: https://dockge.lab1830.com
+            description: Docker compose stack manager
+            icon: dockge
+            
+        - Homepage:
+            href: https://homepage.lab1830.com
+            description: This dashboard
+            icon: homepage
+
+    - Media Management:
+        - Plex:
+            href: https://plex.lab1830.com
+            description: Media streaming server
+            icon: plex
+            
+        - Overseerr:
+            href: https://overseerr.lab1830.com
+            description: Media request management
+            icon: overseerr
+            
+        - Tautulli:
+            href: https://tautulli.lab1830.com
+            description: Plex monitoring & statistics
+            icon: tautulli
+
+    - Media Downloads:
+        - Radarr:
+            href: https://radarr.lab1830.com
+            description: Movie collection manager
+            icon: radarr
+            
+        - Sonarr:
+            href: https://sonarr.lab1830.com
+            description: TV series collection manager
+            icon: sonarr
+            
+        - Prowlarr:
+            href: https://prowlarr.lab1830.com
+            description: Indexer & tracker manager
+            icon: prowlarr
+            
+        - SABnzbd:
+            href: https://sabnzbd.lab1830.com
+            description: Usenet binary downloader
+            icon: sabnzbd
 
   bookmarks.yaml: |
     - Developer:
