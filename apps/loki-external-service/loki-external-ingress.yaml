@@ -10,6 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
         - loki.lab1830.com
@@ -22,6 +23,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: loki
+            name: loki-external
             port:
               number: 3100
