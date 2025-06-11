@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: loki-external-ingress
+  namespace: logging
+  labels:
+    app.kubernetes.io/name: loki-external
+    managed-by: argocd
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+    - hosts:
+        - loki.lab1830.com
+      secretName: loki-external-tls
+  rules:
+  - host: loki.lab1830.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: loki
+            port:
+              number: 3100
