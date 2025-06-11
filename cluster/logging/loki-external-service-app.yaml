@@ -10,7 +10,7 @@ spec:
     targetRevision: HEAD
     path: apps/loki-external-service
   destination:
-    server: https://kubernetes.cluster.local
+    server: https://kubernetes.default.svc
     namespace: logging
   syncPolicy:
     automated:
