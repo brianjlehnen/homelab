@@ -79,6 +79,11 @@ data:
             description: Metrics visualization & alerting
             icon: grafana
               
+        - Dozzle:
+            href: https://dozzle.lab1830.com
+            description: Real-time container log viewer
+            icon: dozzle
+
         - Uptime Kuma:
             href: https://kuma.lab1830.com
             description: Service availability monitoring
@@ -88,11 +93,16 @@ data:
               url: http://10.43.240.254
               slug: lab1830
               apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
-              
-        - Dozzle:
-            href: https://dozzle.lab1830.com
-            description: Real-time container log viewer
-            icon: dozzle
+
+        - Speedtest Tracker:
+            href: https://speedtest.lab1830.com
+            description: Internet speed monitoring and history
+            icon: speedtest-tracker.png
+            widget:
+              type: speedtest
+              url: https://speedtest.lab1830.com
+              version: 1
+              bitratePrecision: 1
 
     - Management:
         - Argo CD:
