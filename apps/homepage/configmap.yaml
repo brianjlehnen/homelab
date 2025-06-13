@@ -152,6 +152,11 @@ data:
             href: https://sabnzbd.lab1830.com
             description: Usenet download client
             icon: sabnzbd
+        
+        - NZBGet:
+            href: https://nzbget.lab1830.com
+            description: Usenet download client
+            icon: nzbget
 
   bookmarks.yaml: |
     - Development:
