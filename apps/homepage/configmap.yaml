@@ -121,6 +121,11 @@ data:
             href: https://plex.lab1830.com
             description: Media streaming platform
             icon: plex
+
+        - Jellyfin:
+            href: https://jellyfin.lab1830.com
+            description: Media streaming platform
+            icon: jellyfin
             
         - Overseerr:
             href: https://overseerr.lab1830.com
