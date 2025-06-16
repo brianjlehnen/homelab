@@ -93,7 +93,7 @@ spec:
             enabled: true
             annotations:
               kubernetes.io/ingress.class: nginx
-              cert-manager.io/cluster-issuer: letsencrypt-production
+              cert-manager.io/cluster-issuer: ca-clusterissuer
               nginx.ingress.kubernetes.io/ssl-redirect: "true"
               cert-manager.io/private-key-rotation-policy: Always
               nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
