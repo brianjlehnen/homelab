@@ -119,10 +119,12 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
-    - ApplyOutOfSyncOnly=true
-# Add this to the spec section of your vault-app.yaml:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+
   ignoreDifferences:
     - group: admissionregistration.k8s.io
       kind: MutatingWebhookConfiguration
       name: vault-agent-injector-cfg
+      jsonPointers:
+        - /webhooks/0/clientConfig/caBundle
