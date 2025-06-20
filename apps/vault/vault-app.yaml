@@ -88,11 +88,13 @@ spec:
             port: 8200
             targetPort: 8200
           
-          # Ingress
+          # Ingress - UPDATED with modern ingressClassName and backend protocol
           ingress:
             enabled: true
+            ingressClassName: nginx  # <- Added this line
             annotations:
-              kubernetes.io/ingress.class: nginx
+              # Removed: kubernetes.io/ingress.class: nginx
+              nginx.ingress.kubernetes.io/backend-protocol: HTTPS  # <- Added this line
               cert-manager.io/cluster-issuer: ca-clusterissuer
               nginx.ingress.kubernetes.io/ssl-redirect: "true"
               cert-manager.io/private-key-rotation-policy: Always
