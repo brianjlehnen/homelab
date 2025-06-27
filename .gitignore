@@ -1,299 +1,104 @@
 # ===================================================================
-# HOMELAB KUBERNETES .gitignore
+# HOMELAB .gitignore - v2.0
 # ===================================================================
 
 # ===========================
 # SECRETS AND CREDENTIALS
 # ===========================
 
-# Environment files
-.env*
+# Environment files (your main concern)
+.env
 *.env
 !.env.example
 !.env.template
 
-# Config files with potential secrets
-config.yaml
-config.yml
-settings.yaml
-settings.yml
-secrets.yaml
-secrets.yml
-values.yaml
-values.yml
-!*.template.yaml
-!*.template.yml
-!*.example.yaml
-!*.example.yml
-
-# Specific application configs that often contain secrets
-services.yaml
-services.yml
-bookmarks.yaml
-bookmarks.yml
-!services.template.yaml
-!services.template.yml
-
-# Generic secret patterns
-*secret*
-*password*
-*credential*
-*token*
-*key*
-!*template*
-!*example*
-
-# ===========================
-# KUBERNETES SECRETS
-# ===========================
-
-# Kubernetes secret manifests
-**/secrets/
-**/secret-*.yaml
-**/secret-*.yml
-**/*-secret.yaml
-**/*-secret.yml
-
-# Helm secrets
+# Actual secret files (not patterns)
+*-secrets.yaml
+*-secrets.yml
 secrets/
 private/
-**/charts/**/secrets/
-helm-secrets/
+
+# SOPS and encryption
 .sops.yaml
 *.sops.yaml
-
-# Sealed secrets (before sealing)
-**/sealed-secrets/raw/
-**/unsealed-*.yaml
-
-# ===========================
-# INFRASTRUCTURE AS CODE
-# ===========================
-
-# Terraform
-*.tfvars
-*.tfstate
-*.tfstate.backup
-.terraform/
-terraform.tfvars.json
-override.tf
-override.tf.json
-
-# Ansible
-inventory.ini
-inventory.yml
-inventory.yaml
-host_vars/
-group_vars/
-!host_vars/example/
-!group_vars/example/
-ansible-vault.yml
-vault-pass.txt
-
-# Pulumi
-Pulumi.*.yaml
-!Pulumi.example.yaml
 
 # ===========================
 # CERTIFICATES AND KEYS
 # ===========================
 
-# SSL/TLS certificates and keys
+# Private keys and certificates
 *.key
 *.pem
 *.p12
 *.pfx
 *.crt
 *.cer
-*.der
-*.csr
-*.p7b
-*.p7c
-*.p7r
-*.spc
 
-# SSH keys
+# SSH keys (but not public keys)
 id_rsa
 id_ed25519
 id_ecdsa
-*.pub
-!ssh-key-templates/
-
-# GPG keys
-*.gpg
-*.asc
-secring.*
-pubring.*
 
 # ===========================
-# CONTAINER SECRETS
+# TEMPORARY AND BUILD FILES
 # ===========================
 
-# Docker
-docker-compose.override.yml
-docker-compose.*.yml
-!docker-compose.template.yml
-!docker-compose.example.yml
-.dockercfg
-.docker/config.json
-
-# Podman
-containers/auth.json
-.config/containers/auth.json
-
-# ===========================
-# CLOUD PROVIDER CONFIGS
-# ===========================
-
-# AWS
-.aws/credentials
-.aws/config
-**/aws-credentials*
-
-# Google Cloud
-.gcloud/
-**/gcp-credentials*
-**/service-account*.json
-**/*-service-account.json
-
-# Azure
-.azure/
-**/azure-credentials*
-
-# DigitalOcean
-.doctl/
-
-# Cloudflare
-.cloudflare/
-**/cloudflare-credentials*
-
-# ===========================
-# DATABASE FILES
-# ===========================
-
-# SQLite databases
-*.db
-*.sqlite
-*.sqlite3
-*.db-journal
-
-# Database dumps
-*.sql
-*.dump
-!schema.sql
-!migrations/*.sql
-
-# ===========================
-# BACKUP AND TEMP FILES
-# ===========================
+# Documentation builds (your original issue!)
+site/
+docs/build/
+search/search_index.json
+.mkdocs/
 
 # Backup files
 *.backup
 *.bak
 *.tmp
 *.temp
-*.old
-*.orig
-*~
-.#*
-
-# Archive files with potential secrets
-*.tar.gz
-*.tgz
-*.zip
-*.rar
-*.7z
-!templates.tar.gz
-!examples.zip
 
 # ===========================
 # DEVELOPMENT FILES
 # ===========================
 
-# IDE and editor files
+# IDE files
 .vscode/settings.json
-.vscode/launch.json
 .idea/
 *.swp
 *.swo
-*~
 
-# OS generated files
+# OS files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
 # ===========================
-# LOGS AND MONITORING
+# INFRASTRUCTURE
 # ===========================
 
-# Log files
+# Terraform
+*.tfvars
+*.tfstate
+.terraform/
+
+# Cloud credentials
+.aws/credentials
+**/service-account*.json
+
+# ===========================
+# LOGS
+# ===========================
+
 *.log
 logs/
 log/
-!logs/.gitkeep
-
-# Monitoring data
-prometheus/data/
-grafana/data/
-*.rrd
 
 # ===========================
-# APPLICATION SPECIFIC
+# SPECIFIC OVERRIDES
 # ===========================
 
-# Homepage dashboard
-**/homepage/config/services.yaml
-**/homepage/config/settings.yaml
-**/homepage/config/bookmarks.yaml
-**/homepage/config/widgets.yaml
-!**/homepage/config/*.template.yaml
+# Only block actual secret files you create
+homepage-secrets.yaml
+argocd-secrets.yaml
+vault-secrets.yaml
 
-# ArgoCD
-**/argocd/projects/
-**/argocd/applications/
-!**/argocd/**/*.template.yaml
-
-# Traefik
-**/traefik/dynamic/
-**/traefik/acme.json
-**/traefik/traefik.yml
-!**/traefik/**/*.template.yml
-
-# Grafana
-**/grafana/grafana.ini
-**/grafana/ldap.toml
-**/grafana/provisioning/datasources/
-!**/grafana/provisioning/datasources/*.template.yaml
-
-# Prometheus
-**/prometheus/prometheus.yml
-!**/prometheus/prometheus.template.yml
-
-# ===========================
-# NETWORK CONFIGS
-# ===========================
-
-# VPN configurations
-*.ovpn
-*.conf
-!*.template.conf
-!*.example.conf
-
-# Network configurations
-**/network/
-**/networking/
-!**/network/**/*.template.yaml
-!**/networking/**/*.template.yaml
-
-# ===========================
-# CUSTOM PATTERNS
-# ===========================
-
-# Add specific patterns here
-# Example: custom-app-secrets/
-# Example: **/my-app/private-config.yaml
+# Block any manually created env files
+homepage.env
+grafana.env
