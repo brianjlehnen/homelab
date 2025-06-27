@@ -8,29 +8,23 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-
   source:
     repoURL: https://wiz-sec.github.io/charts
     targetRevision: 3.3.14
     chart: wiz-kubernetes-connector
-
     helm:
       values: |
         wizApiToken:
           secret:
             create: false
             name: wiz-kubernetes-connector-api-token
-          clientId: ***REMOVED***
-          clientToken: ***REMOVED***
-
         wiz-kubernetes-connector:
           enabled: true
           autoCreateConnector:
             clusterFlavor: Kubernetes
             connectorName: cluster-lab1830
-          wiz-broker:
-            enabled: true
-
+        wiz-broker:
+          enabled: true
         wiz-sensor:
           enabled: true
           image:
@@ -41,11 +35,9 @@ spec:
             create: false
             name: sensor-image-pull
           sensorClusterName: cluster-lab1830
-
   destination:
     server: https://kubernetes.default.svc
     namespace: wiz
-
   syncPolicy:
     automated:
       prune: true
