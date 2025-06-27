@@ -1,7 +1,7 @@
 
 grafana:
   # To set an initial password (will be stored in a secret):
-  adminPassword: "Gozer1017" # Choose a strong password
+  # adminPassword: "" # Choose a strong password
 
   # Enable Ingress for Grafana
   ingress:
