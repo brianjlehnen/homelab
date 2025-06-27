@@ -1,0 +1,111 @@
+# apps/adguard-home/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: adguard-config
+  namespace: network
+data:
+  AdGuardHome.yaml: |
+    bind_host: 0.0.0.0
+    bind_port: 3000
+    users: []
+    auth_attempts: 5
+    block_auth_min: 15
+    http_proxy: ""
+    language: en
+    theme: auto
+    dns:
+      bind_hosts:
+        - 0.0.0.0
+      port: 53
+      anonymize_client_ip: false
+      protection_enabled: true
+      blocking_mode: default
+      blocked_response_ttl: 10
+      parental_block_host: family-block.dns.adguard.com
+      safebrowsing_block_host: standard-block.dns.adguard.com
+      rewrites: []  # Will add your DNS entries here
+      blocked_services: []
+      upstream_dns:
+        - tls://1.1.1.1
+        - tls://1.0.0.1
+        - https://dns.cloudflare.com/dns-query
+      upstream_dns_file: ""
+      bootstrap_dns:
+        - 1.1.1.1
+        - 1.0.0.1
+      all_servers: false
+      fastest_addr: false
+      fastest_timeout: 1s
+      allowed_clients: []
+      disallowed_clients: []
+      blocked_hosts:
+        - version.bind
+        - id.server
+        - hostname.bind
+      cache_size: 4194304
+      cache_ttl_min: 0
+      cache_ttl_max: 0
+      cache_optimistic: false
+      bogus_nxdomain: []
+      aaaa_disabled: false
+      enable_dnssec: false
+      edns_client_subnet:
+        custom_ip: ""
+        enabled: false
+        use_custom: false
+      max_goroutines: 300
+      handle_ddr: true
+      ipset: []
+      ipset_file: ""
+      filtering:
+        protection_enabled: true
+        filtering_enabled: true
+        blocking_mode: default
+        blocked_response_ttl: 10
+        parental_enabled: false
+        safebrowsing_enabled: false
+        safesearch_enabled: false
+        safesearch_cache_size: 1048576
+        safesearch_cache_ttl: 1800
+        rewrites: []
+        blocked_services: []
+        custom_blocked_hosts: []
+        allowed_clients: []
+        disallowed_clients: []
+        blocked_hosts: []
+    tls:
+      enabled: false
+    filters:
+      - enabled: true
+        url: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
+        name: AdGuard DNS filter
+        id: 1
+      - enabled: true
+        url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
+        name: AdGuard Base filter
+        id: 2
+    whitelist_filters: []
+    user_rules: []
+    dhcp:
+      enabled: false
+    clients:
+      runtime_sources:
+        whois: true
+        arp: true
+        rdns: true
+        dhcp: true
+        hosts: true
+      persistent: []
+    log_file: ""
+    log_max_backups: 0
+    log_max_size: 100
+    log_max_age: 3
+    log_compress: false
+    log_localtime: false
+    verbose: false
+    os:
+      group: ""
+      user: ""
+      rlimit_nofile: 0
+    schema_version: 20

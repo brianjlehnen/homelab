@@ -1,0 +1,68 @@
+# apps/adguard-home/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adguard-home
+  namespace: network
+  labels:
+    app: adguard-home
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adguard-home
+  template:
+    metadata:
+      labels:
+        app: adguard-home
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+      - name: adguard-home
+        image: adguard/adguardhome:latest
+        ports:
+        - containerPort: 53
+          protocol: UDP
+          name: dns-udp
+        - containerPort: 53
+          protocol: TCP
+          name: dns-tcp
+        - containerPort: 3000
+          name: web
+        env:
+        - name: AGH_CONFIG
+          value: /opt/adguardhome/conf/AdGuardHome.yaml
+        volumeMounts:
+        - name: config
+          mountPath: /opt/adguardhome/conf
+        - name: work
+          mountPath: /opt/adguardhome/work
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: config
+        configMap:
+          name: adguard-config
+      - name: work
+        persistentVolumeClaim:
+          claimName: adguard-work
