@@ -19,12 +19,12 @@ spec:
         app.kubernetes.io/name: homepage
     spec:
       serviceAccountName: homepage
-      automountServiceAccountToken: true
+      automountServiceAccountToken: false
       dnsPolicy: None
       dnsConfig:
         nameservers:
-          - 192.168.4.254  # Your Pi-hole IP
-          - 8.8.8.8        # Fallback DNS
+          - 192.168.4.254 # Your Pi-hole IP
+          - 8.8.8.8 # Fallback DNS
         searches:
           - lab1830.com
           - cluster.local
@@ -34,7 +34,18 @@ spec:
       enableServiceLinks: true
       containers:
         - name: homepage
+          resources:
+            requests:
+              cpu: "50m" # 0.05 CPU cores
+              memory: "128Mi" # 128 MB RAM
+            limits:
+              cpu: "200m" # Max 0.2 CPU cores
+              memory: "256Mi" # Max 256 MB RAM
           image: "ghcr.io/gethomepage/homepage:latest"
+          securityContext:
+            capabilities:
+              drop:
+                - NET_RAW
           imagePullPolicy: Always
           envFrom:
             - secretRef:
