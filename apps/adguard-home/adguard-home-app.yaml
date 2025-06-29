@@ -11,6 +11,7 @@ spec:
     repoURL: git@github.com:brianjlehnen/k8s-homelab.git
     path: apps/adguard-home
     targetRevision: HEAD
+    # Remove plugin specification - let ArgoCD auto-detect SOPS
   destination:
     server: https://kubernetes.default.svc
     namespace: network
