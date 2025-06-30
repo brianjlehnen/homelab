@@ -34,6 +34,15 @@ spec:
             enabled: true
             # storageClassName: "local-path" # Or your preferred StorageClass. If null, uses default.
             size: 10Gi
+          
+          # ADD GRAFANA RESOURCE REQUESTS - Currently using 344Mi memory, 78m CPU
+          resources:
+            requests:
+              cpu: "100m"        # Current: 78m, so 100m gives headroom
+              memory: "400Mi"    # Current: 344Mi, so 400Mi gives headroom
+            limits:
+              cpu: "500m"        # Allow for dashboard rendering spikes
+              memory: "512Mi"    # Allow for memory spikes
 
         prometheus:
           prometheusSpec:
@@ -48,6 +57,15 @@ spec:
                   resources:
                     requests:
                       storage: 50Gi # Adjust based on your needs and available storage
+            
+            # ADD PROMETHEUS RESOURCE REQUESTS - Currently using 717Mi memory, 37m CPU
+            resources:
+              requests:
+                cpu: "100m"        # Current: 37m, so 100m gives headroom
+                memory: "800Mi"    # Current: 717Mi, so 800Mi gives headroom
+              limits:
+                cpu: "1000m"       # Allow spikes during heavy queries
+                memory: "1200Mi"   # Allow for memory spikes during ingestion
 
         alertmanager:
           alertmanagerSpec:
@@ -59,6 +77,35 @@ spec:
                   resources:
                     requests:
                       storage: 10Gi
+            
+            # ADD ALERTMANAGER RESOURCE REQUESTS - Currently using 38Mi memory, 3m CPU
+            resources:
+              requests:
+                cpu: "25m"         # Current: 3m, so 25m gives plenty headroom
+                memory: "64Mi"     # Current: 38Mi, so 64Mi gives headroom
+              limits:
+                cpu: "100m"
+                memory: "128Mi"
+
+        # ADD RESOURCE REQUESTS FOR SMALLER COMPONENTS
+        kubeStateMetrics:
+          resources:
+            requests:
+              cpu: "25m"          # Current: 3m
+              memory: "32Mi"      # Current: 17Mi
+            limits:
+              cpu: "100m"
+              memory: "64Mi"
+
+        # Node exporter is a DaemonSet, so resource requests are important
+        prometheus-node-exporter:
+          resources:
+            requests:
+              cpu: "25m"          # Currently: ~3m per node
+              memory: "32Mi"      # Currently: ~11Mi per node
+            limits:
+              cpu: "100m"
+              memory: "64Mi"
 
         # Disable components we might not need initially for a simpler setup
         # You can enable them later by removing these 'enabled: false' lines or setting to true.
@@ -75,30 +122,6 @@ spec:
         #     patch:
         #       enabled: false # Can sometimes cause issues on some K3s setups if cert-manager webhook is also very busy, but usually fine. Let's keep default for now.
 
-        # Override some default resource requests/limits for a homelab if needed to be less resource-intensive.
-        # This is optional and you should monitor resource usage.
-        # kubeStateMetrics:
-        #   resources:
-        #     requests:
-        #       cpu: 50m
-        #       memory: 128Mi
-        # prometheus-node-exporter:
-        #   resources:
-        #     requests:
-        #       cpu: 20m
-        #       memory: 64Mi
-        # prometheus:
-        #   prometheusSpec:
-        #     resources:
-        #       requests:
-        #         cpu: 200m
-        #         memory: 512Mi
-        # alertmanager:
-        #   alertmanagerSpec:
-        #     resources:
-        #       requests:
-        #         cpu: 50m
-        #         memory: 128Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

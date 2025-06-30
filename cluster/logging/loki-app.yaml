@@ -13,7 +13,6 @@ spec:
     targetRevision: "6.30.1" # Your specified Loki chart version
     helm:
       values: |
-        # ... your full, corrected Helm values for Loki go here ...
         deploymentMode: SingleBinary
         singleBinary:
           replicas: 1
@@ -21,6 +20,37 @@ spec:
             enabled: true
             storageClass: "nfs-client" # Corrected key
             size: 50Gi
+          # RESOURCES FOR MAIN LOKI POD
+          resources:
+            requests:
+              memory: "700Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+        
+        # RESOURCES FOR CHUNKS CACHE (THE 3.8GB MEMORY HOG!) - ROOT LEVEL
+        chunksCache:
+          enabled: true
+          resources:
+            requests:
+              memory: "3Gi"
+              cpu: "100m"
+            limits:
+              memory: "4Gi"
+              cpu: "500m"
+        
+        # RESOURCES FOR RESULTS CACHE - ROOT LEVEL
+        resultsCache:
+          enabled: true
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "25m"
+            limits:
+              memory: "100Mi"
+              cpu: "100m"
+        
         loki:
           auth_enabled: false
           storage:
@@ -52,6 +82,7 @@ spec:
             allow_structured_metadata: false
             ingestion_rate_mb: 25
             ingestion_burst_size_mb: 50
+        
         write:
           replicas: 0
         read:
@@ -64,14 +95,13 @@ spec:
           enabled: false
         ingress:
           enabled: false
-        # ... (and any other distributed components set to replicas: 0 or enabled: false)
-
+  
   # --- THIS SECTION IS CRITICAL ---
   destination:
     server: https://kubernetes.default.svc
     namespace: logging # Target namespace for Loki components
   # --- END DESTINATION SECTION ---
-
+  
   syncPolicy:
     automated:
       prune: true

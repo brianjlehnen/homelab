@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cmp-plugin-sops
+  namespace: argocd
+data:
+  sops.yaml: |
+    apiVersion: argoproj.io/v1alpha1
+    kind: ConfigManagementPlugin
+    metadata:
+      name: sops
+    spec:
+      allowConcurrency: true
+      discover:
+        find:
+          command:
+            - sh
+            - "-c"
+            - "find . -name '*.yaml' -exec grep -l 'sops:' {} \\;"
+      generate:
+        command:
+          - sh
+          - "-c"
+          - "for f in $(find . -name '*.yaml' -exec grep -l 'sops:' {} \\;); do echo '---' && sops --decrypt $f; done"
+      lockRepo: false

@@ -1,0 +1,48 @@
+spec:
+  template:
+    spec:
+      containers:
+      - name: sops
+        command: [/var/run/argocd/argocd-cmp-server]
+        image: quay.io/argoproj/argocd:v3.0.5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+        volumeMounts:
+          - mountPath: /var/run/argocd
+            name: var-files
+          - mountPath: /home/argocd/cmp-server/plugins
+            name: plugins
+          - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            subPath: sops.yaml
+            name: cmp-plugin-sops
+          - mountPath: /tmp
+            name: tmp
+          - mountPath: /usr/local/bin/sops
+            subPath: sops
+            name: custom-tools
+          - mountPath: /var/run/secrets/sops-age
+            name: sops-age-key
+            readOnly: true
+        env:
+          - name: SOPS_AGE_KEY_FILE
+            value: /var/run/secrets/sops-age/age.agekey
+      volumes:
+      - name: cmp-plugin-sops
+        configMap:
+          name: cmp-plugin-sops
+      - name: sops-age-key
+        secret:
+          secretName: sops-age
+      initContainers:
+      - name: download-sops
+        image: alpine:latest
+        command: [sh, -c]
+        args:
+          - >-
+            wget -O sops https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux.amd64 &&
+            chmod +x sops &&
+            mv sops /custom-tools/
+        volumeMounts:
+          - mountPath: /custom-tools
+            name: custom-tools
