@@ -22,11 +22,28 @@ spec:
           image:
             repository: "hashicorp/vault-k8s"
             tag: "1.4.1"
+          # ADD RESOURCES FOR VAULT AGENT INJECTOR
+          resources:
+            requests:
+              cpu: "25m"
+              memory: "32Mi"
+            limits:
+              cpu: "100m"
+              memory: "64Mi"
         
         server:
           image:
             repository: "hashicorp/vault"
             tag: "1.15.2"
+          
+          # ADD RESOURCES FOR VAULT SERVER PODS
+          resources:
+            requests:
+              cpu: "100m"        # Currently using ~50m each
+              memory: "100Mi"    # Currently using ~75Mi each
+            limits:
+              cpu: "200m"        # Allow for crypto operations
+              memory: "150Mi"    # Headroom for operations
           
           # High Availability mode
           ha:
