@@ -58,9 +58,14 @@ data:
 
   services.yaml: |
     - Infrastructure:
-        - Pi-hole:
-            href: http://192.168.4.254/admin/login
+        - AdGuard Home:
+            href: https://adguard.lab1830.com
             description: Network-wide DNS filtering & ad blocking
+            icon: adguard-home
+            
+        - Pi-hole (Legacy):
+            href: http://192.168.4.254/admin
+            description: Legacy DNS backup service
             icon: pi-hole
             
         - Synology NAS:
@@ -104,11 +109,21 @@ data:
               version: 1
               bitratePrecision: 1
 
+        - SmokePing:
+            href: https://smokeping.lab1830.com
+            description: Network latency monitoring & graphing
+            icon: smokeping
+
     - Management:
         - Argo CD:
             href: https://argocd.lab1830.com
             description: GitOps deployment controller
             icon: argo-cd
+            
+        - Vault:
+            href: https://vault.lab1830.com
+            description: Enterprise secrets management
+            icon: vault
             
         - Portainer:
             href: https://portainer.lab1830.com
@@ -206,6 +221,10 @@ data:
         - Obsidian Vault:
             - abbr: OB
               href: obsidian://open?vault=Zettelkasten
+              icon: obsidian
+        - Homelab Notes:
+            - abbr: Notes
+              href: https://notes.lab1830.com
               icon: obsidian
               
     - Cloud Services:
