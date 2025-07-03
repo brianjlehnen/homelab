@@ -88,21 +88,11 @@ data:
             href: https://kuma.lab1830.com
             description: Service availability monitoring
             icon: uptime-kuma
-            widget:
-              type: uptimekuma
-              url: https://192.168.4.156
-              slug: homelab
-              apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
 
         - Speedtest Tracker:
             href: https://speedtest.lab1830.com
             description: Internet speed monitoring and history
             icon: speedtest-tracker.png
-            widget:
-              type: speedtest
-              url: https://speedtest.lab1830.com
-              version: 1
-              bitratePrecision: 1
 
         - SmokePing:
             href: https://smokeping.lab1830.com
