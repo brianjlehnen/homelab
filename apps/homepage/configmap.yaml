@@ -63,11 +63,6 @@ data:
             description: Network-wide DNS filtering & ad blocking
             icon: adguard-home
             
-        - Pi-hole (Legacy):
-            href: http://192.168.4.254/admin
-            description: Legacy DNS backup service
-            icon: pi-hole
-            
         - Synology NAS:
             href: https://nas.lab1830.com
             description: Network storage & file services
@@ -95,8 +90,8 @@ data:
             icon: uptime-kuma
             widget:
               type: uptimekuma
-              url: http://10.43.240.254
-              slug: lab1830
+              url: https://kuma.lab1830.com
+              slug: homelab
               apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
 
         - Speedtest Tracker:
