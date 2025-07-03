@@ -18,17 +18,13 @@ spec:
       labels:
         app.kubernetes.io/name: homepage
     spec:
-      hostAliases:
-      - ip: "192.168.4.156"
-        hostnames:
-        - "status.lab1830.com"
       serviceAccountName: homepage
       automountServiceAccountToken: false
       dnsPolicy: None
       dnsConfig:
         nameservers:
-          - 192.168.4.201  # AdGuard Home primary DNS
-          - 1.1.1.1        # Cloudflare fallback
+          - 192.168.4.254 # Your Pi-hole IP
+          - 8.8.8.8 # Fallback DNS
         searches:
           - lab1830.com
           - cluster.local
@@ -40,11 +36,11 @@ spec:
         - name: homepage
           resources:
             requests:
-              cpu: "50m"
-              memory: "128Mi"
+              cpu: "50m" # 0.05 CPU cores
+              memory: "128Mi" # 128 MB RAM
             limits:
-              cpu: "200m"
-              memory: "256Mi"
+              cpu: "200m" # Max 0.2 CPU cores
+              memory: "256Mi" # Max 256 MB RAM
           image: "ghcr.io/gethomepage/homepage:latest"
           securityContext:
             capabilities:
