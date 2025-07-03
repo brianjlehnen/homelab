@@ -23,7 +23,7 @@ data:
           - "-c"
           - |
             for f in $(find . -name '*.yaml'); do
-              if grep -q 'sops:' "$f"; then
+              if grep -q '^sops:' "$f" && grep -q 'version:' "$f"; then
                 echo '---'
                 sops --decrypt "$f"
               else
