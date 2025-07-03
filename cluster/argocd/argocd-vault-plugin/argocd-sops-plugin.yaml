@@ -16,10 +16,19 @@ data:
           command:
             - sh
             - "-c"
-            - "find . -name '*.yaml' -exec grep -l 'sops:' {} \\;"
+            - "find . -name '*.yaml'"
       generate:
         command:
           - sh
           - "-c"
-          - "for f in $(find . -name '*.yaml' -exec grep -l 'sops:' {} \\;); do echo '---' && sops --decrypt $f; done"
+          - |
+            for f in $(find . -name '*.yaml'); do
+              if grep -q 'sops:' "$f"; then
+                echo '---'
+                sops --decrypt "$f"
+              else
+                echo '---'
+                cat "$f"
+              fi
+            done
       lockRepo: false
