@@ -90,7 +90,7 @@ data:
             icon: uptime-kuma
             widget:
               type: uptimekuma
-              url: https://status.lab1830.com
+              url: https://192.168.4.156
               slug: homelab
               apiKey: {{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}
 
