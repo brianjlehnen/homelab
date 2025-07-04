@@ -16,6 +16,12 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: network
+  ignoreDifferences:
+  - group: ""
+    kind: ConfigMap
+    name: adguard-home-config
+    jsonPointers:
+    - /data
   syncPolicy:
     automated:
       prune: true
