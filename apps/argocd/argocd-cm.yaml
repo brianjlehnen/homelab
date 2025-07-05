@@ -10,12 +10,11 @@ data:
   url: https://argocd.lab1830.com
   oidc.config: |
     name: Authentik
-    issuer: https://auth.lab1830.com/application/o/argocd/
+    issuer: https://192.168.4.200/application/o/argocd/
     clientId: argocd
     clientSecret: $oidc.authentik.clientSecret
     requestedScopes: ["openid", "profile", "email"]
     requestedIDTokenClaims: {"groups": {"essential": true}}
-    insecureSkipVerify: true
   policy.default: role:readonly
   policy.csv: |
     g, authentik Admins, role:admin
