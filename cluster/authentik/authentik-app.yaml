@@ -1,0 +1,112 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentik
+  namespace: argocd
+spec:
+  destination:
+    namespace: authentik
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: authentik
+    repoURL: https://charts.goauthentik.io
+    targetRevision: 2024.8.3
+    helm:
+      values: |
+        global:
+          env:
+            - name: AUTHENTIK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-secret
+                  key: secret-key
+            - name: AUTHENTIK_POSTGRESQL__HOST
+              value: "authentik-postgresql"
+            - name: AUTHENTIK_POSTGRESQL__NAME
+              value: "authentik"
+            - name: AUTHENTIK_POSTGRESQL__USER
+              value: "authentik"
+            - name: AUTHENTIK_POSTGRESQL__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-postgresql
+                  key: password
+        
+        authentik:
+          log_level: info
+          error_reporting:
+            enabled: false
+        
+        server:
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            hostname: auth.lab1830.com
+            tls: true
+            annotations:
+              cert-manager.io/cluster-issuer: "selfsigned-clusterissuer"
+          
+          metrics:
+            prometheus:
+              serviceMonitor:
+                enabled: true
+          
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+        
+        worker:
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+        
+        postgresql:
+          enabled: true
+          auth:
+            username: authentik
+            database: authentik
+            existingSecret: authentik-postgresql
+          primary:
+            persistence:
+              enabled: true
+              storageClass: nfs-client
+              size: 8Gi
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                cpu: 500m
+                memory: 512Mi
+        
+        redis:
+          enabled: true
+          auth:
+            enabled: false
+          master:
+            persistence:
+              enabled: false
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                cpu: 200m
+                memory: 256Mi
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
