@@ -43,14 +43,13 @@ spec:
             annotations:
               cert-manager.io/cluster-issuer: selfsigned-clusterissuer
             hosts:
-            - host: auth.lab1830.com
-              paths:
-              - path: /
-                pathType: Prefix
-            tls:
-            - secretName: authentik-tls
-              hosts:
               - auth.lab1830.com
+            paths:
+              - /
+            tls:
+              - secretName: authentik-tls
+                hosts:
+                  - auth.lab1830.com
           metrics:
             prometheus:
               serviceMonitor:
