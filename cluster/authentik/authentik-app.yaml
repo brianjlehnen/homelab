@@ -32,12 +32,10 @@ spec:
                 secretKeyRef:
                   name: authentik-postgresql
                   key: password
-        
         authentik:
           log_level: info
           error_reporting:
             enabled: false
-        
         server:
           ingress:
             enabled: true
@@ -53,12 +51,10 @@ spec:
               - secretName: authentik-tls
                 hosts:
                   - auth.lab1830.com
-          
           metrics:
             prometheus:
               serviceMonitor:
                 enabled: true
-          
           resources:
             requests:
               cpu: 100m
@@ -66,7 +62,6 @@ spec:
             limits:
               cpu: 500m
               memory: 1Gi
-        
         worker:
           resources:
             requests:
@@ -75,7 +70,6 @@ spec:
             limits:
               cpu: 500m
               memory: 1Gi
-        
         postgresql:
           enabled: true
           auth:
@@ -94,7 +88,6 @@ spec:
               limits:
                 cpu: 500m
                 memory: 512Mi
-        
         redis:
           enabled: true
           auth:
@@ -109,11 +102,10 @@ spec:
               limits:
                 cpu: 200m
                 memory: 256Mi
-
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
-    - ServerSideApply=true
+      - CreateNamespace=true
+      - ServerSideApply=true
