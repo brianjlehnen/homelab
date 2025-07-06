@@ -19,7 +19,3 @@ data:
   policy.default: role:readonly
   policy.csv: |
     g, authentik Admins, role:admin
-  # Add TLS configuration for the auth domain
-  tls.config: |
-    auth.lab1830.com:
-      insecureSkipVerify: true
