@@ -10,7 +10,7 @@ data:
   url: https://argocd.lab1830.com
   oidc.config: |
     name: Authentik
-    issuer: https://192.168.4.200/application/o/argocd/
+    issuer: http://192.168.4.200/application/o/argocd/
     clientId: argocd
     clientSecret: $oidc.authentik.clientSecret
     requestedScopes: ["openid", "profile", "email"]
