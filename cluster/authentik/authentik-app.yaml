@@ -44,8 +44,6 @@ spec:
               cert-manager.io/cluster-issuer: selfsigned-clusterissuer
             hosts:
               - auth.lab1830.com
-            paths:
-              - /
             tls:
               - secretName: authentik-tls
                 hosts:
