@@ -13,7 +13,7 @@ spec:
     repoURL: https://charts.goauthentik.io
     targetRevision: 2024.8.3
     helm:
-      values: |
+      values: |-
         global:
           env:
             - name: AUTHENTIK_SECRET_KEY
@@ -22,11 +22,11 @@ spec:
                   name: authentik-secret
                   key: secret-key
             - name: AUTHENTIK_POSTGRESQL__HOST
-              value: "authentik-postgresql"
+              value: authentik-postgresql
             - name: AUTHENTIK_POSTGRESQL__NAME
-              value: "authentik"
+              value: authentik
             - name: AUTHENTIK_POSTGRESQL__USER
-              value: "authentik"
+              value: authentik
             - name: AUTHENTIK_POSTGRESQL__PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -41,16 +41,16 @@ spec:
             enabled: true
             ingressClassName: nginx
             annotations:
-              cert-manager.io/cluster-issuer: "selfsigned-clusterissuer"
+              cert-manager.io/cluster-issuer: selfsigned-clusterissuer
             hosts:
-              - host: auth.lab1830.com
-                paths:
-                  - path: /
-                    pathType: Prefix
+            - host: auth.lab1830.com
+              paths:
+              - path: /
+                pathType: Prefix
             tls:
-              - secretName: authentik-tls
-                hosts:
-                  - auth.lab1830.com
+            - secretName: authentik-tls
+              hosts:
+              - auth.lab1830.com
           metrics:
             prometheus:
               serviceMonitor:
