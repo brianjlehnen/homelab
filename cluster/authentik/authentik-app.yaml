@@ -42,14 +42,13 @@ spec:
           ingress:
             enabled: true
             ingressClassName: nginx
-            hostname: auth.lab1830.com
+            annotations:
+              cert-manager.io/cluster-issuer: "selfsigned-clusterissuer"
             hosts:
               - host: auth.lab1830.com
                 paths:
                   - path: /
                     pathType: Prefix
-            annotations:
-              cert-manager.io/cluster-issuer: "selfsigned-clusterissuer"
             tls:
               - secretName: authentik-tls
                 hosts:
