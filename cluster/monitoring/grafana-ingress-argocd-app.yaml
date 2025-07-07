@@ -8,9 +8,9 @@ spec:
   source:
     repoURL: git@github.com:brianjlehnen/k8s-homelab.git
     targetRevision: HEAD
-    path: cluster/monitoring
+    path: cluster/monitoring/ingress
     directory:
-      include: 'grafana-ingress-app.yaml'
+      include: 'grafana-ingress.yaml'
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
