@@ -5,6 +5,7 @@ metadata:
   namespace: network
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
+    argocd.argoproj.io/tracking-id: adguard-home:/ConfigMap:network/adguard-config
 data:
   AdGuardHome.yaml: |
     bind_host: 0.0.0.0
@@ -26,7 +27,7 @@ data:
       parental_block_host: family-block.dns.adguard.com
       safebrowsing_block_host: standard-block.dns.adguard.com
       rewrites: [] # Will add your DNS entries here
-      blocked_services: []
+      blocked_services: {}
       upstream_dns:
       - tls://1.1.1.1
       - tls://1.0.0.1
@@ -70,7 +71,7 @@ data:
       safesearch_cache_size: 1048576
       safesearch_cache_ttl: 1800
       rewrites: []
-      blocked_services: []
+      blocked_services: {}   # <-- fixed here
       custom_blocked_hosts: []
       allowed_clients: []
       disallowed_clients: []
@@ -109,4 +110,4 @@ data:
       group: ""
       user: ""
       rlimit_nofile: 0
-    schema_version: 20
+    schema_version: 29
