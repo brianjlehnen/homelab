@@ -17,9 +17,7 @@ spec:
     server: https://kubernetes.default.svc
     namespace: network
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+    automated: {}  # Simplified
     syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+    - CreateNamespace=true
+    - ServerSideApply=true
