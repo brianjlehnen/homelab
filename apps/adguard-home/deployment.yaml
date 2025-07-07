@@ -50,8 +50,8 @@ spec:
             failureThreshold: 3
           volumeMounts:
             - name: config
-              mountPath: /opt/adguardhome/conf
-              readOnly: true
+              mountPath: /opt/adguardhome/conf/AdGuardHome.yaml
+              subPath: AdGuardHome.yaml
             - name: work
               mountPath: /opt/adguardhome/work
       volumes:
