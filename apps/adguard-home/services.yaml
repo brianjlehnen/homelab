@@ -30,3 +30,18 @@ spec:
     name: web
   selector:
     app: adguard-home
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adguard-home-nodeport
+  namespace: network
+spec:
+  type: NodePort
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 32611
+    name: web
+  selector:
+    app: adguard-home
