@@ -19,15 +19,6 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-      initContainers:
-      - name: config-init
-        image: busybox:latest
-        command: ['sh', '-c', 'cp /tmp/config/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml && chown 1000:1000 /opt/adguardhome/conf/AdGuardHome.yaml']
-        volumeMounts:
-        - name: config-template
-          mountPath: /tmp/config
-        - name: config
-          mountPath: /opt/adguardhome/conf
       containers:
       - name: adguard-home
         image: adguard/adguardhome:latest
@@ -65,11 +56,9 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
       volumes:
-      - name: config-template
-        configMap:
-          name: adguard-config
       - name: config
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: adguard-work
       - name: work
         persistentVolumeClaim:
           claimName: adguard-work
