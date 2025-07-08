@@ -22,4 +22,4 @@ spec:
           service:
             name: adguard-home-ui
             port:
-              number: 3000
+              number: 80
