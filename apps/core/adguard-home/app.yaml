@@ -22,3 +22,11 @@ spec:
       selfHeal: true
     syncOptions:
     - CreateNamespace=true
+  ignoreDifferences:  # Add this section
+  - group: ""
+    kind: Secret
+    name: adguard-home-credentials
+    jsonPointers:
+    - /sops
+    - /metadata/resourceVersion
+    - /metadata/uid
