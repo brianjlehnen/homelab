@@ -18,7 +18,7 @@ spec:
       values: |
         config:
           clients:
-            - url: http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
+            - url: http://192.168.4.250:3100/loki/api/v1/push
         # Add other overrides from your promtail-values.yaml if you have them, e.g., resources
         # resources:
         #   requests:
