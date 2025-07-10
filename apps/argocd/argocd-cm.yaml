@@ -1,21 +1,14 @@
 apiVersion: v1
+data:
+  application.instanceLabelKey: argocd.argoproj.io/instance
+  repositories: "- url: git@github.com:brianjlehnen/k8s-homelab.git\n  name: k8s-homelab\n
+    \ type: git\n  \n"
+  server.insecure: "false"
+  url: https://argocd.lab1830.com
 kind: ConfigMap
 metadata:
-  name: argocd-cm
-  namespace: argocd
   labels:
     app.kubernetes.io/name: argocd-cm
     app.kubernetes.io/part-of: argocd
-data:
-  url: https://argocd.lab1830.com
-  oidc.config: |
-    name: Authentik
-    issuer: https://auth.lab1830.com/application/o/argocd/
-    clientId: xiavBGJX3wlgs0GPareukepXErx7bHut8qML9u4k
-    clientSecret: $oidc.authentik.clientSecret
-    requestedScopes: ["openid", "profile", "email", "groups"]
-    requestedIDTokenClaims: {"groups": {"essential": true}}
-    insecureSkipVerify: true
-  policy.default: role:readonly
-  policy.csv: |
-    g, authentik Admins, role:admin
+  name: argocd-cm
+  namespace: argocd
