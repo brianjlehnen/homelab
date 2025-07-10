@@ -126,6 +126,11 @@ data:
             description: Recipe management & meal planning
             icon: mealie
 
+        - Grocy:
+            href: https://grocy.lab1830.com
+            description: Grocery & household management
+            icon: grocy
+
     - Media Management:
         - Plex:
             href: https://plex.lab1830.com
