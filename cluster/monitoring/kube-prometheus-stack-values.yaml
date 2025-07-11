@@ -7,7 +7,7 @@ grafana:
   ingress:
     enabled: true
     # We will define the hostname and TLS in a separate Ingress resource
-    # to use our ca-clusterissuer with cert-manager.
+    # to use our letsencrypt-prod with cert-manager.
     # So, we don't need to specify annotations or hosts here directly for the chart's Ingress.
     # We'll set pathType to Prefix
     pathType: Prefix

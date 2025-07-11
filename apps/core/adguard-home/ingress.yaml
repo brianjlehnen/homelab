@@ -4,7 +4,7 @@ metadata:
   name: adguard-home-ingress
   namespace: network
   annotations:
-    cert-manager.io/cluster-issuer: "ca-clusterissuer"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
@@ -20,6 +20,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: adguard-home-ui
+            name: adguard-home-web
             port:
               number: 80

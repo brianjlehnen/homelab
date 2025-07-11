@@ -5,13 +5,13 @@ metadata:
   namespace: monitoring
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: "ca-clusterissuer"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
     - grafana.lab1830.com
-    secretName: grafana-tls-cert
+    secretName: grafana-tls
   rules:
   - host: grafana.lab1830.com
     http:

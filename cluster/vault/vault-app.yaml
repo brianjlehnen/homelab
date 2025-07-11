@@ -112,7 +112,7 @@ spec:
             annotations:
               # Removed: kubernetes.io/ingress.class: nginx
               nginx.ingress.kubernetes.io/backend-protocol: HTTPS  # <- Added this line
-              cert-manager.io/cluster-issuer: ca-clusterissuer
+              cert-manager.io/cluster-issuer: letsencrypt-prod
               nginx.ingress.kubernetes.io/ssl-redirect: "true"
               cert-manager.io/private-key-rotation-policy: Always
               nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -120,7 +120,7 @@ spec:
               - host: vault.lab1830.com
                 paths: ["/"]
             tls:
-              - secretName: vault-ingress-tls
+              - secretName: vault-tls
                 hosts:
                   - vault.lab1830.com
         
