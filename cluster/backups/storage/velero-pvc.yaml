@@ -10,3 +10,4 @@ spec:
     requests:
       storage: 100Gi
   volumeName: velero-backup-pv
+  storageClassName: ""  # This forces it to use the specific PV
