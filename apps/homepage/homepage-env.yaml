@@ -5,21 +5,6 @@ metadata:
     namespace: homepage
 type: Opaque
 data:
-    HOMEPAGE_ALLOWED_HOSTS: ENC[AES256_GCM,data:C8VWvw3iuZuPh2JHqB65BMNrvjjrk21Los0eyQ==,iv:0tTVqlj8bPhWf/Md9ln87yCMEEDWgZIudN174KBhShg=,tag:c4tRKhmiUxM1P2JCtFU5BA==,type:str]
-    HOMEPAGE_VAR_UPTIMEKUMA_API_KEY: ENC[AES256_GCM,data:+0ojgh4sE6nFfcqXNyQza+xQfK2JTM6rT/kqu8X4ceT8dM0rLiyVlRQhjfb2HyuZc7+YaonBKcbv1y5k,iv:H2O5eaSsjWDl2yswwbNag2FvvyPf6yctUnpD4njwxNE=,tag:0JN3O/pbaM8u1v0eDdAAwA==,type:str]
-    HOMEPAGE_VAR_WEATHER_API_KEY: ENC[AES256_GCM,data:2Xq6tuVqiaRSEAMPlgSQwH7mjt5C6mDWLVOlCLknN52RBIjS3qVmVTOO5/Y=,iv:6UgMI+DeHWOtWqchOTGBCXkk1803maFmLuibOyxAvI0=,tag:QEM30un4zcJjKSKP9+ZPTw==,type:str]
-sops:
-    age:
-        - recipient: age1ek35nyqzsfq5kuz334vntyklkrfq65d8jhuedxrvnc0nf48rzuaqhejwwv
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAxOTlsQ3pTZmhrY0FCelFp
-            L2dxQjUvVGZxbVFnZlp4dnpFOU9USjRlRHdJCitTL1J6emtRSUl5QS9DZlFXMENR
-            bVdCVUNlVUY4QmsxN0lFRkJ6Ky8vNDAKLS0tIGNFMzJmeWMyMDN6Q2Yxci9qSTYr
-            ajFvSUtwTlRoM09aOUlDaXNpQWY3bTQKbo1IkGRm8xjx/VZp+opKkJjyAEDC0+KK
-            6M6q5J6I89jB4+fvo4M5uoUvjo5Wm3ZD3UYonB8kX0NDZYyLCtTK3Q==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-03T15:06:52Z"
-    mac: ENC[AES256_GCM,data:+rSlGBDp9YfncTdRw+j0rZOajgySiykxr9mmH10TU0GfRaVkx3akc+UJCd81JLtcaVw3BofvLyIojvt/98nfu3w/8IiFTX+sLOG0oOZcWcxi5Uw1PNvabWA7kdN98klIBLste2Yc6Rwmg2LOhUMt20O0TczBZQVSetN1HggeaJg=,iv:sdL3XfTtGQxXQw4Yu9/Lj6OG0SVqwL3hdHnw/lTNWKs=,tag:IWXuAtuvY9EsU6TVm4hEKA==,type:str]
-    encrypted_regex: ^(data|stringData)$
-    version: 3.10.2
+    HOMEPAGE_ALLOWED_HOSTS: aG9tZXBhZ2UubGFiMTgzMC5jb20=
+    HOMEPAGE_VAR_UPTIMEKUMA_API_KEY: dWsxX2s3X29kUnJWa29yd1dUY3ZvT1BJVjhvTjQ1eTNzZnZpazdhblF6UmY=
+    HOMEPAGE_VAR_WEATHER_API_KEY: MWVkMTFiM2RkNmU3ZjI0YTRhNmRhNzQ5Yzg3NTI0ZDE=
