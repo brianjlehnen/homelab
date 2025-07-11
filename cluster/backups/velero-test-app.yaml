@@ -1,0 +1,68 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velero-test
+  namespace: argocd
+spec:
+  destination:
+    namespace: velero
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: velero
+    repoURL: https://vmware-tanzu.github.io/helm-charts
+    targetRevision: 5.1.4
+    helm:
+      values: |
+        configuration:
+          backupStorageLocation:
+            - name: default
+              provider: velero.io/filesystem
+              bucket: velero-test
+              config:
+                path: /mnt/nas-backup/velero-test
+        
+        deployNodeAgent: true
+        nodeAgent:
+          podVolumePath: /var/lib/kubelet/pods
+          privileged: true
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+        
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+        
+        schedules:
+          test-backup:
+            disabled: false
+            schedule: "0 3 * * *"
+            template:
+              ttl: "72h0m0s"
+              includedNamespaces:
+              - default
+              - network
+              defaultVolumesToFsBackup: true
+        
+        metrics:
+          enabled: true
+          serviceMonitor:
+            enabled: true
+        
+        credentials:
+          useSecret: false
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
