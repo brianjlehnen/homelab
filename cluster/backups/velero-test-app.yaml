@@ -21,6 +21,11 @@ spec:
               bucket: velero-test
               config:
                 path: /mnt/nas-backup/velero-test
+          # Disable volume snapshots - we're using Restic instead
+          volumeSnapshotLocation: []
+        
+        # Explicitly disable snapshot features
+        snapshotsEnabled: false
         
         deployNodeAgent: true
         nodeAgent:
@@ -60,6 +65,9 @@ spec:
         
         credentials:
           useSecret: false
+        
+        # Disable snapshot-related features
+        initContainers: []
   syncPolicy:
     automated:
       prune: true
