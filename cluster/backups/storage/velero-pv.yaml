@@ -9,5 +9,5 @@ spec:
     - ReadWriteMany
   nfs:
     server: 192.168.4.159
-    path: /volume1/K8sNFSVolumes/velero-backups
+    path: /volume1/K8sNFSVolumes  # Use parent path that works
   persistentVolumeReclaimPolicy: Retain
