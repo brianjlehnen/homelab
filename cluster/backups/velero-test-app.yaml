@@ -17,14 +17,14 @@ spec:
         configuration:
           backupStorageLocation:
             - name: default
-              provider: velero.io/filesystem
-              bucket: velero-test
+              provider: aws  # Use aws provider with filesystem config
+              bucket: backups
               config:
-                path: /mnt/nas-backup/velero-test
-          # Disable volume snapshots - we're using Restic instead
+                region: minio
+                s3ForcePathStyle: "true"
+                s3Url: file:///backups
           volumeSnapshotLocation: []
         
-        # Explicitly disable snapshot features
         snapshotsEnabled: false
         
         deployNodeAgent: true
@@ -47,6 +47,16 @@ spec:
             cpu: 200m
             memory: 256Mi
         
+        # Mount the PVC for backup storage
+        extraVolumes:
+          - name: backup-storage
+            persistentVolumeClaim:
+              claimName: velero-backup-pvc
+        
+        extraVolumeMounts:
+          - name: backup-storage
+            mountPath: /backups
+        
         schedules:
           test-backup:
             disabled: false
@@ -66,7 +76,6 @@ spec:
         credentials:
           useSecret: false
         
-        # Disable snapshot-related features
         initContainers: []
   syncPolicy:
     automated:
