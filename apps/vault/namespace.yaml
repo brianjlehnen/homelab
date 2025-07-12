@@ -13,7 +13,7 @@ metadata:
 spec:
   secretName: vault-tls
   issuerRef:
-    name: letsencrypt-production
+    name: selfsigned-clusterissuer
     kind: ClusterIssuer
   dnsNames:
     - vault.lab1830.com
