@@ -48,7 +48,7 @@ spec:
           # High Availability mode
           ha:
             enabled: true
-            replicas: 2
+            replicas: 1
             raft:
               enabled: true
               setNodeId: true
