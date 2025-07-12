@@ -18,6 +18,9 @@ spec:
           # To set an initial password (will be stored in a secret):
           adminPassword: "resetPassword"
 
+          # Disable problematic init container
+          initContainers: []
+
           # Enable Ingress for Grafana
           ingress:
             enabled: false # This chart's ingress.enabled, not to be confused with our separate grafana-ingress.yaml
