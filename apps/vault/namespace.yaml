@@ -13,7 +13,7 @@ metadata:
 spec:
   secretName: vault-tls
   issuerRef:
-    name: selfsigned-clusterissuer
+    name: ca-clusterissuer
     kind: ClusterIssuer
   dnsNames:
     - vault.lab1830.com
