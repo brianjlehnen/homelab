@@ -1,19 +1,28 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: all-applications
+  # Renamed to match the filename for clarity
+  name: core-services
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: git@github.com:brianjlehnen/k8s-homelab.git
-    path: .
+    # Using the HTTPS URL is often easier than setting up SSH keys in ArgoCD
+    repoURL: https://github.com/brianjlehnen/k8s-homelab.git
+    targetRevision: HEAD
+    
+    # Point to the parent directory containing all your application folders
+    path: apps
+    
+    # Recursively sync all subdirectories within 'apps'
     directory:
       recurse: true
-      include: "apps/core/adguard-home/app.yaml"  # Only include AdGuard initially
+      
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    # Deploys resources to their defined namespace, or 'default' if unspecified
+    namespace: default
+    
   syncPolicy:
     automated:
       prune: true
