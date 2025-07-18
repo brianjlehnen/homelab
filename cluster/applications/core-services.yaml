@@ -1,29 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  # Renamed to match the filename for clarity
   name: core-services
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2" # <-- Wave 2 for applications
 spec:
   project: default
   source:
-    # Using the HTTPS URL is often easier than setting up SSH keys in ArgoCD
     repoURL: https://github.com/brianjlehnen/k8s-homelab.git
     targetRevision: HEAD
-    
-    # Point to the parent directory containing all your application folders
-    path: apps
-    
-    # Recursively sync all subdirectories within 'apps'
+    # This points to the directories with your applications
+    path: cluster
     directory:
       recurse: true
-      
+      # Find all apps EXCEPT the infrastructure ones
+      exclude: '{metallb/*,ingress-nginx/*,cert-manager/*,storage/*}'
   destination:
     server: https://kubernetes.default.svc
-    # Deploys resources to their defined namespace, or 'default' if unspecified
     namespace: default
-    
   syncPolicy:
     automated:
-      prune: false
+      prune: true
       selfHeal: true
