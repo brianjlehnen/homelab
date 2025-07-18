@@ -35,6 +35,7 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      # Promtail doesn't create the namespace; it assumes 'logging' exists (Loki app creates it)
-      # - CreateNamespace=true # Not strictly necessary here if Loki app already created 'logging'
+      # Promtail doesn't create the namespace in Prod; it assumes 'logging' exists (Loki app creates it)
+      # Future-proof: Create namespace if it doesn't exist in staging (safe for both staging and production)
+      - CreateNamespace=true
       - ServerSideApply=true
