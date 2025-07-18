@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: promtail
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: promtail
+    # Check the Grafana Helm repo for the latest STABLE version of the 'promtail' chart.
+    # Example version (please verify and update):
+    targetRevision: "6.17.0" # This is an example, use a current stable version for the 'promtail' chart
+    helm:
+      # Inline the values from promtail-values.yaml here for consistency
+      values: |
+        config:
+          clients:
+            - url: http://192.168.4.250:3100/loki/api/v1/push
+        # Add other overrides from your promtail-values.yaml if you have them, e.g., resources
+        # resources:
+        #   requests:
+        #     cpu: 50m
+        #     memory: 128Mi
+        #   limits:
+        #     cpu: 200m
+        #     memory: 256Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logging # Deploy Promtail in the same namespace as Loki
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      # Promtail doesn't create the namespace; it assumes 'logging' exists (Loki app creates it)
+      # - CreateNamespace=true # Not strictly necessary here if Loki app already created 'logging'
+      - ServerSideApply=true

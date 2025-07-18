@@ -1,0 +1,137 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: "72.9.0" # Your chosen chart version
+    helm:
+      values: |
+        # Ensure all lines below are correctly indented as part of this multi-line string
+        grafana:
+          # To set an initial password (will be stored in a secret):
+          adminPassword: "resetPassword"
+
+          # Disable problematic init container
+          initContainers: []
+
+          # Enable Ingress for Grafana
+          ingress:
+            enabled: false # This chart's ingress.enabled, not to be confused with our separate grafana-ingress.yaml
+                          # If you want ONLY your grafana-ingress.yaml to create the ingress,
+                          # you might set this to false and remove ingressClassName and pathType here.
+                          # However, setting ingressClassName here is also fine if your separate ingress is more specific
+                          # or you decide to let the chart create it and just annotate.
+                          # For full control with your separate grafana-ingress.yaml, often people set this to false.
+                          # Let's assume for now it's okay to be true, and your separate ingress takes precedence or you adapt.
+            ingressClassName: "nginx" # Your IngressClass name
+            pathType: Prefix
+
+          persistence:
+            enabled: true
+            # storageClassName: "local-path" # Or your preferred StorageClass. If null, uses default.
+            size: 10Gi
+          
+          # ADD GRAFANA RESOURCE REQUESTS - Currently using 344Mi memory, 78m CPU
+          resources:
+            requests:
+              cpu: "100m"        # Current: 78m, so 100m gives headroom
+              memory: "400Mi"    # Current: 344Mi, so 400Mi gives headroom
+            limits:
+              cpu: "500m"        # Allow for dashboard rendering spikes
+              memory: "512Mi"    # Allow for memory spikes
+
+        prometheus:
+          prometheusSpec:
+            # externalLabels: # Optional: if you want to add external labels to your metrics
+            #   cluster: lab1830
+            retention: 15d # How long to keep metrics, default is 10d. Adjust as needed for your storage.
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  # storageClassName: "local-path" # Or your preferred StorageClass. If null, uses default.
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 50Gi # Adjust based on your needs and available storage
+            
+            # ADD PROMETHEUS RESOURCE REQUESTS - Currently using 717Mi memory, 37m CPU
+            resources:
+              requests:
+                cpu: "100m"        # Current: 37m, so 100m gives headroom
+                memory: "800Mi"    # Current: 717Mi, so 800Mi gives headroom
+              limits:
+                cpu: "1000m"       # Allow spikes during heavy queries
+                memory: "1200Mi"   # Allow for memory spikes during ingestion
+
+        alertmanager:
+          alertmanagerSpec:
+            storage:
+              volumeClaimTemplate:
+                spec:
+                  # storageClassName: "local-path"
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 10Gi
+            
+            # ADD ALERTMANAGER RESOURCE REQUESTS - Currently using 38Mi memory, 3m CPU
+            resources:
+              requests:
+                cpu: "25m"         # Current: 3m, so 25m gives plenty headroom
+                memory: "64Mi"     # Current: 38Mi, so 64Mi gives headroom
+              limits:
+                cpu: "100m"
+                memory: "128Mi"
+
+        # ADD RESOURCE REQUESTS FOR SMALLER COMPONENTS
+        kubeStateMetrics:
+          resources:
+            requests:
+              cpu: "25m"          # Current: 3m
+              memory: "32Mi"      # Current: 17Mi
+            limits:
+              cpu: "100m"
+              memory: "64Mi"
+
+        # Node exporter is a DaemonSet, so resource requests are important
+        prometheus-node-exporter:
+          resources:
+            requests:
+              cpu: "25m"          # Currently: ~3m per node
+              memory: "32Mi"      # Currently: ~11Mi per node
+            limits:
+              cpu: "100m"
+              memory: "64Mi"
+
+        # Disable components we might not need initially for a simpler setup
+        # You can enable them later by removing these 'enabled: false' lines or setting to true.
+        # prometheus-node-exporter:
+        #   enabled: true # Usually good to keep
+        # kube-state-metrics:
+        #   enabled: true # Usually good to keep
+        # alertmanager:
+        #   enabled: false # Disable if you're not setting up alerts yet
+        # grafana: # This top-level 'grafana.enabled' would disable Grafana deployment by the chart
+        #   enabled: true # Keep this true if you want the chart to deploy Grafana
+        # prometheusOperator:
+        #   admissionWebhooks:
+        #     patch:
+        #       enabled: false # Can sometimes cause issues on some K3s setups if cert-manager webhook is also very busy, but usually fine. Let's keep default for now.
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

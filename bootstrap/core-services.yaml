@@ -1,20 +1,18 @@
-apiVersion: argocroj.io/v1alpha1
+apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cluster-infra
+  name: core-services
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   source:
     repoURL: https://github.com/brianjlehnen/k8s-homelab.git
     targetRevision: HEAD
-    path: cluster
+    path: apps # <-- Manages the 'apps' directory
     directory:
       recurse: true
-      # Exclude the directory containing this manifest to prevent recursion
-      exclude: '{applications/*}'
   destination:
     server: https://kubernetes.default.svc
     namespace: default
