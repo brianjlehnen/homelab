@@ -24,20 +24,25 @@ spec:
             nginx.ingress.kubernetes.io/backend-protocol: HTTPS
             nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           hosts:
-            - host: dashboard.lab1830.com
-              paths:
-                - path: /
-                  pathType: Prefix
+          - host: dashboard.lab1830.com
+            paths:
+            - path: /
+              pathType: Prefix
+          - host: dashboard.staging.lab1830.com
+            paths:
+            - path: /
+              pathType: Prefix
           tls:
-            - secretName: dashboard-tls-cert
-              hosts:
-                - dashboard.lab1830.com
+          - secretName: dashboard-tls-cert
+            hosts:
+            - dashboard.lab1830.com
+            - dashboard.staging.lab1830.com
         extraArgs:
-          - --enable-skip-login
-          - --disable-settings-authorizer
+        - --enable-skip-login
+        - --disable-settings-authorizer
   syncPolicy:
     automated:
-      prune: false  # Keep safe like your other apps
+      prune: false
       selfHeal: true
     syncOptions:
     - CreateNamespace=true

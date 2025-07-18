@@ -11,9 +11,20 @@ spec:
   tls:
   - hosts:
     - grafana.lab1830.com
+    - grafana.staging.lab1830.com
     secretName: grafana-tls
   rules:
   - host: grafana.lab1830.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kube-prometheus-stack-grafana
+            port:
+              number: 80
+  - host: grafana.staging.lab1830.com
     http:
       paths:
       - path: /

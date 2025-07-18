@@ -17,17 +17,28 @@ metadata:
 spec:
   ingressClassName: "nginx"
   rules:
-    - host: "homepage.lab1830.com"
-      http:
-        paths:
-          - path: "/"
-            pathType: Prefix
-            backend:
-              service:
-                name: homepage
-                port:
-                  number: 3000
+  - host: "homepage.lab1830.com"
+    http:
+      paths:
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: homepage
+            port:
+              number: 3000
+  - host: "homepage.staging.lab1830.com"
+    http:
+      paths:
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: homepage
+            port:
+              number: 3000
   tls:
-      - hosts:
-          - "homepage.lab1830.com"
-        secretName: "homepage-tls-cert"
+  - hosts:
+    - "homepage.lab1830.com"
+    - "homepage.staging.lab1830.com"
+    secretName: "homepage-tls-cert"

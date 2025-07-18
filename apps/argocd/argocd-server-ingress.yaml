@@ -6,22 +6,32 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod" 
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
   rules:
-    - host: argocd.lab1830.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: argocd-server
-                port:
-                  number: 80 # Or 443 if argocd-server expects HTTPS and you configured backend-protocol accordingly
-
+  - host: argocd.lab1830.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80
+  - host: argo.staging.lab1830.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80
   tls:
-    - hosts:
-        - argocd.lab1830.com
-      secretName: argocd-tls-cert
+  - hosts:
+    - argocd.lab1830.com
+    - argo.staging.lab1830.com
+    secretName: argocd-tls-cert
