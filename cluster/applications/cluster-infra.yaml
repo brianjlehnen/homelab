@@ -1,21 +1,20 @@
-apiVersion: argoproj.io/v1alpha1
+apiVersion: argocroj.io/v1alpha1
 kind: Application
 metadata:
   name: cluster-infra
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1" # <-- Wave 1 for infrastructure
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
     repoURL: https://github.com/brianjlehnen/k8s-homelab.git
     targetRevision: HEAD
-    # This now points to specific infrastructure directories
     path: cluster
     directory:
       recurse: true
-      # Only find the infrastructure app manifests
-      include: '{metallb/*,ingress-nginx/*,cert-manager/*,storage/*}'
+      # Exclude the directory containing this manifest to prevent recursion
+      exclude: '{applications/*}'
   destination:
     server: https://kubernetes.default.svc
     namespace: default

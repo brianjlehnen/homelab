@@ -4,18 +4,15 @@ metadata:
   name: core-services
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "2" # <-- Wave 2 for applications
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   source:
     repoURL: https://github.com/brianjlehnen/k8s-homelab.git
     targetRevision: HEAD
-    # This points to the directories with your applications
-    path: cluster
+    path: apps
     directory:
       recurse: true
-      # Find all apps EXCEPT the infrastructure ones
-      exclude: '{metallb/*,ingress-nginx/*,cert-manager/*,storage/*}'
   destination:
     server: https://kubernetes.default.svc
     namespace: default
