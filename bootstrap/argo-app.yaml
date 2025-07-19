@@ -1,0 +1,45 @@
+# bootstrap/argocd-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # Points to the official Argo CD Helm chart repository
+    repoURL: https://argoproj.github.io/argo-helm
+    chart: argo-cd
+    # Use a specific, stable version of the chart
+    targetRevision: 6.11.2 
+    helm:
+      # --- This section overrides the default Helm values ---
+      values: |
+        # Disable the default network policies that were causing DNS issues
+        controller:
+          networkPolicy:
+            create: false
+        dex:
+          networkPolicy:
+            create: false
+        redis:
+          networkPolicy:
+            create: false
+        repoServer:
+          networkPolicy:
+            create: false
+        server:
+          networkPolicy:
+            create: false
+
+  # This tells ArgoCD where to deploy itself
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  
+  # This ensures the namespace is created if it doesn't exist
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    # Apply the CRDs that ArgoCD needs to function
+    - ApplyOutOfSyncOnly=true

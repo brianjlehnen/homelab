@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/brianjlehnen/k8s-homelab.git
-    targetRevision: HEAD
+    targetRevision: staging
     path: cluster # <-- Manages the 'cluster' directory
     directory:
       recurse: true
