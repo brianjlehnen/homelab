@@ -1,0 +1,31 @@
+---
+# Allow DNS egress from network namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: network-allow-dns-egress
+  namespace: network
+spec:
+  podSelector: {}  # Apply to all pods in network namespace
+  policyTypes:
+  - Egress
+  egress:
+  # Allow DNS queries to cluster DNS
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+  # Allow DNS queries to external DNS servers
+  - to: []
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+    - protocol: TCP
+      port: 443  # DNS-over-HTTPS
