@@ -4,10 +4,12 @@ metadata:
   name: argocd-server-ingress
   namespace: argocd
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"        # Changed from HTTP
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"         # Added this line
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  labels:
+    app.kubernetes.io/instance: core-services
 spec:
   ingressClassName: nginx
   rules:
@@ -20,8 +22,7 @@ spec:
           service:
             name: argocd-server
             port:
-              number: 443                                        # Changed from 80
-  # Removed staging host entry for cleaner production config
+              number: 80
   tls:
   - hosts:
     - argocd.lab1830.com
