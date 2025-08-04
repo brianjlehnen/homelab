@@ -59,7 +59,7 @@ data:
   services.yaml: |
     - Infrastructure:
         - AdGuard Home:
-            href: https://adguard.lab1830.com
+            href: http://adguard.lab1830.com
             description: Network-wide DNS filtering & ad blocking
             icon: adguard-home
             
@@ -88,11 +88,6 @@ data:
             href: https://kuma.lab1830.com
             description: Service availability monitoring
             icon: uptime-kuma
-
-        - Speedtest Tracker:
-            href: https://speedtest.lab1830.com
-            description: Internet speed monitoring and history
-            icon: speedtest-tracker.png
 
         - SmokePing:
             href: https://smokeping.lab1830.com
